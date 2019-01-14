@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 14:43:30 by wta              ###   ########.fr       */
+/*   Created: 2019/01/14 14:37:55 by wta               #+#    #+#             */
+/*   Updated: 2019/01/14 14:39:08 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "mlx.h"
-#include "wolf3d.h"
+#include "../libft/includes/libft.h"
 
-int	main(int ac, char **av)
+int		splitlen(char **split)
 {
-	t_map	map_info;
-	int		err_id;
-	
-	err_id = 1;
-	if (ac > 1)
-		err_id = read_file(av[1], &map_info);
-	if (err_id != 1)
-		err_handler(err_id);
-	return (0);
+	int	i;
+
+	i = 0;
+	if (split != NULL)
+	{
+		while (split[i] != NULL)
+			i++;
+	}
+	return (i);
+}
+
+void	splitdel(char **split)
+{
+	int	i;
+
+	if (split != NULL)
+	{
+		i = -1;
+		while (split[++i] != NULL)
+			ft_strdel(&split[i]);
+		free(split);
+		split = NULL;
+	}
 }

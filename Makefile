@@ -6,7 +6,7 @@
 #    By: wta <marvin@42.fr>                         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/14 09:58:32 by wta              ###   ########.fr        #
+#    Updated: 2019/01/14 14:39:53 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 # COLOR #
@@ -28,8 +28,11 @@ INC			=	-I $(INCDIR)
 CFLAGS		=	-Wall -Wextra -Werror
 MLXLIB		=	-L minilibx_macos -lmlx
 MLXFLAG		=	-framework OpenGL -framework Appkit
-SRCS		=	\
-main.c
+SRCS=			\
+error.c			\
+main.c			\
+read_file.c		\
+utils.c
 HEADER		=	\
 wolf3d.h
 # RULES #
