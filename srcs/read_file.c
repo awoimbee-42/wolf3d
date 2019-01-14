@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 16:16:48 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/14 16:39:49 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,8 @@ int		read_file(char *file, t_map *map_info)
 	fn_ret = 1;
 	while (fn_ret == 1 && (gnl_ret = get_next_line(fd, &line)) > 0)
 	{
-		if (check_line(line, TOKENS, map_info) != 0)
+		if ((ft_ret = check_line(line, TOKENS, map_info)) != 0)
 			map_info->map[line_count] = line;
-		else
-			fn_ret = 0;
 		line_count += 1;
 	}
 	close(fd);
