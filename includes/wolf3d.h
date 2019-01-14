@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 14:43:41 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/14 15:41:03 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct	s_map
 
 int		read_file(char *file, t_map *map_info);
 
+int		check_bounds(t_map *map_info);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);

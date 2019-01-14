@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check_bounds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 15:48:42 by wta              ###   ########.fr       */
+/*   Created: 2019/01/14 15:33:57 by wta               #+#    #+#             */
+/*   Updated: 2019/01/14 16:23:32 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "mlx.h"
 #include "wolf3d.h"
 
-int	main(int ac, char **av)
+int	check_bounds(t_map *map_info)
 {
-	t_map	map_info;
-	int		err_id;
-	
-	err_id = 1;
-	if (ac > 1)
+	int	idx;
+
+	idx = -1;
+	while (++idx < map_info->height)
 	{
-		if ((err_id = read_file(av[1], &map_info)) == 1
-		&& (err_id = check_bounds(&map_info)) == 1)
-		{
-			
-		}
+		if (map_info->map[idx][0] != '1'
+		|| map_info->map[idx][map_info->width - 1] != '1')
+			return (BAD_FMT);
 	}
-	if (err_id != 1)
-		err_handler(err_id);
-	return (0);
+	idx = -1;
+	while (++idx < map_info->width)
+	{
+		if (map_info->map[0][idx] != '1'
+		|| map_info->map[map_info->height - 1][idx] != '1')
+			return (BAD_FMT);
+	}
+	return (1);
 }

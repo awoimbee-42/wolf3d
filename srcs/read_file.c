@@ -6,9 +6,11 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 15:26:16 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/14 16:16:48 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -71,12 +73,12 @@ int		check_line(char *line, char *tokens, t_map *map_info)
 	if ((int)ft_strlen(line) != map_info->width)
 		return (0);
 	i = -1;
-	while (line[i++] != '\0')
+	while (line[++i] != '\0')
 	{
 		j = -1;
-		while (tokens[j] != '\0')
-			if (line[i] != tokens[j])
-				j++;
+		while (tokens[++j] != '\0')
+			if (line[i] == tokens[j])
+				break ;
 		if (tokens[j] == '\0')
 			return (0);
 	}
