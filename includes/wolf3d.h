@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 16:02:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/15 16:22:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,11 @@ typedef struct	s_info
 	t_mlx		mlx;
 }				t_info;
 
-int		read_file(char *file, t_info *info);
-int		**read_textures(void *mlx_ptr);
+t_vec2	rotate2d(t_vec2 vector, const double theta);
 
+int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);
+int		**read_textures(void *mlx_ptr);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);
