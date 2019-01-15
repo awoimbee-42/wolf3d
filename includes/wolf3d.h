@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 14:35:55 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/15 15:51:22 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define MALLOC_ERR	4
 # define GNL_ERR	5
 # define TOKENS		"01"
+# define WALL_S		1
 
 typedef struct	s_mlx
 {
@@ -46,8 +47,8 @@ typedef struct	s_map
 typedef struct	s_player
 {
 	t_vec2	pos;
+	t_vec2	dir;
 	int		fov;
-	int		angle;
 }				t_player;
 
 typedef struct	s_info
