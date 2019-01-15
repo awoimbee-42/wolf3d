@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 15:40:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/15 16:02:29 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct	s_info
 }				t_info;
 
 int		read_file(char *file, t_info *info);
-int		**read_textures(mlx_ptr_t *mlx_ptr);
+int		**read_textures(void *mlx_ptr);
 
 int		check_bounds(t_map *m_info);
 

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/15 15:38:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/15 16:02:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int			error_exit(int msg)
 	exit(EXIT_FAILURE);
 }
 
-int		**read_textures(mlx_ptr_t *mlx_ptr)
+int		**read_textures(void *mlx_ptr)
 {
 	int			**textures;
 	char		i;
