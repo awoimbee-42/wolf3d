@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 16:52:55 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/15 14:35:55 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@
 # define MALLOC_ERR	4
 # define GNL_ERR	5
 # define TOKENS		"01"
+
+typedef struct	s_mlx
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img_ptr;
+	char		*img_str;
+	int			bpp;
+	int			sizel;
+	int			endian;
+}				t_mlx;
 
 typedef struct	s_vec2
 {
@@ -39,9 +50,16 @@ typedef struct	s_player
 	int		angle;
 }				t_player;
 
-int		read_file(char *file, t_map *map_info);
+typedef struct	s_info
+{
+	t_player	player;
+	t_map		m_info;
+	t_mlx		mlx;
+}				t_info;
 
-int		check_bounds(t_map *map_info);
+int		read_file(char *file, t_info *info);
+
+int		check_bounds(t_map *m_info);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);

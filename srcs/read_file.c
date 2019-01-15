@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 16:41:19 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/15 15:02:19 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		parse_first_line(char *str, t_map *map_info)
 	ret = 1;
 	if ((split = ft_strsplit(str, ' ')) != NULL && (len = splitlen(split) == 2)) // FORMAT : 2 ARGUMENTS -> WIDTH HEIGHT
 	{
-		
+
 		map_info->width = check_fmt(split[0]);
 		map_info->height = check_fmt(split[1]);
 		if (map_info->width < 0 || map_info->height < 0)
@@ -65,53 +65,71 @@ int		prealloc_map(t_map *map_info)
 	return (map_info->map != NULL);
 }
 
-int		check_line(char *line, char *tokens, t_map *map_info)
+int		p_set(t_info *info)
+{
+	return (info->player.pos.x != -1 && info->player.pos.y != -1);
+}
+
+void	set_vec2(double x, double y, t_vec2 *pos)
+{
+	pos->x = x;
+	pos->y = y;
+}
+
+int		check_line(char *line, int row, char *tokens, t_info *info)
 {
 	int	i;
 	int	j;
 
-	if ((int)ft_strlen(line) != map_info->width)
+	if ((int)ft_strlen(line) != info->m_info.width)
 		return (0);
 	i = -1;
 	while (line[++i] != '\0')
 	{
 		j = -1;
-		while (tokens[++j] != '\0')
-			if (line[i] == tokens[j])
-				break ;
-		if (tokens[j] == '\0')
+		if (line[i] == '@' && p_set(info) == 0)
+			set_vec2((double)i, (double)row, &info->player.pos);
+		else if (line[i] == '@')
 			return (0);
+		else
+		{
+			while (tokens[++j] != '\0')
+				if (line[i] == tokens[j])
+					break ;
+			if (tokens[j] == '\0')
+				return (0);
+		}
 	}
 	return (1);
 }
 
-int		read_file(char *file, t_map *map_info)
+int		read_file(char *file, t_info *info)
 {
 	char	*line;
 	int		line_count;
 	int		gnl_ret;
-	int		fn_ret;
+	int		ret;
 	int		fd;
 
 	if ((fd = open(file, O_RDONLY)) < 0)
 		return (-1);
 	if (get_next_line(fd, &line) <= 0)
 		return (GNL_ERR);
-	if (parse_first_line(line, map_info) == 0)
+	if (parse_first_line(line, &info->m_info) == 0)
 		return (ft_strdelerr(line, BAD_FMT));
 	ft_strdel(&line);
-	if (prealloc_map(map_info) == 0)
+	if (prealloc_map(&info->m_info) == 0)
 		return (MALLOC_ERR);
 	line_count = 0;
-	fn_ret = 1;
-	while (fn_ret == 1 && (gnl_ret = get_next_line(fd, &line)) > 0)
+	ret = 1;
+	while (ret == 1 && (gnl_ret = get_next_line(fd, &line)) > 0)
 	{
-		if ((fn_ret = check_line(line, TOKENS, map_info)) != 0)
-			map_info->map[line_count] = line;
+		if ((ret = check_line(line, line_count, TOKENS, info)) != 0)
+			info->m_info.map[line_count] = line;
 		line_count += 1;
 	}
 	close(fd);
-	if (line_count != map_info->height || fn_ret == 0 || gnl_ret < 0)
-		return (splitdelerr(map_info->map, (gnl_ret < 0) ? GNL_ERR : BAD_FMT));
+	if (line_count != info->m_info.height || ret == 0 || gnl_ret < 0)
+		return (splitdelerr(info->m_info.map, (gnl_ret < 0) ? GNL_ERR : BAD_FMT));
 	return (1);
 }
