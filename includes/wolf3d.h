@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 16:38:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/15 16:46:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define GNL_ERR	5
 # define READ_ERR	6
 # define TOKENS		"01"
+# define WALL_S		1
 # define TEX_WIDTH	640
 # define TEX_HEIGHT	640
 
@@ -50,8 +51,8 @@ typedef struct	s_map
 typedef struct	s_player
 {
 	t_vec2	pos;
+	t_vec2	dir;
 	int		fov;
-	int		angle;
 }				t_player;
 
 typedef struct	s_info
