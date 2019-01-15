@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 16:22:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/15 16:38:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,22 @@ typedef struct	s_info
 	t_mlx		mlx;
 }				t_info;
 
+/*
+**	vec2_op.c
+*/
+
 t_vec2	rotate2d(t_vec2 vector, const double theta);
+t_vec2	vec2_add(t_vec2 a, const t_vec2 b);
+t_vec2	vec2_sub(t_vec2 a, const t_vec2 b);
+t_vec2	vec2_multv(t_vec2 a, const t_vec2 b);
+t_vec2	vec2_multf(t_vec2 a, const float b);
+t_vec2	vec2_div(t_vec2 a, const t_vec2 b);
+t_vec2	vec2_divf(t_vec2 a, const float b);
+float	vec2_dot(const t_vec2 a, const t_vec2 b);
+float	vec2_mod(const t_vec2 a);
+t_vec2	vec2_normalize(t_vec2 a);
+float	points_dist(const t_vec2 p1, const t_vec2 p2);
+
 
 int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);

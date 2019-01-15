@@ -3,13 +3,13 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wta <marvin@42.fr>                         +#+  +:+       +#+         #
+#    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/14 15:41:46 by wta              ###   ########.fr        #
+#    Updated: 2019/01/15 16:40:09 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-# COLOR #
+
 _GREEN		=	\033[0;32m
 _WHITE		=	\033[m
 _YELLOW		=	\033[0;33m
@@ -33,7 +33,9 @@ check_bounds.c	\
 error.c			\
 main.c			\
 read_file.c		\
-utils.c
+utils.c			\
+vec2_op0.c		\
+read_textures.c
 HEADER		=	\
 wolf3d.h
 # RULES #
