@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 15:51:22 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/15 16:33:30 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@
 # define BAD_FMT	3
 # define MALLOC_ERR	4
 # define GNL_ERR	5
+# define READ_ERR	6
 # define TOKENS		"01"
 # define WALL_S		1
+# define TEX_WIDTH	640
+# define TEX_HEIGHT	640
 
 typedef struct	s_mlx
 {
@@ -42,6 +45,7 @@ typedef struct	s_map
 	char	**map;
 	int		width;
 	int		height;
+	int		**textures;
 }				t_map;
 
 typedef struct	s_player
@@ -59,6 +63,7 @@ typedef struct	s_info
 }				t_info;
 
 int		read_file(char *file, t_info *info);
+int		**read_textures(mlx_ptr_t *mlx_ptr);
 
 int		check_bounds(t_map *m_info);
 
