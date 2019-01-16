@@ -6,12 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:19:09 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 13:42:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -43,19 +42,20 @@ static int	check_fmt(char *str)
 
 /*
 **	parse_first_line:
-**	 The first line of map files should contain the width and height of said map
+**	 The first line of map files should contain only
+**		the width and height of said map
 */
 
-int		parse_first_line(char *str, t_map *map_info)
+static int	parse_first_line(char *str, t_map *map_info)
 {
-	char	**split;
-	int		ret;
-	int		len;
+	char			**split;
+	int				ret;
+	int				len;
 
 	ret = 1;
-	if ((split = ft_strsplit(str, ' ')) != NULL && (len = splitlen(split) == 2)) // FORMAT : 2 ARGUMENTS -> WIDTH HEIGHT
+	if ((split = ft_strsplit(str, ' ')) != NULL
+	&& (len = splitlen(split) == 2))
 	{
-
 		map_info->width = check_fmt(split[0]);
 		map_info->height = check_fmt(split[1]);
 		if (map_info->width < 0 || map_info->height < 0)
@@ -67,21 +67,21 @@ int		parse_first_line(char *str, t_map *map_info)
 	return (ret);
 }
 
-int		prealloc_map(t_map *map_info)
+static int	prealloc_map(t_map *map_info)
 {
 	map_info->map = (char**)ft_memalloc(sizeof(char*) * (map_info->height + 1));
 	return (map_info->map != NULL);
 }
 
-int		p_set(t_info *info)
+static int	p_set(t_info *info)
 {
 	return (info->player.pos.x != -1 && info->player.pos.y != -1);
 }
 
-int		check_line(char *line, int row, char *tokens, t_info *info)
+static int	check_line(char *line, int row, char *tokens, t_info *info)
 {
-	int	i;
-	int	j;
+	int				i;
+	int				j;
 
 	if ((int)ft_strlen(line) != info->m_info.width)
 		return (0);
@@ -105,13 +105,13 @@ int		check_line(char *line, int row, char *tokens, t_info *info)
 	return (1);
 }
 
-int		read_file(char *file, t_info *info)
+int			read_file(char *file, t_info *info)
 {
-	char	*line;
-	int		line_count;
-	int		gnl_ret;
-	int		ret;
-	int		fd;
+	char			*line;
+	int				line_count;
+	int				gnl_ret;
+	int				ret;
+	int				fd;
 
 	if ((fd = open(file, O_RDONLY)) < 0)
 		return (-1);
@@ -132,6 +132,6 @@ int		read_file(char *file, t_info *info)
 	}
 	close(fd);
 	if (line_count != info->m_info.height || ret == 0 || gnl_ret < 0)
-		return (splitdelerr(info->m_info.map, (gnl_ret < 0) ? GNL_ERR : BAD_FMT));
+		return (splitdelerr(info->m_info.map, gnl_ret < 0 ? GNL_ERR : BAD_FMT));
 	return (1);
 }

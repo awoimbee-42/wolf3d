@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:19:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 13:33:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,10 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 
 	delta = (t_vec2){fabs(1. / ray_dir->x), fabs(1. / ray_dir->y)};
 	curr_pos = (t_vec2){info->player.pos.x, info->player.pos.y};
-	side_dist = (t_vec2){
-		(ray_dir->x >= 0.)
-			? ((curr_pos.x - info->player.pos.x + 1) * delta.x)
-			: ((info->player.pos.x - curr_pos.x) * delta.x),
-		(ray_dir->y >= 0.)
-			? ((curr_pos.y - info->player.pos.y + 1) * delta.y)
-			: ((info->player.pos.y - curr_pos.y) * delta.y)};
+	side_dist = (t_vec2){ (ray_dir->x >= 0.) ? ((curr_pos.x - info->player.pos.x
+	+ 1) * delta.x) : ((info->player.pos.x - curr_pos.x) * delta.x), (ray_dir->y
+	>= 0.) ? ((curr_pos.y - info->player.pos.y + 1) * delta.y) :
+	((info->player.pos.y - curr_pos.y) * delta.y)};
 	step = (t_vec2){(ray_dir->x >= 0.) ? 1 : -1, (ray_dir->y >= 0.) ? 1 : -1};
 	while (1)
 	{

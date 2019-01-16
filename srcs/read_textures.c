@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/15 16:44:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 13:22:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int			error_exit(int msg)
 	exit(EXIT_FAILURE);
 }
 
-int		**read_textures(void *mlx_ptr)
+int			**read_textures(void *mlx_ptr)
 {
-	int			**textures;
-	int			i;
-	char		filename[17];
-	int			null;
+	int		**textures;
+	int		i;
+	char	filename[17];
+	int		null;
 
 	if (!(textures = (int**)malloc(sizeof(int*) * 4)))
 		error_exit(MALLOC_ERR);

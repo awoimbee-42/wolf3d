@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:19:13 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 13:23:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 #include "mlx.h"
 #include "wolf3d.h"
 
-void	init_vec2(t_vec2 *pos)
-{
-	pos->x = -1;
-	pos->y = -1;
-}
-
 void	init_player(t_player *player)
 {
-	init_vec2(&player->pos);
+	player->pos = (t_vec2){-1, -1};
 	player->fov = 60;
 }
 
@@ -46,7 +40,7 @@ int		init_mlx(t_mlx *mlx)
 	return (1);
 }
 
-int	main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_info	info;
 	int		err_id;
@@ -62,7 +56,8 @@ int	main(int ac, char **av)
 			if (!(init_mlx(&info.mlx)))
 				return (0);
 			raycasting(&info);
-			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr, info.mlx.img_ptr, 0, 0);
+			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
+									info.mlx.img_ptr, 0, 0);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
 	}
