@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 16:18:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 16:57:21 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 			curr_pos.y += step.y;
 			*side = 1;
 		}
-		if (info->m_info.map[(int)curr_pos.y][(int)curr_pos.x] > '0'
-			&& info->m_info.map[(int)curr_pos.y][(int)curr_pos.x] != '@')
+		if (info->m_info.map[(int)curr_pos.y][(int)curr_pos.x] > '0')
 			break ;
 	}
 	if (*side == 0)
@@ -67,25 +66,56 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 	return (dist);
 }
 
-void	draw_line(int x, int side, int line_h, t_info *info)
+void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 {
 	int	start;
 	int	end;
 	int	idx;
+	int line_h;
 
-	start = SCREEN_H / 2 - line_h / 2;
-	start = (start < 0) ? 0 : start;
-	end = SCREEN_H / 2 + line_h / 2;
-	end = (end >= SCREEN_H) ? SCREEN_H - 1 : end;
+	line_h = (int)(SCREEN_H / dist);
+	if ((start = SCREEN_H / 2 - line_h / 2) < 0)
+		start = 0;
+	if ((end = SCREEN_H / 2 + line_h / 2) >= SCREEN_H)
+		end = SCREEN_H - 1;
 	idx = -1;
 	while (++idx < start)
 		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
-	// wall
-	while (start < end)
+	// #### WALL ####
+
+		//calculate value of wallX
+	double wallX; //where exactly the wall was hit
+	if (side == 0) wallX = info->player.pos.y + dist * ray_dir.y;
+	else           wallX = info->player.pos.x + dist * ray_dir.x;
+	wallX -= floor((wallX));
+
+	//x coordinate on the texture
+	int texX = (int)(wallX * TEX_WIDTH);
+	if(side == 0 && ray_dir.x > 0) texX = TEX_WIDTH - texX - 1;
+	if(side == 1 && ray_dir.y < 0) texX = TEX_WIDTH - texX - 1;
+
+
+
+
+
+	while (idx < end)
 	{
-		info->mlx.img_str[x + (start * info->mlx.sizel / 4)] = (side == 0) ? 0xFFFFFF : 0xd3d3d3;
-		start++;
+		int d = idx * 256 - SCREEN_H * 128 + line_h * 128;  //256 and 128 factors to avoid floats
+        // TODO: avoid the division to speed this up
+        int texY = ((d * TEX_HEIGHT) / line_h) / 256;
+		fprintf(stderr, "color = info->m_info.textures[0][%d * %d + %d]\n",
+						TEX_HEIGHT, texY, texX);
+        int color = info->m_info.textures[0][TEX_HEIGHT * texY + texX];
+        //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+        // if(side == 1) color = (color >> 1) & 8355711;
+        // buffer[y][x] = color;
+
+		info->mlx.img_str[x + (start * info->mlx.sizel / 4)] = color;
+		idx++;
 	}
+
+
+	// #### WALL ####
 	idx = end - 1;
 	while (++idx < SCREEN_H - 1)
 		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
@@ -96,7 +126,6 @@ void	raycasting(t_info *info)
 	t_vec2	ray_dir;
 	double	dist;
 	int		screen_x;
-	int		line_h;
 	int		side;
 
 	screen_x = -1;
@@ -106,7 +135,6 @@ void	raycasting(t_info *info)
 		side = -1;
 		get_ray_dir(screen_x, &ray_dir, info);
 		dist = dda(&side, &ray_dir, info);
-		line_h = (int)(SCREEN_H / dist);
-		draw_line(screen_x, side, line_h, info);
+		draw_line(screen_x, side, dist, info, ray_dir);
 	}
 }
