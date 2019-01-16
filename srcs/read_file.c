@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 11:22:48 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:57:58 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -19,7 +18,12 @@
 #include "../libft/includes/ft_printf.h"
 #include "wolf3d.h"
 
-int		check_fmt(char *str)
+/*
+**	check_fmt:
+**		check the format of the map width and map height values
+*/
+
+static int	check_fmt(char *str)
 {
 	unsigned int	value;
 	int				len;
@@ -36,18 +40,22 @@ int		check_fmt(char *str)
 	return (value);
 }
 
+/*
+**	parse_first_line:
+**	 The first line of map files should contain only
+**		the width and height of said map
+*/
 
-
-int		parse_first_line(char *str, t_map *map_info)
+static int	parse_first_line(char *str, t_map *map_info)
 {
-	char	**split;
-	int		ret;
-	int		len;
+	char			**split;
+	int				ret;
+	int				len;
 
 	ret = 1;
-	if ((split = ft_strsplit(str, ' ')) != NULL && (len = splitlen(split) == 2)) // FORMAT : 2 ARGUMENTS -> WIDTH HEIGHT
+	if ((split = ft_strsplit(str, ' ')) != NULL
+	&& (len = splitlen(split) == 2))
 	{
-
 		map_info->width = check_fmt(split[0]);
 		map_info->height = check_fmt(split[1]);
 		if (map_info->width < 0 || map_info->height < 0)
@@ -59,27 +67,21 @@ int		parse_first_line(char *str, t_map *map_info)
 	return (ret);
 }
 
-int		prealloc_map(t_map *map_info)
+static int	prealloc_map(t_map *map_info)
 {
 	map_info->map = (char**)ft_memalloc(sizeof(char*) * (map_info->height + 1));
 	return (map_info->map != NULL);
 }
 
-int		p_set(t_info *info)
+static int	p_set(t_info *info)
 {
 	return (info->player.pos.x != -1 && info->player.pos.y != -1);
 }
 
-void	set_vec2(double x, double y, t_vec2 *pos)
+static int	check_line(char *line, int row, char *tokens, t_info *info)
 {
-	pos->x = x;
-	pos->y = y;
-}
-
-int		check_line(char *line, int row, char *tokens, t_info *info)
-{
-	int	i;
-	int	j;
+	int				i;
+	int				j;
 
 	if ((int)ft_strlen(line) != info->m_info.width)
 		return (0);
@@ -88,7 +90,7 @@ int		check_line(char *line, int row, char *tokens, t_info *info)
 	{
 		j = -1;
 		if (line[i] == '@' && p_set(info) == 0)
-			set_vec2((double)i, (double)row, &info->player.pos);
+			info->player.pos = (t_vec2){(double)i, (double)row};
 		else if (line[i] == '@')
 			return (0);
 		else
@@ -103,13 +105,13 @@ int		check_line(char *line, int row, char *tokens, t_info *info)
 	return (1);
 }
 
-int		read_file(char *file, t_info *info)
+int			read_file(char *file, t_info *info)
 {
-	char	*line;
-	int		line_count;
-	int		gnl_ret;
-	int		ret;
-	int		fd;
+	char			*line;
+	int				line_count;
+	int				gnl_ret;
+	int				ret;
+	int				fd;
 
 	if ((fd = open(file, O_RDONLY)) < 0)
 		return (-1);
@@ -130,6 +132,6 @@ int		read_file(char *file, t_info *info)
 	}
 	close(fd);
 	if (line_count != info->m_info.height || ret == 0 || gnl_ret < 0)
-		return (splitdelerr(info->m_info.map, (gnl_ret < 0) ? GNL_ERR : BAD_FMT));
+		return (splitdelerr(info->m_info.map, gnl_ret < 0 ? GNL_ERR : BAD_FMT));
 	return (1);
 }

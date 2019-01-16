@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:51:14 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:57:19 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 #include "mlx.h"
 #include "wolf3d.h"
 
-void	init_vec2(t_vec2 *pos)
-{
-	pos->x = -1;
-	pos->y = -1;
-}
-
 void	init_player(t_player *player)
 {
-	init_vec2(&player->pos);
+	player->pos = (t_vec2){-1, -1};
 	player->fov = 60;
 }
 
@@ -83,7 +77,7 @@ int	key_move(int keycode, void *param)
 	return (0);
 }
 
-int	main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_info	info;
 	int		err_id;
@@ -92,14 +86,15 @@ int	main(int ac, char **av)
 	init_info(&info);
 	if (ac > 1)
 	{
-		set_vec2(1, 0, &info.player.dir);
+		info.player.dir = (t_vec2){1, 0};
 		if ((err_id = read_file(av[1], &info)) == 1
 				&& (err_id = check_bounds(&info.m_info)) == 1)
 		{
 			if (!(init_mlx(&info.mlx)))
 				return (0);
 			raycasting(&info);
-			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr, info.mlx.img_ptr, 0, 0);
+			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
+									info.mlx.img_ptr, 0, 0);
 			mlx_hook(info.mlx.win_ptr, 2, 0, key_move, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}

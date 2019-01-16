@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:02 by wta               #+#    #+#             */
-/*   Updated: 2019/01/14 14:57:58 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:21:18 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		splitdelerr(char **split, int err_id)
 void	err_handler(int err_id)
 {
 	char	buf[255];
-	(void)err_id;
+
 	ft_bzero(buf, 255);
 	ft_strcpy(buf, "-Wolf3D: ");
 	if (err_id == -1 || err_id == GNL_ERR)
@@ -43,4 +43,5 @@ void	err_handler(int err_id)
 		ft_strcat(buf, "Allocation failed");
 	ft_strcat(buf, "\n");
 	ft_putstr_fd(buf, 2);
+	(void)err_id;
 }
