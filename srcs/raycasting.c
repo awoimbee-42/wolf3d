@@ -6,11 +6,12 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 07:46:27 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:55:20 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <math.h>
 #include "mlx.h"
 #include "wolf3d.h"
@@ -36,10 +37,10 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 
 	set_vec2(fabs(1. / ray_dir->x), fabs(1. / ray_dir->y),
 			&delta);
-	set_vec2(info->player.pos.x, info->player.pos.y, &curr_pos);
-	set_vec2((ray_dir->x >= 0.) ? ((curr_pos.x - info->player.pos.x + 1) * delta.x)
+	set_vec2((int)info->player.pos.x, (int)info->player.pos.y, &curr_pos);
+	set_vec2((ray_dir->x >= 0.) ? ((curr_pos.x + 1. - info->player.pos.x) * delta.x)
 			: ((info->player.pos.x - curr_pos.x) * delta.x), (ray_dir->y >= 0.)
-			? ((curr_pos.y - info->player.pos.y + 1) * delta.y)
+			? ((curr_pos.y + 1. - info->player.pos.y) * delta.y)
 			: ((info->player.pos.y - curr_pos.y) * delta.y), &side_dist);
 	set_vec2((ray_dir->x >= 0.) ? 1. : -1., (ray_dir->y >= 0.) ? 1. : -1., &step);
 	while (1)
@@ -71,17 +72,26 @@ void	draw_line(int x, int side, int line_h, t_info *info)
 {
 	int	start;
 	int	end;
+	int	idx;
 
 	start = SCREEN_H / 2 - line_h / 2;
 	start = (start < 0) ? 0 : start;
 	end = SCREEN_H / 2 + line_h / 2;
 	end = (end >= SCREEN_H) ? SCREEN_H - 1 : end;
+	idx = -1;
+	while (++idx < start)
+		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
+					/ 8 + idx * info->mlx.sizel)) = 0x0;
 	while (start < end)
 	{
 		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
 					/ 8 + start * info->mlx.sizel)) = (side == 0) ? 0xFFFFFF : 0xd3d3d3;
 		start++;
 	}
+	idx = end;
+	while (++idx < SCREEN_H - 1)
+		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
+					/ 8 + idx * info->mlx.sizel)) = 0x0;
 }
 
 void	raycasting(t_info *info)

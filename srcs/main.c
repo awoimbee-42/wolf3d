@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 07:43:30 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:51:14 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,61 @@ int		init_mlx(t_mlx *mlx)
 	return (1);
 }
 
+void	flush(int width, int height, t_mlx *mlx)
+{
+	int	y;
+	int	x;
+
+	y = -1;
+	while (++y < height)
+	{
+		x = -1;
+		while (++x < width)
+			*((unsigned int*)(mlx->img_str + x * mlx->bpp
+						/ 8 + y * mlx->sizel)) = 0;
+	}
+}
+
+int	key_move(int keycode, void *param)
+{
+	t_info	*info;
+
+	info = (t_info*)param;
+	if (keycode == 126 || keycode == 125 || keycode == 123 || keycode == 124)
+	{
+		if (keycode == 123)
+			info->player.dir = rotate2d(info->player.dir, 0.1);
+		if (keycode == 126)
+			info->player.pos.y -= 0.1;
+		if (keycode == 124)
+			info->player.dir = rotate2d(info->player.dir, -0.1);
+		if (keycode == 125)
+			info->player.pos.y += 0.1;
+		printf("%f %f\n", info->player.dir.x, info->player.dir.y);
+		raycasting(info);
+		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
+	}
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_info	info;
 	int		err_id;
-	
+
 	err_id = 1;
 	init_info(&info);
 	if (ac > 1)
 	{
-		set_vec2(1., 0., &info.player.dir);
+		set_vec2(1, 0, &info.player.dir);
 		if ((err_id = read_file(av[1], &info)) == 1
-		&& (err_id = check_bounds(&info.m_info)) == 1)
+				&& (err_id = check_bounds(&info.m_info)) == 1)
 		{
 			if (!(init_mlx(&info.mlx)))
 				return (0);
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr, info.mlx.img_ptr, 0, 0);
+			mlx_hook(info.mlx.win_ptr, 2, 0, key_move, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
 	}
