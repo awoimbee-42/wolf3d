@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:58:32 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 14:13:30 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,17 @@ void	draw_line(int x, int side, int line_h, t_info *info)
 	idx = -1;
 	while (++idx < start)
 		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + idx * info->mlx.sizel)) = 0x0;
+					/ 8 + idx * info->mlx.sizel)) = 0xb2b2ff;
 	while (start < end)
 	{
 		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
 					/ 8 + start * info->mlx.sizel)) = (side == 0) ? 0xFFFFFF : 0xd3d3d3;
 		start++;
 	}
-	idx = end;
+	idx = end - 1;
 	while (++idx < SCREEN_H - 1)
 		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + idx * info->mlx.sizel)) = 0x0;
+					/ 8 + idx * info->mlx.sizel)) = 0xf4a460;
 }
 
 void	raycasting(t_info *info)

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:57:19 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 14:12:23 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,13 @@ int	key_move(int keycode, void *param)
 	if (keycode == 126 || keycode == 125 || keycode == 123 || keycode == 124)
 	{
 		if (keycode == 123)
-			info->player.dir = rotate2d(info->player.dir, 0.1);
+			info->player.dir = rotate2d(info->player.dir, -0.05);
 		if (keycode == 126)
-			info->player.pos.y -= 0.1;
+			info->player.pos = vec2_add(info->player.pos, vec2_divf(info->player.dir, 10.));
 		if (keycode == 124)
-			info->player.dir = rotate2d(info->player.dir, -0.1);
+			info->player.dir = rotate2d(info->player.dir, 0.05);
 		if (keycode == 125)
-			info->player.pos.y += 0.1;
-		printf("%f %f\n", info->player.dir.x, info->player.dir.y);
+			info->player.pos = vec2_sub(info->player.pos, vec2_divf(info->player.dir, 10.));
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
 	}
