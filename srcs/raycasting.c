@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 07:46:27 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:19:11 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	get_ray_dir(int x, t_vec2 *ray_dir, t_info *info)
 
 	player = &info->player;
 	proj_x = 2. * (double)x / (double)SCREEN_W - 1.;
-	set_vec2(player->dir.x + player->cam_dir.x * proj_x,
-			player->dir.y + player->cam_dir.y * proj_x, ray_dir);	
+	*ray_dir = (t_vec2){player->dir.x + player->cam_dir.x * proj_x,
+						player->dir.y + player->cam_dir.y * proj_x};
 }
 
 double	dda(int *side, t_vec2 *ray_dir, t_info *info)
@@ -34,14 +34,16 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 	t_vec2		side_dist;
 	double		dist;
 
-	set_vec2(fabs(1. / ray_dir->x), fabs(1. / ray_dir->y),
-			&delta);
-	set_vec2(info->player.pos.x, info->player.pos.y, &curr_pos);
-	set_vec2((ray_dir->x >= 0.) ? ((curr_pos.x - info->player.pos.x + 1) * delta.x)
-			: ((info->player.pos.x - curr_pos.x) * delta.x), (ray_dir->y >= 0.)
+	delta = (t_vec2){fabs(1. / ray_dir->x), fabs(1. / ray_dir->y)};
+	curr_pos = (t_vec2){info->player.pos.x, info->player.pos.y};
+	side_dist = (t_vec2){
+		(ray_dir->x >= 0.)
+			? ((curr_pos.x - info->player.pos.x + 1) * delta.x)
+			: ((info->player.pos.x - curr_pos.x) * delta.x),
+		(ray_dir->y >= 0.)
 			? ((curr_pos.y - info->player.pos.y + 1) * delta.y)
-			: ((info->player.pos.y - curr_pos.y) * delta.y), &side_dist);
-	set_vec2((ray_dir->x >= 0.) ? 1. : -1., (ray_dir->y >= 0.) ? 1. : -1., &step);
+			: ((info->player.pos.y - curr_pos.y) * delta.y)};
+	step = (t_vec2){(ray_dir->x >= 0.) ? 1 : -1, (ray_dir->y >= 0.) ? 1 : -1};
 	while (1)
 	{
 		if (side_dist.x < side_dist.y)

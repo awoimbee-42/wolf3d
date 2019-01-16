@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 08:19:46 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:19:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@
 #include "../libft/includes/ft_printf.h"
 #include "wolf3d.h"
 
-int		check_fmt(char *str)
+/*
+**	check_fmt:
+**		check the format of the map width and map height values
+*/
+
+static int	check_fmt(char *str)
 {
 	unsigned int	value;
 	int				len;
@@ -36,7 +41,10 @@ int		check_fmt(char *str)
 	return (value);
 }
 
-
+/*
+**	parse_first_line:
+**	 The first line of map files should contain the width and height of said map
+*/
 
 int		parse_first_line(char *str, t_map *map_info)
 {
@@ -70,12 +78,6 @@ int		p_set(t_info *info)
 	return (info->player.pos.x != -1 && info->player.pos.y != -1);
 }
 
-void	set_vec2(double x, double y, t_vec2 *pos)
-{
-	pos->x = x;
-	pos->y = y;
-}
-
 int		check_line(char *line, int row, char *tokens, t_info *info)
 {
 	int	i;
@@ -88,7 +90,7 @@ int		check_line(char *line, int row, char *tokens, t_info *info)
 	{
 		j = -1;
 		if (line[i] == '@' && p_set(info) == 0)
-			set_vec2((double)i, (double)row, &info->player.pos);
+			info->player.pos = (t_vec2){(double)i, (double)row};
 		else if (line[i] == '@')
 			return (0);
 		else

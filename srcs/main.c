@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 07:43:30 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 13:19:13 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ int	main(int ac, char **av)
 {
 	t_info	info;
 	int		err_id;
-	
+
 	err_id = 1;
 	init_info(&info);
 	if (ac > 1)
 	{
-		set_vec2(1., 0., &info.player.dir);
+		info.player.dir = (t_vec2){1, 0};
 		if ((err_id = read_file(av[1], &info)) == 1
 		&& (err_id = check_bounds(&info.m_info)) == 1)
 		{
