@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 16:04:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 16:15:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		init_mlx(t_mlx *mlx)
 		return (0);
 	if (!(mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, SCREEN_W, SCREEN_H)))
 		return (0);
-	if (!(mlx->img_str = mlx_get_data_addr(mlx->img_ptr, &mlx->bpp
+	if (!(mlx->img_str = (int*)mlx_get_data_addr(mlx->img_ptr, &mlx->bpp
 					, &mlx->sizel, &mlx->endian)))
 		return (0);
 	return (1);

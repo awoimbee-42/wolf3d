@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 15:43:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 16:18:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,16 @@ void	draw_line(int x, int side, int line_h, t_info *info)
 	end = (end >= SCREEN_H) ? SCREEN_H - 1 : end;
 	idx = -1;
 	while (++idx < start)
-		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + idx * info->mlx.sizel)) = 0xb2b2ff;
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
+	// wall
 	while (start < end)
 	{
-		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + start * info->mlx.sizel)) = (side == 0) ? 0xFFFFFF : 0xd3d3d3;
+		info->mlx.img_str[x + (start * info->mlx.sizel / 4)] = (side == 0) ? 0xFFFFFF : 0xd3d3d3;
 		start++;
 	}
 	idx = end - 1;
 	while (++idx < SCREEN_H - 1)
-		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + idx * info->mlx.sizel)) = 0xf4a460;
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
 }
 
 void	raycasting(t_info *info)
