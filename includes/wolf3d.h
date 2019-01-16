@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/15 16:46:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 06:34:52 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@
 # define GNL_ERR	5
 # define READ_ERR	6
 # define TOKENS		"01"
-# define WALL_S		1
+# define WALL_S		2.
 # define TEX_WIDTH	640
 # define TEX_HEIGHT	640
+# define SCREEN_W	1024
+# define SCREEN_H	720
 
 typedef struct	s_mlx
 {
@@ -52,6 +54,7 @@ typedef struct	s_player
 {
 	t_vec2	pos;
 	t_vec2	dir;
+	t_vec2	cam_dir;
 	int		fov;
 }				t_player;
 
@@ -66,6 +69,7 @@ typedef struct	s_info
 **	vec2_op.c
 */
 
+void	set_vec2(double x, double y, t_vec2 *pos);
 t_vec2	rotate2d(t_vec2 vector, const double theta);
 t_vec2	vec2_add(t_vec2 a, const t_vec2 b);
 t_vec2	vec2_sub(t_vec2 a, const t_vec2 b);
@@ -78,6 +82,7 @@ float	vec2_mod(const t_vec2 a);
 t_vec2	vec2_normalize(t_vec2 a);
 float	points_dist(const t_vec2 p1, const t_vec2 p2);
 
+void	raycasting(t_info *info);
 
 int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);

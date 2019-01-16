@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/15 16:40:09 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/16 06:28:31 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,13 @@ LIBFTPATH	=	libft
 LIBFTLIB	=	libft.a
 LIBFT		=	$(addprefix $(LIBFTPATH)/,$(LIBFTLIB))
 INCDIR		=	includes
+MLXDIR		= 	minilibx_macos
 OBJDIR		=	objs
 OBJ			=	$(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
 CC			=	gcc
-INC			=	-I $(INCDIR)
+INC			=	-I $(INCDIR) -I $(MLXDIR)
 CFLAGS		=	-Wall -Wextra -Werror
-MLXLIB		=	-L minilibx_macos -lmlx
+MLXLIB		=	-L $(MLXDIR) -lmlx
 MLXFLAG		=	-framework OpenGL -framework Appkit
 SRCS=			\
 check_bounds.c	\
@@ -35,6 +36,7 @@ main.c			\
 read_file.c		\
 utils.c			\
 vec2_op0.c		\
+raycasting.c	\
 read_textures.c
 HEADER		=	\
 wolf3d.h
