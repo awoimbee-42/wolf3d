@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 14:12:23 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/16 15:14:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,27 @@ void	flush(int width, int height, t_mlx *mlx)
 int	key_move(int keycode, void *param)
 {
 	t_info	*info;
+	t_vec2	tmp_pos;
 
 	info = (t_info*)param;
 	if (keycode == 126 || keycode == 125 || keycode == 123 || keycode == 124)
 	{
-		if (keycode == 123)
+		if (keycode == KEY_LEFT)
 			info->player.dir = rotate2d(info->player.dir, -0.05);
-		if (keycode == 126)
-			info->player.pos = vec2_add(info->player.pos, vec2_divf(info->player.dir, 10.));
-		if (keycode == 124)
+		if (keycode == KEY_UP)
+		{
+			tmp_pos = vec2_add(info->player.pos, vec2_divf(info->player.dir, 10.));
+			if (info->m_info.map[(int)tmp_pos.y][(int)tmp_pos.x] == '0')
+				info->player.pos = tmp_pos;
+		}
+		if (keycode == KEY_RIGHT)
 			info->player.dir = rotate2d(info->player.dir, 0.05);
-		if (keycode == 125)
-			info->player.pos = vec2_sub(info->player.pos, vec2_divf(info->player.dir, 10.));
+		if (keycode == KEY_DOWN)
+		{
+			tmp_pos = vec2_sub(info->player.pos, vec2_divf(info->player.dir, 10.));
+			if (info->m_info.map[(int)tmp_pos.y][(int)tmp_pos.x] == '0')
+				info->player.pos = tmp_pos;
+		}
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
 	}

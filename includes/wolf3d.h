@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:42:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/16 14:44:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@
 # define TEX_HEIGHT	640
 # define SCREEN_W	1024
 # define SCREEN_H	720
+# define KEY_LEFT	123
+# define KEY_UP		126
+# define KEY_RIGHT	124
+# define KEY_DOWN	125
 
 typedef struct	s_mlx
 {
