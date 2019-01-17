@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 15:44:09 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/17 15:54:01 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,15 +129,15 @@ int		apply_key(void *param)
 	{
 		mvt = (t_vec2){0., 0.};
 		if (key & 0x1)
-			mvt = vec2_add(mvt, vec2_divf(info->player.dir, 10.));
+			mvt = vec2_add(mvt, vec2_divf(info->player.dir, 20.));
 		if (key & 0x2)
-			mvt = vec2_sub(mvt, vec2_divf(info->player.dir, 10.));
+			mvt = vec2_sub(mvt, vec2_divf(info->player.dir, 20.));
 		vec2_normalize(mvt);
 		move(&info->player.pos, mvt, info->m_info.map);
 		if (key & 0x4)
-			info->player.dir = rotate2d(info->player.dir, -0.1);
+			info->player.dir = rotate2d(info->player.dir, -0.05);
 		if (key & 0x8)
-			info->player.dir = rotate2d(info->player.dir, 0.1);
+			info->player.dir = rotate2d(info->player.dir, 0.05);
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
 	}
