@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/17 12:18:58 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/17 13:39:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include "mlx.h"
 
+
+#include <stdio.h>
 int			error_exit(int msg)
 {
 	if (msg == MALLOC_ERR)
@@ -44,7 +46,7 @@ t_img		*read_textures(void *mlx_ptr)
 		filename[16] = i + '0';
 		img[i].img_ptr = mlx_xpm_file_to_image(mlx_ptr, filename,
 				&img->width, &img->height);
-		img[i].img_str = mlx_get_data_addr(&img->img_ptr,
+		img[i].img_str = (int*)mlx_get_data_addr(img->img_ptr,
 				&img->bpp, &img->sizel,
 				&img->endian);
 	}

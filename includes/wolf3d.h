@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 12:17:10 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/17 13:43:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define READ_ERR	6
 # define TOKENS		"01"
 # define WALL_S		2.
-# define TEX_WIDTH	640
-# define TEX_HEIGHT	640
+# define TEX_WIDTH	64
+# define TEX_HEIGHT	64
 # define SCREEN_W	1024
 # define SCREEN_H	720
 # define KEY_LEFT	123
@@ -34,7 +34,7 @@ typedef struct	s_mlx
 	void		*mlx_ptr;
 	void		*win_ptr;
 	void		*img_ptr;
-	char		*img_str;
+	int			*img_str;
 	int			bpp;
 	int			sizel;
 	int			endian;
@@ -43,7 +43,7 @@ typedef struct	s_mlx
 typedef struct	s_img
 {
 	void	*img_ptr;
-	char	*img_str;
+	int		*img_str;
 	int		width;
 	int		height;
 	int		bpp;
@@ -62,7 +62,7 @@ typedef struct	s_map
 	char	**map;
 	int		width;
 	int		height;
-	int		**textures;
+	t_img	*textures;
 }				t_map;
 
 typedef struct	s_player

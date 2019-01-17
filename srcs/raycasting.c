@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 15:43:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 13:45:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,30 +67,58 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 	return (dist);
 }
 
-void	draw_line(int x, int side, int line_h, t_info *info)
+void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 {
 	int	start;
 	int	end;
 	int	idx;
+	int line_h;
 
-	start = SCREEN_H / 2 - line_h / 2;
-	start = (start < 0) ? 0 : start;
-	end = SCREEN_H / 2 + line_h / 2;
-	end = (end >= SCREEN_H) ? SCREEN_H - 1 : end;
+	line_h = (int)(SCREEN_H / dist);
+	if ((start = SCREEN_H / 2 - line_h / 2) < 0)
+		start = 0;
+	if ((end = SCREEN_H / 2 + line_h / 2) >= SCREEN_H)
+		end = SCREEN_H - 1;
 	idx = -1;
 	while (++idx < start)
-		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + idx * info->mlx.sizel)) = 0xb2b2ff;
-	while (start < end)
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
+	// #### WALL ####
+
+		//calculate value of wall_x
+	// ray_dir = vec2_normalize(ray_dir);
+	fprintf(stderr, "%f + %f * %f\n", info->player.pos.y, dist, ray_dir.y);
+	double wall_x; //where exactly the wall was hit
+	if (side == 0)
+		wall_x = info->player.pos.y + dist * ray_dir.y;
+	else
+		wall_x = info->player.pos.x + dist * ray_dir.x;
+	wall_x -= floor(wall_x);
+	fprintf(stderr, "wall_x : %f\n", wall_x);
+
+	//x coordinate on the texture
+	int tex_x = (int)(wall_x * TEX_WIDTH);
+	if(side == 0 && ray_dir.x > 0)
+		tex_x = TEX_WIDTH - tex_x - 1;
+	if(side == 1 && ray_dir.y < 0)
+		tex_x = TEX_WIDTH - tex_x - 1;
+	// fprintf(stderr, "wall_x : %f\n", wall_x);
+
+	while (idx < end)
 	{
-		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + start * info->mlx.sizel)) = (side == 0) ? 0xFFFFFF : 0xd3d3d3;
-		start++;
+
+		int d = idx * 256 - SCREEN_H * 128 + line_h * 128;
+        // TODO: avoid the division to speed this up
+        int tex_y = ((d * TEX_HEIGHT) / line_h) / 256;
+		// fprintf(stderr, "color = info->m_info.textures[0].img_str[%d * %d + %d]\n",
+		// 				TEX_HEIGHT, tex_y, tex_x);
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = info->m_info.textures[0].img_str[TEX_HEIGHT * tex_y + tex_x];
+		idx++;
 	}
+
+	// #### WALL ####
 	idx = end - 1;
 	while (++idx < SCREEN_H - 1)
-		*((unsigned int*)(info->mlx.img_str + x * info->mlx.bpp
-					/ 8 + idx * info->mlx.sizel)) = 0xf4a460;
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
 }
 
 void	raycasting(t_info *info)
@@ -98,7 +126,6 @@ void	raycasting(t_info *info)
 	t_vec2	ray_dir;
 	double	dist;
 	int		screen_x;
-	int		line_h;
 	int		side;
 
 	screen_x = -1;
@@ -108,7 +135,6 @@ void	raycasting(t_info *info)
 		side = -1;
 		get_ray_dir(screen_x, &ray_dir, info);
 		dist = dda(&side, &ray_dir, info);
-		line_h = (int)(SCREEN_H / dist);
-		draw_line(screen_x, side, line_h, info);
+		draw_line(screen_x, side, dist, info, ray_dir);
 	}
 }
