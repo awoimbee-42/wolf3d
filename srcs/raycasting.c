@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 15:22:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 15:58:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,23 +84,18 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
 
 	// #### WALL ########################################################
-	double	wall_x;
-	t_img	texture;
+	unsigned int	tex_x;
+	t_img			texture;
 
-	wall_x = side == 0 ? info->player.pos.y + dist * ray_dir.y :
-						info->player.pos.x + dist * ray_dir.x;
-	wall_x -= floor(wall_x);
-
+	tex_x = !side ? ((info->player.pos.y + dist * ray_dir.y) * (1 << 30)) :
+						((info->player.pos.x + dist * ray_dir.x) * (1 << 30));
+	tex_x %= (1 << 30);
 	if (side == 0)
 		texture = (ray_dir.x > 0) ? info->m_info.textures[0] : info->m_info.textures[1];
 	else
 		texture = (ray_dir.y < 0) ? info->m_info.textures[2] : info->m_info.textures[3];
-
-	int tex_x;
-
 	tex_x = (side == 0 && ray_dir.x > 0) || (side != 0 && ray_dir.y < 0) ?
-			texture.width - (wall_x * texture.width) - 1 : wall_x * texture.width;
-
+			texture.width - (double)tex_x * texture.width / (1 << 30) - 1 : (double)tex_x * texture.width / (1 << 30);
 	while (idx < end)
 	{
 		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture.height) / (line_h * 512);
