@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 15:41:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:15:26 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int	check_line(char *line, int row, char *tokens, t_info *info)
 		if (line[i] == '@' && p_set(info) == 0)
 		{
 			line[i] = '0';
-			info->player.pos = (t_vec2){(double)i, (double)row};
+			info->player.pos = (t_vec2){((double)i) + .5, ((double)row) + .5};
 		}
 		else if (line[i] == '@')
 			return (0);

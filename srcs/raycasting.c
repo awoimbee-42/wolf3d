@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 13:45:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:14:43 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,12 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 
 		//calculate value of wall_x
 	// ray_dir = vec2_normalize(ray_dir);
-	fprintf(stderr, "%f + %f * %f\n", info->player.pos.y, dist, ray_dir.y);
 	double wall_x; //where exactly the wall was hit
 	if (side == 0)
 		wall_x = info->player.pos.y + dist * ray_dir.y;
 	else
 		wall_x = info->player.pos.x + dist * ray_dir.x;
 	wall_x -= floor(wall_x);
-	fprintf(stderr, "wall_x : %f\n", wall_x);
-
 	//x coordinate on the texture
 	int tex_x = (int)(wall_x * TEX_WIDTH);
 	if(side == 0 && ray_dir.x > 0)
