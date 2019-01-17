@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 14:44:43 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 12:17:10 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,17 @@ typedef struct	s_mlx
 	int			sizel;
 	int			endian;
 }				t_mlx;
+
+typedef struct	s_img
+{
+	void	*img_ptr;
+	char	*img_str;
+	int		width;
+	int		height;
+	int		bpp;
+	int		sizel;
+	int		endian;
+}				t_img;
 
 typedef struct	s_vec2
 {
@@ -89,7 +100,7 @@ void	raycasting(t_info *info);
 
 int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);
-int		**read_textures(void *mlx_ptr);
+t_img	*read_textures(void *mlx_ptr);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);

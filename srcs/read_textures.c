@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/16 13:22:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 12:18:58 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,25 @@ int			error_exit(int msg)
 	exit(EXIT_FAILURE);
 }
 
-int			**read_textures(void *mlx_ptr)
+t_img		*read_textures(void *mlx_ptr)
 {
-	int		**textures;
+	t_img	*img;
+	char	filename[256];
 	int		i;
-	char	filename[17];
-	int		null;
 
-	if (!(textures = (int**)malloc(sizeof(int*) * 4)))
+	if ((img = ft_memalloc(sizeof(t_img) * 4)) == NULL)
 		error_exit(MALLOC_ERR);
-	ft_bzero(filename, 17);
-	ft_strcpy(filename, "./textures/");
-	ft_strcpy(filename + 12, ".XPM");
+	ft_bzero(filename, 256);
+	ft_strcpy(filename, "textures/texture0.XPM");
 	i = -1;
 	while (++i < 4)
 	{
-		filename[11] = i + '0';
-		textures[i] =
-		(int*)mlx_xpm_file_to_image(mlx_ptr, filename, &null, &null);
+		filename[16] = i + '0';
+		img[i].img_ptr = mlx_xpm_file_to_image(mlx_ptr, filename,
+				&img->width, &img->height);
+		img[i].img_str = mlx_get_data_addr(&img->img_ptr,
+				&img->bpp, &img->sizel,
+				&img->endian);
 	}
-	return (textures);
+	return (img);
 }

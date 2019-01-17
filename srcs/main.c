@@ -6,11 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 16:04:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 12:20:33 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #include "mlx.h"
 #include "wolf3d.h"
 
@@ -38,21 +41,6 @@ int		init_mlx(t_mlx *mlx)
 					, &mlx->sizel, &mlx->endian)))
 		return (0);
 	return (1);
-}
-
-void	flush(int width, int height, t_mlx *mlx)
-{
-	int	y;
-	int	x;
-
-	y = -1;
-	while (++y < height)
-	{
-		x = -1;
-		while (++x < width)
-			*((unsigned int*)(mlx->img_str + x * mlx->bpp
-						/ 8 + y * mlx->sizel)) = 0;
-	}
 }
 
 void		move(t_vec2 *pos, t_vec2 dir, int forward, char **map)
@@ -97,6 +85,7 @@ int	key_move(int keycode, void *param)
 int		main(int ac, char **av)
 {
 	t_info	info;
+//	t_img	*img;
 	int		err_id;
 
 	err_id = 1;
@@ -112,6 +101,11 @@ int		main(int ac, char **av)
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
 									info.mlx.img_ptr, 0, 0);
+/*	how to use read textures
+**			img = read_textures(info.mlx.mlx_ptr);
+**			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
+**									img[1].img_ptr, 0, 0);
+*/
 			mlx_hook(info.mlx.win_ptr, 2, 0, key_move, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
