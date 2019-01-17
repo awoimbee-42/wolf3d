@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 13:43:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:57:40 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@
 # define TEX_HEIGHT	64
 # define SCREEN_W	1024
 # define SCREEN_H	720
-# define KEY_LEFT	123
-# define KEY_UP		126
-# define KEY_RIGHT	124
-# define KEY_DOWN	125
+# define K_LEFT	123
+# define K_UP		126
+# define K_RIGHT	124
+# define K_DOWN	125
 
 typedef struct	s_mlx
 {
@@ -78,6 +78,7 @@ typedef struct	s_info
 	t_player	player;
 	t_map		m_info;
 	t_mlx		mlx;
+	int			key_pressed;
 }				t_info;
 
 /*

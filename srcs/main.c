@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 14:18:40 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/17 15:44:09 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,8 @@ int		init_mlx(t_mlx *mlx)
 	return (1);
 }
 
-void		move(t_vec2 *pos, t_vec2 dir, int forward, char **map)
+void		move(t_vec2 *pos, t_vec2 dir, char **map)
 {
-	dir = vec2_divf(dir, 10.);
-	if (!forward)
-		dir = vec2_multf(dir, -1);
 	if (map[(int)(pos->y + dir.y + 0.2)][(int)(pos->x + 0.2)] != '0'
 	|| map[(int)(pos->y + dir.y + 0.2)][(int)(pos->x - 0.2)] != '0'
 	|| map[(int)(pos->y + dir.y - 0.2)][(int)(pos->x + 0.2)] != '0'
@@ -60,7 +57,7 @@ void		move(t_vec2 *pos, t_vec2 dir, int forward, char **map)
 		dir.x = 0;
 	*pos = vec2_add(*pos, dir);
 }
-
+/*
 int	key_move(int keycode, void *param)
 {
 	t_info	*info;
@@ -76,6 +73,71 @@ int	key_move(int keycode, void *param)
 			info->player.dir = rotate2d(info->player.dir, 0.05);
 		if (keycode == KEY_DOWN)
 			move(&info->player.pos, info->player.dir, 0, info->m_info.map);
+		raycasting(info);
+		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
+	}
+	return (0);
+}*/
+
+int		key_pressed(int key, void *param)
+{
+	t_info	*info;
+
+	info = (t_info*)param;
+	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT)
+	{
+		if (key == K_UP)
+			info->key_pressed |= 0x1;
+		if (key == K_DOWN)
+			info->key_pressed |= 0x2;
+		if (key == K_LEFT)
+			info->key_pressed |= 0x4;
+		if (key == K_RIGHT)
+			info->key_pressed |= 0x8;
+	}
+	return (0);
+}
+
+int		key_released(int key, void *param)
+{
+	t_info	*info;
+
+	info = (t_info*)param;
+	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT)
+	{
+		if (key == K_UP)
+			info->key_pressed ^= 0x1;
+		if (key == K_DOWN)
+			info->key_pressed ^= 0x2;
+		if (key == K_LEFT)
+			info->key_pressed ^= 0x4;
+		if (key == K_RIGHT)
+			info->key_pressed ^= 0x8;
+	}
+	return (0);
+}
+
+int		apply_key(void *param)
+{
+	t_info	*info;
+	t_vec2	mvt;
+	int		key;
+
+	info = (t_info*)param;
+	key = info->key_pressed;
+	if (key > 0)
+	{
+		mvt = (t_vec2){0., 0.};
+		if (key & 0x1)
+			mvt = vec2_add(mvt, vec2_divf(info->player.dir, 10.));
+		if (key & 0x2)
+			mvt = vec2_sub(mvt, vec2_divf(info->player.dir, 10.));
+		vec2_normalize(mvt);
+		move(&info->player.pos, mvt, info->m_info.map);
+		if (key & 0x4)
+			info->player.dir = rotate2d(info->player.dir, -0.1);
+		if (key & 0x8)
+			info->player.dir = rotate2d(info->player.dir, 0.1);
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
 	}
@@ -101,7 +163,9 @@ int		main(int ac, char **av)
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
 									info.mlx.img_ptr, 0, 0);
-			mlx_hook(info.mlx.win_ptr, 2, 0, key_move, &info);
+			mlx_hook(info.mlx.win_ptr, 2, 0, key_pressed, &info);
+			mlx_hook(info.mlx.win_ptr, 3, 0, key_released, &info);
+			mlx_loop_hook(info.mlx.mlx_ptr, apply_key, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
 	}
