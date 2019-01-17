@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 13:50:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:03:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ int	key_move(int keycode, void *param)
 int		main(int ac, char **av)
 {
 	t_info	info;
-	t_img	*img;
 	int		err_id;
 
 	err_id = 1;
@@ -99,11 +98,9 @@ int		main(int ac, char **av)
 			if (!(init_mlx(&info.mlx)))
 				return (0);
 			info.m_info.textures = read_textures(info.mlx.mlx_ptr);
-			// mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
-			// 						info.m_info.textures[1].img_ptr, 0, 0);
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
-									img[1].img_ptr, 0, 0);
+									info.mlx.img_ptr, 0, 0);
 			mlx_hook(info.mlx.win_ptr, 2, 0, key_move, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
