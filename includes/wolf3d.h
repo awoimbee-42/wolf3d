@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 16:07:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 18:06:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ typedef struct	s_vec2
 	double	x;
 	double	y;
 }				t_vec2;
+
+typedef struct	s_int2
+{
+	int		x;
+	int		y;
+}				t_int2;
 
 typedef struct	s_map
 {

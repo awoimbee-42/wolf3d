@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 15:58:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 18:25:49 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
 
 	// #### WALL ########################################################
+
 	unsigned int	tex_x;
 	t_img			texture;
 
@@ -94,19 +95,91 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 		texture = (ray_dir.x > 0) ? info->m_info.textures[0] : info->m_info.textures[1];
 	else
 		texture = (ray_dir.y < 0) ? info->m_info.textures[2] : info->m_info.textures[3];
-	tex_x = (side == 0 && ray_dir.x > 0) || (side != 0 && ray_dir.y < 0) ?
+	tex_x = (!side && ray_dir.x > 0) || (side && ray_dir.y < 0) ?
 			texture.width - (double)tex_x * texture.width / (1 << 30) - 1 : (double)tex_x * texture.width / (1 << 30);
 	while (idx < end)
 	{
 		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture.height) / (line_h * 512);
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture.img_str[texture.height * tex_y + tex_x];
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture.img_str[texture.width * tex_y + tex_x];
 		idx++;
 	}
-	// #### WALL ########################################################
+	// #############################################################
 
-	idx = end - 1;
-	while (++idx < SCREEN_H - 1)
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
+
+	// ######## FLOOR #######################
+	t_vec2			floor_wall;
+	double			wall_x;
+
+	texture = info->m_info.textures[0];
+
+	wall_x = !side ? info->player.pos.y + dist * ray_dir.y :
+						info->player.pos.x + dist * ray_dir.x;
+	wall_x -= floor(wall_x);
+
+    //   if (drawEnd < 0) drawEnd = h; //becomes < 0 when the integer overflows
+
+    //   //draw the floor from drawEnd to the bottom of the screen
+    //   for(int y = drawEnd + 1; y < h; y++)
+    //   {
+    //     currentDist = h / (2.0 * y - h); //you could make a small lookup table for this instead
+
+    //     double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+    //     double currentFloorX = weight * floorXWall + (1.0 - weight) * posX;
+    //     double currentFloorY = weight * floorYWall + (1.0 - weight) * posY;
+
+    //     int floorTexX, floorTexY;
+    //     floorTexX = int(currentFloorX * texWidth) % texWidth;
+    //     floorTexY = int(currentFloorY * texHeight) % texHeight;
+
+    //     //floor
+    //     buffer[y][x] = (texture[3][texWidth * floorTexY + floorTexX] >> 1) & 8355711;
+    //     //ceiling (symmetrical!)
+    //     buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
+    //   }
+    // }
+
+	t_int2 map = (t_int2){map.x = info->player.pos.x + ray_dir.x * dist,
+				info->player.pos.y + ray_dir.y * dist};
+	//if (ray_dir.x >)
+
+	if (!side)
+		floor_wall = ray_dir.x > 0 ?
+		(t_vec2){map.x, map.y + wall_x} :
+		(t_vec2){map.x, map.y + wall_x};
+	else
+		floor_wall = ray_dir.y > 0 ?
+		(t_vec2){map.x + wall_x, map.y} :
+		(t_vec2){map.x + wall_x, map.y};
+
+	double currentDist;
+
+	while (idx < SCREEN_H - 1)
+	{
+		currentDist = SCREEN_H / (2. * idx - SCREEN_H);
+
+		double weight = currentDist / dist;
+
+		t_vec2 current_floor = vec2_add(vec2_multf(floor_wall, weight), vec2_multf(info->player.pos, (1.0 - weight)));
+
+		t_int2 floor_tex;
+		floor_tex.x = (int)(current_floor.x * texture.width) % texture.width;
+		floor_tex.y = (int)(current_floor.y * texture.height) % texture.height;
+		if (floor_tex.x < 0)
+			floor_tex.x = 0;
+			if (floor_tex.y < 0)
+			floor_tex.y = 0;
+
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = info->m_info.textures[3].img_str[info->m_info.textures[3].width * floor_tex.y + floor_tex.x];
+		info->mlx.img_str[x + ((SCREEN_H - idx) * info->mlx.sizel / 4)] = info->m_info.textures[2].img_str[info->m_info.textures[2].width * floor_tex.y + floor_tex.x];
+		++idx;
+	}
+
+	// idx = end - 1;
+	// while (++idx < SCREEN_H - 1)
+	// 	info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
+
+	// #####################################
 }
 
 void	raycasting(t_info *info)
