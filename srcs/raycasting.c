@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 14:04:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:24:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 			curr_pos.y += step.y;
 			*side = 1;
 		}
-		if (info->m_info.map[(int)curr_pos.y][(int)curr_pos.x] > '0')
+		if (info->m_info.map[(int)curr_pos.y][(int)curr_pos.x] > '0'
+			&& info->m_info.map[(int)curr_pos.y][(int)curr_pos.x] != '@')
 			break ;
 	}
 	if (*side == 0)
@@ -81,40 +82,36 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	idx = -1;
 	while (++idx < start)
 		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
-	// #### WALL ####
 
-		//calculate value of wall_x
-	// ray_dir = vec2_normalize(ray_dir);
-	fprintf(stderr, "%f + %f * %f\n", info->player.pos.y, dist, ray_dir.y);
-	double wall_x; //where exactly the wall was hit
-	if (side == 0)
+	// #### WALL ########################################################
+	double	wall_x;
+	t_img	*texture;
+
+	if (side == 0 )
 		wall_x = info->player.pos.y + dist * ray_dir.y;
 	else
 		wall_x = info->player.pos.x + dist * ray_dir.x;
 	wall_x -= floor(wall_x);
-	fprintf(stderr, "wall_x : %f\n", wall_x);
 
-	//x coordinate on the texture
-	int tex_x = (int)(wall_x * TEX_WIDTH);
+	texture = &info->m_info.textures[side];
+	texture->width = 64;
+	texture->height = 64;
+	fprintf(stderr, "side:%d\twidth:%d\theight:%d\n", side, texture->width, texture->height);
+
+	int tex_x = (int)(wall_x * texture->width);
 	if(side == 0 && ray_dir.x > 0)
-		tex_x = TEX_WIDTH - tex_x - 1;
+		tex_x = texture->width - tex_x - 1;
 	if(side == 1 && ray_dir.y < 0)
-		tex_x = TEX_WIDTH - tex_x - 1;
-	// fprintf(stderr, "wall_x : %f\n", wall_x);
+		tex_x = texture->width - tex_x - 1;
 
 	while (idx < end)
 	{
-
-		int d = idx * 256 - SCREEN_H * 128 + line_h * 128;
-        // TODO: avoid the division to speed this up
-        int tex_y = ((d * TEX_HEIGHT) / line_h) / 256;
-		// fprintf(stderr, "color = info->m_info.textures[0].img_str[%d * %d + %d]\n",
-		// 				TEX_HEIGHT, tex_y, tex_x);
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = info->m_info.textures[0].img_str[TEX_HEIGHT * tex_y + tex_x];
+		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture->height) / (line_h * 512);
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture->img_str[texture->height * tex_y + tex_x];
 		idx++;
 	}
+	// #### WALL ########################################################
 
-	// #### WALL ####
 	idx = end - 1;
 	while (++idx < SCREEN_H - 1)
 		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
