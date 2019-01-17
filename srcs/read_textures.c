@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/16 17:26:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:05:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,25 @@ int			error_exit(int msg)
 	exit(EXIT_FAILURE);
 }
 
-int			**read_textures(void *mlx_ptr)
+t_img		*read_textures(void *mlx_ptr)
 {
-	int		**textures;
+	t_img	*img;
+	char	filename[256];
 	int		i;
-	char	f_name[24];
-	int		null;
 
-	if (!(textures = (int**)malloc(sizeof(int*) * 4)))
+	if ((img = ft_memalloc(sizeof(t_img) * 4)) == NULL)
 		error_exit(MALLOC_ERR);
-	ft_bzero(f_name, 24);
-	ft_strcpy(f_name, "./textures/texture");
-	ft_strcpy(f_name + 19, ".XPM");
+	ft_bzero(filename, 256);
+	ft_strcpy(filename, "textures/texture0.XPM");
 	i = -1;
 	while (++i < 4)
 	{
-		f_name[18] = i + '0';
-		textures[i] = (int*)mlx_xpm_file_to_image(mlx_ptr, f_name, &null, &null);
-		fprintf(stderr, "=>texture file: %s\theight = %d\n", f_name, null);
-		if (textures[i] == 0)
-			error_exit(READ_ERR);
-		for (unsigned int j = 0; j < 640 * 640; ++j)
-		{
-			fprintf(stderr, "(%d, %d, %d)\t", (unsigned char)(textures[i][j] >> 16), (unsigned char)(textures[i][j] >> 8), (unsigned char)(textures[i][j]));
-		}
-		fprintf(stderr, "\n\n");
+		filename[16] = i + '0';
+		img[i].img_ptr = mlx_xpm_file_to_image(mlx_ptr, filename,
+				&img->width, &img->height);
+		img[i].img_str = (int*)mlx_get_data_addr(img->img_ptr,
+				&img->bpp, &img->sizel,
+				&img->endian);
 	}
-	return (textures);
+	return (img);
 }

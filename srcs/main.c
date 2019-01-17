@@ -6,11 +6,14 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 16:49:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:04:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
 #include "mlx.h"
 #include "wolf3d.h"
 
@@ -38,21 +41,6 @@ int		init_mlx(t_mlx *mlx)
 					, &mlx->sizel, &mlx->endian)))
 		return (0);
 	return (1);
-}
-
-void	flush(int width, int height, t_mlx *mlx)
-{
-	int	y;
-	int	x;
-
-	y = -1;
-	while (++y < height)
-	{
-		x = -1;
-		while (++x < width)
-			*((unsigned int*)(mlx->img_str + x * mlx->bpp
-						/ 8 + y * mlx->sizel)) = 0;
-	}
 }
 
 void		move(t_vec2 *pos, t_vec2 dir, int forward, char **map)

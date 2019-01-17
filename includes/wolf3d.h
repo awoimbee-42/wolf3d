@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 16:15:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:04:46 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define READ_ERR	6
 # define TOKENS		"01"
 # define WALL_S		2.
-# define TEX_WIDTH	640
-# define TEX_HEIGHT	640
+# define TEX_WIDTH	64
+# define TEX_HEIGHT	64
 # define SCREEN_W	1024
 # define SCREEN_H	720
 # define KEY_LEFT	123
@@ -40,6 +40,17 @@ typedef struct	s_mlx
 	int			endian;
 }				t_mlx;
 
+typedef struct	s_img
+{
+	void	*img_ptr;
+	int		*img_str;
+	int		width;
+	int		height;
+	int		bpp;
+	int		sizel;
+	int		endian;
+}				t_img;
+
 typedef struct	s_vec2
 {
 	double	x;
@@ -51,7 +62,7 @@ typedef struct	s_map
 	char	**map;
 	int		width;
 	int		height;
-	int		**textures;
+	t_img	*textures;
 }				t_map;
 
 typedef struct	s_player
@@ -89,7 +100,7 @@ void	raycasting(t_info *info);
 
 int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);
-int		**read_textures(void *mlx_ptr);
+t_img	*read_textures(void *mlx_ptr);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);
