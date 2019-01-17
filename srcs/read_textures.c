@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/17 13:39:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 13:50:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 #include <stdlib.h>
 #include "mlx.h"
 
-
-#include <stdio.h>
 int			error_exit(int msg)
 {
 	if (msg == MALLOC_ERR)
