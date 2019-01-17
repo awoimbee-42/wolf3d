@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 14:24:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 15:22:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,29 +85,26 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 
 	// #### WALL ########################################################
 	double	wall_x;
-	t_img	*texture;
+	t_img	texture;
 
-	if (side == 0 )
-		wall_x = info->player.pos.y + dist * ray_dir.y;
-	else
-		wall_x = info->player.pos.x + dist * ray_dir.x;
+	wall_x = side == 0 ? info->player.pos.y + dist * ray_dir.y :
+						info->player.pos.x + dist * ray_dir.x;
 	wall_x -= floor(wall_x);
 
-	texture = &info->m_info.textures[side];
-	texture->width = 64;
-	texture->height = 64;
-	fprintf(stderr, "side:%d\twidth:%d\theight:%d\n", side, texture->width, texture->height);
+	if (side == 0)
+		texture = (ray_dir.x > 0) ? info->m_info.textures[0] : info->m_info.textures[1];
+	else
+		texture = (ray_dir.y < 0) ? info->m_info.textures[2] : info->m_info.textures[3];
 
-	int tex_x = (int)(wall_x * texture->width);
-	if(side == 0 && ray_dir.x > 0)
-		tex_x = texture->width - tex_x - 1;
-	if(side == 1 && ray_dir.y < 0)
-		tex_x = texture->width - tex_x - 1;
+	int tex_x;
+
+	tex_x = (side == 0 && ray_dir.x > 0) || (side != 0 && ray_dir.y < 0) ?
+			texture.width - (wall_x * texture.width) - 1 : wall_x * texture.width;
 
 	while (idx < end)
 	{
-		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture->height) / (line_h * 512);
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture->img_str[texture->height * tex_y + tex_x];
+		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture.height) / (line_h * 512);
+		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture.img_str[texture.height * tex_y + tex_x];
 		idx++;
 	}
 	// #### WALL ########################################################

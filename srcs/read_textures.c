@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/17 14:05:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/17 14:55:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ t_img		*read_textures(void *mlx_ptr)
 	{
 		filename[16] = i + '0';
 		img[i].img_ptr = mlx_xpm_file_to_image(mlx_ptr, filename,
-				&img->width, &img->height);
-		img[i].img_str = (int*)mlx_get_data_addr(img->img_ptr,
-				&img->bpp, &img->sizel,
-				&img->endian);
+				&img[i].width, &img[i].height);
+		img[i].img_str = (int*)mlx_get_data_addr(img[i].img_ptr,
+				&img[i].bpp, &img[i].sizel,
+				&img[i].endian);
+		fprintf(stderr, "img%d:\t width:%d\theight:%d\n",
+			i, img[i].width, img[i].height);
 	}
 	return (img);
 }
