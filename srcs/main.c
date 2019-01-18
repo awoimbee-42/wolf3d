@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 14:57:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:03:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_info(t_info *info)
 {
 	init_player(&info->player);
 	info->options = 0;
-	// info->options = OPT_FLOOR; //To get textured floor/walls
+	// info->options |= OPT_FLOOR; //To get textured floor/walls
 }
 
 int		init_mlx(t_mlx *mlx)
@@ -151,7 +151,7 @@ int		main(int ac, char **av)
 		{
 			if (!(init_mlx(&info.mlx)))
 				return (0);
-			info.m_info.textures = read_textures(info.mlx.mlx_ptr);
+			info.m_info.texs = read_textures(info.mlx.mlx_ptr);
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
 									info.mlx.img.img_ptr, 0, 0);

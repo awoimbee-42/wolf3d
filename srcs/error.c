@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:02 by wta               #+#    #+#             */
-/*   Updated: 2019/01/16 13:21:18 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 15:57:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,5 @@ void	err_handler(int err_id)
 	ft_strcat(buf, "\n");
 	ft_putstr_fd(buf, 2);
 	(void)err_id;
+	exit(EXIT_FAILURE);
 }

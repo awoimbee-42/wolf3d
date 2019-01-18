@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 14:41:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:22:57 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define MALLOC_ERR	4
 # define GNL_ERR	5
 # define READ_ERR	6
-# define TOKENS		"01"
+# define TOKENS		"@01"
 # define WALL_S		2.
 # define SHFT_32	(1L << 32)
 # define SCREEN_W	1024
@@ -67,7 +67,7 @@ typedef struct	s_map
 	char	**map;
 	int		width;
 	int		height;
-	t_img	*textures;
+	t_img	*texs;
 }				t_map;
 
 typedef struct	s_player

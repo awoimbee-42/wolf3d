@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bresenham.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 12:59:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 13:43:54 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 15:03:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ void	fill_pixel(t_img *img, t_int2 a, t_int2 b, int color)
 	while (1)
 	{
 		if (is_out(a, img) == 0 && is_out(b, img) == 0)
-			img->img_str[ft_round(a.x) + ft_round(a.y) * img->sizel / 4] = color;
-		if (a.x == b.x && a.y== b.y)
+			img->img_str[ft_round(a.x) + ft_round(a.y) * img->sizel / 4] =
+			color;
+		if (a.x == b.x && a.y == b.y)
 			break ;
 		delta.error = delta.derror;
 		if (delta.error > -(delta.dx))

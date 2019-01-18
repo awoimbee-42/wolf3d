@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
+/*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 09:30:25 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 13:46:01 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 15:49:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	minimap(t_info *info)
 
 	mnmap = &info->m_info.minimap;
 	init_minimap(info);
-	map_pos = (t_int2) {-1,-1};
+	map_pos = (t_int2) {-1, -1};
 	while (++map_pos.y < mnmap->height)
 	{
 		real_pos.y = map_pos.y * info->m_info.height / mnmap->height;
@@ -85,6 +85,6 @@ void	minimap(t_info *info)
 	draw_circle(info->player.pos.x * mnmap->width / info->m_info.width,
 		info->player.pos.y * mnmap->height / info->m_info.height, 3., mnmap);
 	draw_dir(&info->player, &info->m_info.minimap, &info->m_info);
-	mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, mnmap->img_ptr,
-			mnmap->width * 3, 0);
+	mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
+		mnmap->img_ptr, mnmap->width * 3, 0);
 }
