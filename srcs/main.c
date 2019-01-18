@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 14:57:23 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:16:16 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		key_pressed(int key, void *param)
 
 	info = (t_info*)param;
 	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT
-		|| key == NUM_ZERO)
+		|| key == NUM_ZERO || key == OPT_FLOOR)
 	{
 		if (key == K_UP)
 			info->key_pressed |= 0x1;
@@ -76,9 +76,10 @@ int		key_pressed(int key, void *param)
 			info->key_pressed |= 0x4;
 		if (key == K_RIGHT)
 			info->key_pressed |= 0x8;
-		if (key == NUM_ZERO)
+		if (key == NUM_ZERO || key == OPT_FLOOR)
 		{
-			info->key_pressed ^= 0x10;
+			info->key_pressed ^= (key == OPT_FLOOR) ? 0x20 : 0x10;
+			raycasting(info);
 			mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
 				info->mlx.img.img_ptr, 0, 0);
 		}

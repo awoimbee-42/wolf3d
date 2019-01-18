@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 14:41:55 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:05:07 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define K_RIGHT	124
 # define K_DOWN		125
 # define NUM_ZERO	82
-# define OPT_FLOOR	(1)
+# define OPT_FLOOR	83
 
 typedef struct	s_img
 {
