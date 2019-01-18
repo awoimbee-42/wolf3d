@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 19:43:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 14:35:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,81 +67,77 @@ double	dda(int *side, t_vec2 *ray_dir, t_info *info)
 	return (dist);
 }
 
-int		color_fade(int color, int idx)
+void	draw_walls(int line_h, int x, int end, int side, double dist, t_info *inf, t_vec2 ray_dir)
 {
-	return ((((color & 0xFF) / idx + idx * 2) & 0xFF)
-	+ (((color & 0xFF00) / idx + idx * 2) & 0xFF00)
-	+ (((color & 0xFF0000) / idx + idx * 2) & 0xFF0000));
+	unsigned int	tex_x;
+	t_img			tex;
+	int				start;
+
+	if ((start = SCREEN_H / 2 - line_h / 2) < 0)
+		start = 0;
+	tex_x = !side ? ((inf->player.pos.y + dist * ray_dir.y) * SHFT_32) :
+						((inf->player.pos.x + dist * ray_dir.x) * SHFT_32);
+	if (side == 0)
+		tex = (ray_dir.x > 0) ? inf->m_info.textures[0] : inf->m_info.textures[1];
+	else
+		tex = (ray_dir.y < 0) ? inf->m_info.textures[2] : inf->m_info.textures[3];
+	tex_x = (!side && ray_dir.x > 0) || (side && ray_dir.y < 0) ?
+		tex.width - (double)tex_x * tex.width / SHFT_32 - 1 : (double)tex_x * tex.width / SHFT_32;
+	while (start < end)
+	{
+		int tex_y = (((start * 512 - SCREEN_H * 256 + line_h * 256)) * tex.height) / (line_h * 512);
+		inf->mlx.img_str[x + (start * inf->mlx.sizel / 4)] = tex.img_str[tex.width * tex_y + tex_x];
+		start++;
+	}
+}
+
+void	draw_tex_floor(int start, int side, int x, t_info *inf, double dist, t_vec2 ray_dir)
+{
+	t_vec2	wall_grnd;
+	double	weigth;
+	t_int2	floor_tex;
+	t_img	*tex;
+	t_vec2	current_floor;
+
+	tex = &inf->m_info.textures[0];
+	wall_grnd = (t_vec2){inf->player.pos.x + ray_dir.x * dist,
+						inf->player.pos.y + ray_dir.y * dist};
+	wall_grnd = !side ? (t_vec2){floor(wall_grnd.x), wall_grnd.y} :
+						(t_vec2){wall_grnd.x, floor(wall_grnd.y)};
+	while (start < SCREEN_H)
+	{
+		weigth = (SCREEN_H / (2. * start - SCREEN_H)) / dist;
+		if (weigth > 1.)
+			weigth = 1.;
+		current_floor = vec2_add(vec2_multf(wall_grnd, weigth), vec2_multf(inf->player.pos, (1. - weigth)));
+		floor_tex = (t_int2){(int)(current_floor.x * tex[0].width) % tex[0].width,
+							(int)(current_floor.y * tex[0].height) % tex[0].height};
+		inf->mlx.img_str[x + (start * inf->mlx.sizel / 4)] = tex[0].img_str[tex[0].width * floor_tex.y + floor_tex.x];
+		inf->mlx.img_str[x + ((SCREEN_H - start) * inf->mlx.sizel / 4)] = tex[1].img_str[tex[1].width * floor_tex.y + floor_tex.x];
+		++start;
+	}
+}
+
+void	draw_floor(int start, int x, t_info *inf)
+{
+	while (++start < SCREEN_H - 1)
+	{
+		inf->mlx.img_str[x + (start * inf->mlx.sizel / 4)] = 0xf4a460;
+		inf->mlx.img_str[x + ((SCREEN_H - start) * inf->mlx.sizel / 4)] = 0xb2b2ff;
+	}
 }
 
 void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 {
-	int	start;
 	int	end;
-	int	idx;
 	int line_h;
 
 	line_h = (int)(SCREEN_H / dist);
-	if ((start = SCREEN_H / 2 - line_h / 2) < 0)
-		start = 0;
 	if ((end = SCREEN_H / 2 + line_h / 2) >= SCREEN_H)
 		end = SCREEN_H - 1;
-	idx = -1;
-	while (++idx < start)
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
 
-	// #### WALL ########################################################
-
-	unsigned int	tex_x;
-	t_img			texture;
-
-	tex_x = !side ? ((info->player.pos.y + dist * ray_dir.y) * (1 << 30)) :
-						((info->player.pos.x + dist * ray_dir.x) * (1 << 30));
-	tex_x %= (1 << 30);
-	if (side == 0)
-		texture = (ray_dir.x > 0) ? info->m_info.textures[0] : info->m_info.textures[1];
-	else
-		texture = (ray_dir.y < 0) ? info->m_info.textures[2] : info->m_info.textures[3];
-	tex_x = (!side && ray_dir.x > 0) || (side && ray_dir.y < 0) ?
-			texture.width - (double)tex_x * texture.width / (1 << 30) - 1 : (double)tex_x * texture.width / (1 << 30);
-	while (idx < end)
-	{
-		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture.height) / (line_h * 512);
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture.img_str[texture.width * tex_y + tex_x];
-		idx++;
-	}
-	// #############################################################
-
-
-	// ######## FLOOR #######################
-	// t_vec2			floor_wall;
-	// double			wall_x;
-	// // t_int2			floor_tex;
-
-	// texture = info->m_info.textures[0];
-
-	// wall_x = !side ? info->player.pos.y + dist * ray_dir.y :
-	// 					info->player.pos.x + dist * ray_dir.x;
-	// wall_x -= floor(wall_x);
-
-	// floor_wall = !side ? (t_vec2){floor(info->player.pos.x + ray_dir.x * dist),
-	// floor(info->player.pos.y + ray_dir.y * dist) + wall_x} :
-	// (t_vec2){floor(info->player.pos.x + ray_dir.x * dist) + wall_x,
-	// floor(info->player.pos.y + ray_dir.y * dist)};
-
-	start = idx;
-	idx = 0;
-	while (++idx < 10 && start + idx < SCREEN_H)
-	{
-		info->mlx.img_str[x + ((start + idx) * info->mlx.sizel / 4)] = color_fade(info->mlx.img_str[x + ((start - idx) * info->mlx.sizel / 4)], idx);
-		// info->mlx.img_str[x + ((SCREEN_H - idx) * info->mlx.sizel / 4)] = info->m_info.textures[2].img_str[info->m_info.textures[2].width * floor_tex.y + floor_tex.x];
-	}
-
-	idx = start + idx;
-	while (++idx < SCREEN_H - 1)
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
-
-	// #####################################
+	draw_walls(line_h, x, end, side, dist, info, ray_dir);
+	info->options & OPT_FLOOR ? draw_tex_floor(end, side, x, info, dist, ray_dir) : draw_floor(end, x, info);
 }
 
 void	raycasting(t_info *info)
