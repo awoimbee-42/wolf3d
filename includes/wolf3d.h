@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 16:07:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 09:50:55 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,6 @@
 # define K_RIGHT	124
 # define K_DOWN	125
 
-typedef struct	s_mlx
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	void		*img_ptr;
-	int			*img_str;
-	int			bpp;
-	int			sizel;
-	int			endian;
-}				t_mlx;
-
 typedef struct	s_img
 {
 	void	*img_ptr;
@@ -51,14 +40,29 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
+typedef struct	s_mlx
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img_ptr;
+	t_img		img;
+}				t_mlx;
+
 typedef struct	s_vec2
 {
 	double	x;
 	double	y;
 }				t_vec2;
 
+typedef struct	s_int2
+{
+	int	x;
+	int	y;
+}				t_int2;
+
 typedef struct	s_map
 {
+	t_img	minimap;
 	char	**map;
 	int		width;
 	int		height;
@@ -102,6 +106,8 @@ void	raycasting(t_info *info);
 int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);
 t_img	*read_textures(void *mlx_ptr);
+
+void	minimap(t_info *info);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);

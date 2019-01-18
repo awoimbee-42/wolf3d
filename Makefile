@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/17 14:44:17 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/18 10:23:04 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,11 +33,12 @@ SRCS=			\
 check_bounds.c	\
 error.c			\
 main.c			\
-read_file.c		\
-utils.c			\
-vec2_op0.c		\
+minimap.c		\
 raycasting.c	\
-read_textures.c
+read_file.c		\
+read_textures.c	\
+utils.c			\
+vec2_op0.c
 HEADER		=	\
 wolf3d.h
 # RULES #

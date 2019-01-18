@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 16:19:36 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 10:22:47 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ int		init_mlx(t_mlx *mlx)
 	mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, SCREEN_W, SCREEN_H, "Wolf3D");
 	if (!(mlx->win_ptr))
 		return (0);
-	if (!(mlx->img_ptr = mlx_new_image(mlx->mlx_ptr, SCREEN_W, SCREEN_H)))
+	if (!(mlx->img.img_ptr = mlx_new_image(mlx->mlx_ptr, SCREEN_W, SCREEN_H)))
 		return (0);
-	if (!(mlx->img_str = (int*)mlx_get_data_addr(mlx->img_ptr, &mlx->bpp
-					, &mlx->sizel, &mlx->endian)))
+	if (!(mlx->img.img_str = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bpp
+					, &mlx->img.sizel, &mlx->img.endian)))
 		return (0);
 	return (1);
 }
@@ -57,27 +57,6 @@ void		move(t_vec2 *pos, t_vec2 dir, char **map)
 		dir.x = 0;
 	*pos = vec2_add(*pos, dir);
 }
-/*
-int	key_move(int keycode, void *param)
-{
-	t_info	*info;
-
-	info = (t_info*)param;
-	if (keycode == 126 || keycode == 125 || keycode == 123 || keycode == 124)
-	{
-		if (keycode == KEY_LEFT)
-			info->player.dir = rotate2d(info->player.dir, -0.05);
-		if (keycode == KEY_UP)
-			move(&info->player.pos, info->player.dir, 1, info->m_info.map);
-		if (keycode == KEY_RIGHT)
-			info->player.dir = rotate2d(info->player.dir, 0.05);
-		if (keycode == KEY_DOWN)
-			move(&info->player.pos, info->player.dir, 0, info->m_info.map);
-		raycasting(info);
-		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
-	}
-	return (0);
-}*/
 
 int		key_pressed(int key, void *param)
 {
@@ -139,8 +118,10 @@ int		apply_key(void *param)
 		if (key & 0x8)
 			info->player.dir = rotate2d(info->player.dir, 0.05);
 		raycasting(info);
-		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr, info->mlx.img_ptr, 0, 0);
+		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
+				info->mlx.img.img_ptr, 0, 0);
 	}
+	minimap(info);
 	return (0);
 }
 
@@ -162,7 +143,7 @@ int		main(int ac, char **av)
 			info.m_info.textures = read_textures(info.mlx.mlx_ptr);
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
-									info.mlx.img_ptr, 0, 0);
+									info.mlx.img.img_ptr, 0, 0);
 			mlx_hook(info.mlx.win_ptr, 2, 0, key_pressed, &info);
 			mlx_hook(info.mlx.win_ptr, 3, 0, key_released, &info);
 			mlx_loop_hook(info.mlx.mlx_ptr, apply_key, &info);

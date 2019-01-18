@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 15:58:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 09:30:15 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 		end = SCREEN_H - 1;
 	idx = -1;
 	while (++idx < start)
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xb2b2ff;
+		info->mlx.img.img_str[x + (idx * info->mlx.img.sizel / 4)] = 0xb2b2ff;
 
 	// #### WALL ########################################################
 	unsigned int	tex_x;
@@ -99,14 +99,13 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	while (idx < end)
 	{
 		int tex_y = (((idx * 512 - SCREEN_H * 256 + line_h * 256)) * texture.height) / (line_h * 512);
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = texture.img_str[texture.height * tex_y + tex_x];
+		info->mlx.img.img_str[x + (idx * info->mlx.img.sizel / 4)] = texture.img_str[texture.height * tex_y + tex_x];
 		idx++;
 	}
 	// #### WALL ########################################################
-
 	idx = end - 1;
 	while (++idx < SCREEN_H - 1)
-		info->mlx.img_str[x + (idx * info->mlx.sizel / 4)] = 0xf4a460;
+		info->mlx.img.img_str[x + (idx * info->mlx.img.sizel / 4)] = 0xf4a460;
 }
 
 void	raycasting(t_info *info)
