@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/18 10:23:04 by wta              ###   ########.fr        #
+#    Updated: 2019/01/18 13:09:18 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
 MLXLIB		=	-L $(MLXDIR) -lmlx
 MLXFLAG		=	-framework OpenGL -framework Appkit
 SRCS=			\
+bresenham.c		\
 check_bounds.c	\
 error.c			\
 main.c			\

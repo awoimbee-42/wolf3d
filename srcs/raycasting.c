@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 09:30:15 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 12:16:30 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	if ((start = SCREEN_H / 2 - line_h / 2) < 0)
 		start = 0;
 	if ((end = SCREEN_H / 2 + line_h / 2) >= SCREEN_H)
-		end = SCREEN_H - 1;
+		end = SCREEN_H;
 	idx = -1;
 	while (++idx < start)
 		info->mlx.img.img_str[x + (idx * info->mlx.img.sizel / 4)] = 0xb2b2ff;
@@ -104,7 +104,7 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	}
 	// #### WALL ########################################################
 	idx = end - 1;
-	while (++idx < SCREEN_H - 1)
+	while (++idx < SCREEN_H)
 		info->mlx.img.img_str[x + (idx * info->mlx.img.sizel / 4)] = 0xf4a460;
 }
 

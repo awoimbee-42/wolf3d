@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 10:22:47 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 13:46:15 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int		init_mlx(t_mlx *mlx)
 void		move(t_vec2 *pos, t_vec2 dir, char **map)
 {
 	if (map[(int)(pos->y + dir.y + 0.2)][(int)(pos->x + 0.2)] != '0'
-	|| map[(int)(pos->y + dir.y + 0.2)][(int)(pos->x - 0.2)] != '0'
-	|| map[(int)(pos->y + dir.y - 0.2)][(int)(pos->x + 0.2)] != '0'
-	|| map[(int)(pos->y + dir.y - 0.2)][(int)(pos->x - 0.2)] != '0')
+		|| map[(int)(pos->y + dir.y + 0.2)][(int)(pos->x - 0.2)] != '0'
+		|| map[(int)(pos->y + dir.y - 0.2)][(int)(pos->x + 0.2)] != '0'
+		|| map[(int)(pos->y + dir.y - 0.2)][(int)(pos->x - 0.2)] != '0')
 		dir.y = 0;
 	if (map[(int)(pos->y + 0.2)][(int)(pos->x + dir.x + 0.2)] != '0'
-	|| map[(int)(pos->y - 0.2)][(int)(pos->x + dir.x + 0.2)] != '0'
-	|| map[(int)(pos->y + 0.2)][(int)(pos->x + dir.x - 0.2)] != '0'
-	|| map[(int)(pos->y - 0.2)][(int)(pos->x + dir.x - 0.2)] != '0')
+		|| map[(int)(pos->y - 0.2)][(int)(pos->x + dir.x + 0.2)] != '0'
+		|| map[(int)(pos->y + 0.2)][(int)(pos->x + dir.x - 0.2)] != '0'
+		|| map[(int)(pos->y - 0.2)][(int)(pos->x + dir.x - 0.2)] != '0')
 		dir.x = 0;
 	*pos = vec2_add(*pos, dir);
 }
@@ -63,7 +63,8 @@ int		key_pressed(int key, void *param)
 	t_info	*info;
 
 	info = (t_info*)param;
-	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT)
+	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT
+		|| key == NUM_ZERO)
 	{
 		if (key == K_UP)
 			info->key_pressed |= 0x1;
@@ -73,6 +74,12 @@ int		key_pressed(int key, void *param)
 			info->key_pressed |= 0x4;
 		if (key == K_RIGHT)
 			info->key_pressed |= 0x8;
+		if (key == NUM_ZERO)
+		{
+			info->key_pressed ^= 0x10;
+			mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
+				info->mlx.img.img_ptr, 0, 0);
+		}
 	}
 	return (0);
 }
@@ -82,7 +89,8 @@ int		key_released(int key, void *param)
 	t_info	*info;
 
 	info = (t_info*)param;
-	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT)
+	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT
+	|| key == NUM_ZERO)
 	{
 		if (key == K_UP)
 			info->key_pressed ^= 0x1;
@@ -119,9 +127,10 @@ int		apply_key(void *param)
 			info->player.dir = rotate2d(info->player.dir, 0.05);
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
-				info->mlx.img.img_ptr, 0, 0);
+			info->mlx.img.img_ptr, 0, 0);
+		if (key & 0x10)
+			minimap(info);
 	}
-	minimap(info);
 	return (0);
 }
 
