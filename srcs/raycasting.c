@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 15:47:03 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:43:54 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,10 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	if ((end = SCREEN_H / 2 + line_h / 2) > SCREEN_H)
 		end = SCREEN_H;
 	draw_walls(x, end, side, dist, info, ray_dir);
-	info->options & OPT_FLOOR ?
-	draw_tex_floor(end - 1, side, x, info, dist, ray_dir) :
-	draw_floor(end, x, info);
+	if (info->key_pressed & OPT_FLOOR)
+		draw_tex_floor(end - 1, side, x, info, dist, ray_dir);
+	else
+		draw_floor(end, x, info);
 }
 
 void	raycasting(t_info *info)

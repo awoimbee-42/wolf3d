@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 16:22:57 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:37:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define READ_ERR	6
 # define TOKENS		"@01"
 # define WALL_S		2.
-# define SHFT_32	(1L << 32)
+# define SHFT_32	0xFFFFFFFFL
 # define SCREEN_W	1024
 # define SCREEN_H	720
 # define K_LEFT		123
@@ -28,7 +28,7 @@
 # define K_RIGHT	124
 # define K_DOWN		125
 # define NUM_ZERO	82
-# define OPT_FLOOR	(1)
+# define OPT_FLOOR	83
 
 typedef struct	s_img
 {
