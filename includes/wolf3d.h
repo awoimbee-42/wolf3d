@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 13:29:44 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 14:41:55 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,12 @@
 # define SHFT_32	(1L << 32)
 # define SCREEN_W	1024
 # define SCREEN_H	720
-# define K_LEFT	123
+# define K_LEFT		123
 # define K_UP		126
 # define K_RIGHT	124
-# define K_DOWN	125
+# define K_DOWN		125
+# define NUM_ZERO	82
 # define OPT_FLOOR	(1)
-
-typedef struct	s_mlx
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	void		*img_ptr;
-	int			*img_str;
-	int			bpp;
-	int			sizel;
-	int			endian;
-}				t_mlx;
 
 typedef struct	s_img
 {
@@ -50,6 +40,14 @@ typedef struct	s_img
 	int		sizel;
 	int		endian;
 }				t_img;
+
+typedef struct	s_mlx
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	void		*img_ptr;
+	t_img		img;
+}				t_mlx;
 
 typedef struct	s_vec2
 {
@@ -65,6 +63,7 @@ typedef struct	s_int2
 
 typedef struct	s_map
 {
+	t_img	minimap;
 	char	**map;
 	int		width;
 	int		height;
@@ -88,9 +87,19 @@ typedef struct	s_info
 	int			key_pressed;
 }				t_info;
 
+typedef struct	s_delta
+{
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int derror;
+	int	error;
+}				t_delta;
+
 /*
-**	vec2_op.c
-*/
+ **	vec2_op.c
+ */
 
 t_vec2	rotate2d(t_vec2 vector, const double theta);
 t_vec2	vec2_add(t_vec2 a, const t_vec2 b);
@@ -109,6 +118,10 @@ void	raycasting(t_info *info);
 int		read_file(char *file, t_info *info);
 int		check_bounds(t_map *m_info);
 t_img	*read_textures(void *mlx_ptr);
+
+void	minimap(t_info *info);
+void	pxl_to_img(t_img *img, int x, int y, int color);
+void	fill_pixel(t_img *img, t_int2 a, t_int2 b, int color);
 
 int		ft_strdelerr(char *line, int err_id);
 int		splitdelerr(char **split, int err_id);

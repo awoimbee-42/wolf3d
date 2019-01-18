@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 14:35:51 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 14:55:48 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	draw_walls(int line_h, int x, int end, int side, double dist, t_info *inf, 
 	while (start < end)
 	{
 		int tex_y = (((start * 512 - SCREEN_H * 256 + line_h * 256)) * tex.height) / (line_h * 512);
-		inf->mlx.img_str[x + (start * inf->mlx.sizel / 4)] = tex.img_str[tex.width * tex_y + tex_x];
+		inf->mlx.img.img_str[x + (start * inf->mlx.img.sizel / 4)] = tex.img_str[tex.width * tex_y + tex_x];
 		start++;
 	}
 }
@@ -112,18 +112,19 @@ void	draw_tex_floor(int start, int side, int x, t_info *inf, double dist, t_vec2
 		current_floor = vec2_add(vec2_multf(wall_grnd, weigth), vec2_multf(inf->player.pos, (1. - weigth)));
 		floor_tex = (t_int2){(int)(current_floor.x * tex[0].width) % tex[0].width,
 							(int)(current_floor.y * tex[0].height) % tex[0].height};
-		inf->mlx.img_str[x + (start * inf->mlx.sizel / 4)] = tex[0].img_str[tex[0].width * floor_tex.y + floor_tex.x];
-		inf->mlx.img_str[x + ((SCREEN_H - start) * inf->mlx.sizel / 4)] = tex[1].img_str[tex[1].width * floor_tex.y + floor_tex.x];
+		inf->mlx.img.img_str[x + (start * inf->mlx.img.sizel / 4)] = tex[0].img_str[tex[0].width * floor_tex.y + floor_tex.x];
+		inf->mlx.img.img_str[x + ((SCREEN_H - start) * inf->mlx.img.sizel / 4)] = tex[1].img_str[tex[1].width * floor_tex.y + floor_tex.x];
 		++start;
 	}
 }
 
 void	draw_floor(int start, int x, t_info *inf)
 {
-	while (++start < SCREEN_H - 1)
+	while (start < SCREEN_H)
 	{
-		inf->mlx.img_str[x + (start * inf->mlx.sizel / 4)] = 0xf4a460;
-		inf->mlx.img_str[x + ((SCREEN_H - start) * inf->mlx.sizel / 4)] = 0xb2b2ff;
+		inf->mlx.img.img_str[x + (start * inf->mlx.img.sizel / 4)] = 0xf4a460;
+		inf->mlx.img.img_str[x + ((SCREEN_H - start - 1) * inf->mlx.img.sizel / 4)] = 0xb2b2ff;
+		++start;
 	}
 }
 
@@ -133,8 +134,8 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	int line_h;
 
 	line_h = (int)(SCREEN_H / dist);
-	if ((end = SCREEN_H / 2 + line_h / 2) >= SCREEN_H)
-		end = SCREEN_H - 1;
+	if ((end = SCREEN_H / 2 + line_h / 2) > SCREEN_H)
+		end = SCREEN_H;
 
 	draw_walls(line_h, x, end, side, dist, info, ray_dir);
 	info->options & OPT_FLOOR ? draw_tex_floor(end, side, x, info, dist, ray_dir) : draw_floor(end, x, info);
