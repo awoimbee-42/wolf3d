@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 17:03:05 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 17:26:52 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	init_player(t_player *player)
 void	init_info(t_info *info)
 {
 	init_player(&info->player);
+	info->options = 0;
 	info->key_pressed = 0;
-	// info->options = OPT_FLOOR; //To get textured floor/walls
 }
 
 int		init_mlx(t_mlx *mlx)
@@ -39,8 +39,8 @@ int		init_mlx(t_mlx *mlx)
 		return (0);
 	if (!(mlx->img.img_ptr = mlx_new_image(mlx->mlx_ptr, SCREEN_W, SCREEN_H)))
 		return (0);
-	if (!(mlx->img.img_str = (int*)mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bpp
-					, &mlx->img.sizel, &mlx->img.endian)))
+	if (!(mlx->img.img_str = (int*)mlx_get_data_addr(mlx->img.img_ptr,
+							&mlx->img.bpp, &mlx->img.sizel, &mlx->img.endian)))
 		return (0);
 	return (1);
 }
@@ -151,7 +151,7 @@ int		main(int ac, char **av)
 		{
 			if (!(init_mlx(&info.mlx)))
 				return (0);
-			info.m_info.textures = read_textures(info.mlx.mlx_ptr);
+			info.m_info.texs = read_textures(info.mlx.mlx_ptr);
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
 									info.mlx.img.img_ptr, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/17 14:15:26 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 16:28:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,6 @@ static int	prealloc_map(t_map *map_info)
 	return (map_info->map != NULL);
 }
 
-static int	p_set(t_info *info)
-{
-	return (info->player.pos.x != -1 && info->player.pos.y != -1);
-}
-
 static int	check_line(char *line, int row, char *tokens, t_info *info)
 {
 	int				i;
@@ -88,21 +83,19 @@ static int	check_line(char *line, int row, char *tokens, t_info *info)
 	i = -1;
 	while (line[++i] != '\0')
 	{
-		j = -1;
-		if (line[i] == '@' && p_set(info) == 0)
+		if (line[i] == '@')
 		{
+			if (info->player.pos.x != -1 && info->player.pos.y != -1)
+				return (0);
 			line[i] = '0';
 			info->player.pos = (t_vec2){((double)i) + .5, ((double)row) + .5};
 		}
-		else if (line[i] == '@')
-			return (0);
 		else
 		{
-			while (tokens[++j] != '\0')
-				if (line[i] == tokens[j])
-					break ;
-			if (tokens[j] == '\0')
-				return (0);
+			j = -1;
+			while (tokens[++j] != line[i])
+				if (tokens[j] == '\0')
+					return (0);
 		}
 	}
 	return (1);
@@ -118,13 +111,11 @@ int			read_file(char *file, t_info *info)
 
 	if ((fd = open(file, O_RDONLY)) < 0)
 		return (-1);
-	if (get_next_line(fd, &line) <= 0)
-		return (GNL_ERR);
-	if (parse_first_line(line, &info->m_info) == 0)
-		return (ft_strdelerr(line, BAD_FMT));
+	get_next_line(fd, &line) <= 0 ? err_handler(GNL_ERR) : 0;
+	!parse_first_line(line, &info->m_info) ?
+		err_handler(ft_strdelerr(line, BAD_FMT)) : 0;
 	ft_strdel(&line);
-	if (prealloc_map(&info->m_info) == 0)
-		return (MALLOC_ERR);
+	!prealloc_map(&info->m_info) ? err_handler(MALLOC_ERR) : 0;
 	line_count = 0;
 	ret = 1;
 	while (ret == 1 && (gnl_ret = get_next_line(fd, &line)) > 0)
