@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 16:37:02 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 17:20:37 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define READ_ERR	6
 # define TOKENS		"@01"
 # define WALL_S		2.
-# define SHFT_32	0xFFFFFFFFL
+# define SHFT_32	(1L << 32)
 # define SCREEN_W	1024
 # define SCREEN_H	720
 # define K_LEFT		123
