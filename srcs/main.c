@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 16:49:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 16:56:43 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,7 @@ int		key_released(int key, void *param)
 	t_info	*info;
 
 	info = (t_info*)param;
-	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT
-	|| key == NUM_ZERO)
+	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT)
 	{
 		if (key == K_UP)
 			info->key_pressed ^= 0x1;
