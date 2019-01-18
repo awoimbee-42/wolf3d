@@ -6,67 +6,91 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 12:59:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 15:03:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 20:47:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "wolf3d.h"
 
-int		ft_round(float x)
+
+
+
+
+
+
+
+
+
+static void	draw_line_higrad(t_int2 p0, t_int2 p1, t_img *img, int color)
 {
-	return ((int)(x + 0.5));
-}
+	t_int2	delta;
+	int			way_x;
+	int			error;
 
-t_delta	init_delta(t_int2 a, t_int2 b)
-{
-	t_delta	delta;
-
-	delta.dx = abs(ft_round(b.x) - ft_round(a.x));
-	delta.dy = abs(ft_round(b.y) - ft_round(a.y));
-	delta.sx = (a.x < b.x) ? 1 : -1;
-	delta.sy = (a.y < b.y) ? 1 : -1;
-	delta.derror = ((delta.dx > delta.dy) ? delta.dx : -(delta.dy)) / 2;
-	delta.error = 0;
-	return (delta);
-}
-
-int		is_out(t_int2 point, t_img *img)
-{
-	if (ft_round(point.x) < 0 || ft_round(point.x) > img->width - 1)
-		return (1);
-	if (ft_round(point.y) < 0 || ft_round(point.y) > img->height - 1)
-		return (1);
-	return (0);
-}
-
-void	fill_pixel(t_img *img, t_int2 a, t_int2 b, int color)
-{
-	t_delta	delta;
-
-	delta = init_delta(a, b);
-	while (1)
+	delta.x = p1.x - p0.x;
+	delta.y = p1.y - p0.y;
+	way_x = 1;
+	if (delta.x < 0 && (delta.x *= -1))
+		way_x = -1;
+	error = 2 * delta.x - delta.y;
+	while (p0.y < p1.y)
 	{
-		if (is_out(a, img) == 0 && is_out(b, img) == 0)
-			img->img_str[ft_round(a.x) + ft_round(a.y) * img->sizel / 4] =
-			color;
-		if (a.x == b.x && a.y == b.y)
-			break ;
-		delta.error = delta.derror;
-		if (delta.error > -(delta.dx))
+		pxl_to_img(img, p0.x, p0.y, color);
+		if (error > 0)
 		{
-			delta.derror -= delta.dy;
-			a.x += (double)delta.sx;
+			p0.x += way_x;
+			error -= 2 * delta.y;
 		}
-		if (delta.error < delta.dy)
-		{
-			delta.derror += delta.dx;
-			a.y += (double)delta.sy;
-		}
+		error += 2 * delta.x;
+		++p0.y;
 	}
 }
 
-void	pxl_to_img(t_img *img, int x, int y, int color)
+static void	draw_line_lograd(t_int2 p0, t_int2 p1, t_img *img, int color)
+{
+	t_int2	delta;
+	int			way_y;
+	int			error;
+
+	delta.x = p1.x - p0.x;
+	delta.y = p1.y - p0.y;
+	way_y = 1;
+	if (delta.y < 0 && (delta.y *= -1))
+		way_y = -1;
+	error = 2 * delta.y - delta.x;
+	while (p0.x < p1.x)
+	{
+		pxl_to_img(img, p0.x, p0.y, color);
+		if (error > 0)
+		{
+			p0.y += way_y;
+			error -= 2 * delta.x;
+		}
+		error += 2 * delta.y;
+		++p0.x;
+	}
+}
+
+void		fill_pixel(t_img *img, t_int2 p0, t_int2 p1, int color)
+{
+	if (abs(p1.y - p0.y) < abs(p1.x - p0.x))
+	{
+		if (p0.x > p1.x)
+			draw_line_lograd(p1, p0, img, color);
+		else
+			draw_line_lograd(p0, p1, img, color);
+	}
+	else
+	{
+		if (p0.y > p1.y)
+			draw_line_higrad(p1, p0, img, color);
+		else
+			draw_line_higrad(p0, p1, img, color);
+	}
+}
+
+void		pxl_to_img(t_img *img, int x, int y, int color)
 {
 	img->img_str[x + (y * img->sizel / 4)] = color;
 }

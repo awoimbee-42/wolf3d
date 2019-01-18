@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/17 16:06:40 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 20:08:20 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ t_img		*read_textures(void *mlx_ptr)
 	char	filename[256];
 	int		i;
 
-	if ((img = ft_memalloc(sizeof(t_img) * 4)) == NULL)
+	if ((img = ft_memalloc(sizeof(t_img) * 6)) == NULL)
 		error_exit(MALLOC_ERR);
 	ft_bzero(filename, 256);
 	ft_strcpy(filename, "textures/texture0.XPM");
 	i = -1;
-	while (++i < 4)
+	while (++i < 6)
 	{
 		filename[16] = i + '0';
 		img[i].img_ptr = mlx_xpm_file_to_image(mlx_ptr, filename,

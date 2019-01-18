@@ -1,0 +1,7 @@
+texture 0 = east  wall (stone I sthink)
+texture 1 = west  wall (LORRAINE) - shitty
+texture 2 = north wall (brick - minecraft)
+texture 3 = south wall (sandstone - minecraft)
+texture 4 = floor      (wood - minecraft)
+texture 5 = ceiling    (stars)
+
