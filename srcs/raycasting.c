@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 16:56:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 18:59:00 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ double		dda(int *side, t_vec2 *ray_dir, t_info *info)
 void	draw_walls(int x, int end, int side, double dist, t_info *inf, t_vec2 ray_dir)
 {
 	unsigned int	tex_x;
-	int				tex_y;
+	unsigned int	tex_y;
 	t_img			*tex;
 	int				start;
 	int				line_h;
@@ -81,39 +81,41 @@ void	draw_walls(int x, int end, int side, double dist, t_info *inf, t_vec2 ray_d
 		(double)tex_x * tex->width / SHFT_32;
 	while (++start < end)
 	{
-		tex_y = (((start * 512 - SCREEN_H * 256 + line_h * 256)) *
-		tex->height) / (line_h * 512);
+		tex_y = ((start * 2 - SCREEN_H + line_h) * tex->height) / (line_h * 2);
 		inf->mlx.img.img_str[x + (start * inf->mlx.img.sizel / 4)] =
 		tex->img_str[tex->width * tex_y + tex_x];
 	}
 }
 
-void	draw_tex_floor(int sy, int side, int x, t_info *inf, double dist, t_vec2 ray_dir)
+/*
+**	Take the pixel at the bottom of the wall and the player position
+**		for each pixel between these 2, project a texture pixel
+*/
+
+void	draw_tex_floor(int sy, int x, t_info *inf, double dist, t_vec2 ray_dir)
 {
 	t_vec2	wall_grnd;
-	double	weigth;
-	t_int2	floor_tex;
+	double	ratio;
+	t_int2	tex_coords[2];
 	t_img	*tex;
 	t_vec2	curr_floor;
 
 	tex = &inf->m_info.texs[0];
 	wall_grnd = (t_vec2){inf->player.pos.x + ray_dir.x * dist,
 						inf->player.pos.y + ray_dir.y * dist};
-	wall_grnd = !side ? (t_vec2){floor(wall_grnd.x), wall_grnd.y} :
-						(t_vec2){wall_grnd.x, floor(wall_grnd.y)};
-	while (++sy < SCREEN_H)
+ 	while (++sy < SCREEN_H)
 	{
-		weigth = (SCREEN_H / (2. * sy - SCREEN_H)) / dist;
-		if (weigth > 1.)
-			weigth = 1.;
-		curr_floor = vec2_add(vec2_multf(wall_grnd, weigth),
-							vec2_multf(inf->player.pos, (1. - weigth)));
-		floor_tex = (t_int2){(int)(curr_floor.x * tex[0].width) % tex[0].width,
+		ratio = (SCREEN_H / (2. * sy - SCREEN_H)) / dist;
+		curr_floor = vec2_add(vec2_multf(wall_grnd, ratio),
+							vec2_multf(inf->player.pos, (1 - ratio)));
+		tex_coords[0] = (t_int2){(int)(curr_floor.x * tex[0].width) % tex[0].width,
 						(int)(curr_floor.y * tex[0].height) % tex[0].height};
+		tex_coords[1] = (t_int2){(int)(curr_floor.x * tex[1].width) % tex[1].width,
+						(int)(curr_floor.y * tex[1].height) % tex[1].height};
 		inf->mlx.img.img_str[x + (sy * inf->mlx.img.sizel / 4)] =
-		tex[0].img_str[tex[0].width * floor_tex.y + floor_tex.x];
+		tex[0].img_str[tex[0].width * tex_coords[0].y + tex_coords[0].x];
 		inf->mlx.img.img_str[x + ((SCREEN_H - sy) * inf->mlx.img.sizel / 4)] =
-		tex[1].img_str[tex[1].width * floor_tex.y + floor_tex.x];
+		tex[1].img_str[tex[1].width * tex_coords[1].y + tex_coords[1].x];
 	}
 }
 
@@ -138,7 +140,7 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 		end = SCREEN_H;
 	draw_walls(x, end, side, dist, info, ray_dir);
 	if (info->key_pressed & 0x20)
-		draw_tex_floor(end - 1, side, x, info, dist, ray_dir);
+		draw_tex_floor(end - 1, x, info, dist, ray_dir);
 	else
 		draw_floor(end, x, info);
 }

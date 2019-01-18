@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 17:20:37 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 17:28:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,8 @@ typedef struct	s_delta
 }				t_delta;
 
 /*
- **	vec2_op.c
- */
-
+**	vec2_op.c
+*/
 t_vec2	rotate2d(t_vec2 vector, const double theta);
 t_vec2	vec2_add(t_vec2 a, const t_vec2 b);
 t_vec2	vec2_sub(t_vec2 a, const t_vec2 b);
