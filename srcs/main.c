@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 16:54:07 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/18 17:03:05 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_player(t_player *player)
 void	init_info(t_info *info)
 {
 	init_player(&info->player);
-	info->options = 0;
+	info->key_pressed = 0;
 	// info->options = OPT_FLOOR; //To get textured floor/walls
 }
 
