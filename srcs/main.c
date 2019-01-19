@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:44:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:55:45 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			main(int ac, char **av)
 				&& (err_id = check_bounds(&info.m_info)) == 1)
 		{
 			if (!(init_mlx(&info.mlx)))
-				return (0);
+				err_handler(MLX_ERR);
 			info.m_info.texs = read_textures(info.mlx.mlx_ptr);
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,

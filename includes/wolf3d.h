@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:30:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:55:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define MALLOC_ERR	4
 # define GNL_ERR	5
 # define READ_ERR	6
+# define MLX_ERR	7
 # define TOKENS		"@01"
 # define SHFT_32	0x100000000UL
 # define SCREEN_W	1200

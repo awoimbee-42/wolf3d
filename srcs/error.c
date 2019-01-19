@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:02 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:46:27 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:56:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	err_handler(int err_id)
 		ft_strcat(buf, "Bad format");
 	if (err_id == MALLOC_ERR)
 		ft_strcat(buf, "Allocation failed");
+	if (err_id == MLX_ERR)
+		ft_strcat(buf, "Minilibx failure");
 	ft_strcat(buf, "\n");
 	ft_putstr_fd(buf, 2);
 	(void)err_id;
