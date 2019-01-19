@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 20:08:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 00:07:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	draw_tex_floor(int sy, int x, t_info *inf, double dist, t_vec2 ray_dir)
 						inf->player.pos.y + ray_dir.y * dist};
  	while (++sy < SCREEN_H)
 	{
-		ratio = (SCREEN_H / (2. * sy - SCREEN_H)) / dist;
+		ratio = (SCREEN_H / (2. * sy + 1 - SCREEN_H)) / dist;
 		ratio > 1. ? ratio = 1 : 0;
 		curr_floor = vec2_add(vec2_multf(wall_grnd, ratio),
 							vec2_multf(inf->player.pos, (1 - ratio)));

@@ -6,16 +6,16 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 16:28:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 23:43:36 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "../libft/includes/libft.h"
-#include "../libft/includes/ft_printf.h"
+#include "libft.h"
 #include "wolf3d.h"
 
 /*

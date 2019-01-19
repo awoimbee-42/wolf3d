@@ -6,21 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 12:59:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 20:47:25 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 23:40:39 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "wolf3d.h"
-
-
-
-
-
-
-
-
-
 
 static void	draw_line_higrad(t_int2 p0, t_int2 p1, t_img *img, int color)
 {

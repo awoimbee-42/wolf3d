@@ -6,12 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/18 20:08:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 23:41:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-#include "../libft/includes/libft.h"
+#include "libft.h"
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/uio.h>

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 17:28:10 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/18 23:57:09 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,22 @@
 # define SHFT_32	(1L << 32)
 # define SCREEN_W	1024
 # define SCREEN_H	720
-# define K_LEFT		123
-# define K_UP		126
-# define K_RIGHT	124
-# define K_DOWN		125
-# define NUM_ZERO	82
-# define OPT_FLOOR	83
+
+# ifdef __linux__
+#  define K_LEFT	65361
+#  define K_UP		65362
+#  define K_RIGHT	65363
+#  define K_DOWN	65364
+#  define NUM_ZERO	48
+#  define OPT_FLOOR	49
+# else
+#  define K_LEFT	123
+#  define K_UP		126
+#  define K_RIGHT	124
+#  define K_DOWN	125
+#  define NUM_ZERO	82
+#  define OPT_FLOOR	83
+# endif
 
 typedef struct	s_img
 {

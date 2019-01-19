@@ -6,77 +6,102 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/18 17:07:50 by wta              ###   ########.fr        #
+#    Updated: 2019/01/18 23:47:10 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-_GREEN		=	\033[0;32m
-_WHITE		=	\033[m
-_YELLOW		=	\033[0;33m
-_DYELLOW	=	\x1b[33;01m
-# VARIABLES #
-NAME		=	wolf3d
-SRCSDIR		=	srcs
-LIBFTPATH	=	libft
-LIBFTLIB	=	libft.a
-LIBFT		=	$(addprefix $(LIBFTPATH)/,$(LIBFTLIB))
-INCDIR		=	includes
-MLXDIR		= 	minilibx_macos
-OBJDIR		=	objs
-OBJ			=	$(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
-CC			=	gcc
-INC			=	-I $(INCDIR) -I $(MLXDIR)
+NAME = wolf3d
+
+CC = gcc
+
 CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
-MLXLIB		=	-L $(MLXDIR) -lmlx
-MLXFLAG		=	-framework OpenGL -framework Appkit
-SRCS=			\
-bresenham.c		\
-check_bounds.c	\
-error.c			\
-main.c			\
-minimap.c		\
-raycasting.c	\
-read_file.c		\
-read_textures.c	\
-utils.c			\
-vec2_op0.c
-HEADER		=	\
-wolf3d.h
-# RULES #
+
+SRC_NAME=	bresenham.c		\
+			check_bounds.c	\
+			error.c			\
+			main.c			\
+			minimap.c		\
+			raycasting.c	\
+			read_file.c		\
+			read_textures.c	\
+			utils.c			\
+			vec2_op0.c
+
+
+################################################################################
+
+OBJ_NAME = $(SRC_NAME:.c=.o)
+
+SRC_PATH =	srcs
+OBJ_PATH =	objs
+
+SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+
+LDLIBS = -lft -lmlx -lm -lpthread
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+	LIBX_FD = ./minilibx_macos
+	LDLIBS += -framework OpenGL -framework AppKit
+else
+	LIBX_FD = ./minilibx_x11
+	LDLIBS += -lXext -lX11
+	#Don't forget you need libxext-dev & libx11-dev
+endif
+
+LDFLAGS = -Llibft -L$(LIBX_FD)
+LIBS = libft/libft.a $(LIBX_FD)/libmlx.a
+
+CFLAGS += -I./includes -I$(LIBX_FD) -I./libft
+
+################################################################################
+
 all : $(NAME)
-# NAME #
-$(NAME) : $(LIBFT) $(OBJ)
-	@$(CC) $(CFLAGS) $(MLXLIB) $(MLXFLAG) $(INC) $(OBJ) $(LIBFT) -o $@
-	@echo "\n$(_GREEN)[CREATED]$(_WHITE)" $@
-	@echo "All objects files are in $(_DYELLOW)obj$(_WHITE)/"
-# MKDIROBJ #
-$(OBJDIR) :
-	@mkdir $@
-	@echo "\n$(_YELLOW)[CREATED]$(_WHITE)" $@
-# Wolf3D #
-$(addprefix $(OBJDIR)/,%.o) : $(addprefix $(SRCSDIR)/,%.c) $(addprefix $(INCDIR)/,$(HEADER)) | $(OBJDIR)
-	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
-	@echo "\r                                                              \r\c"
-	@echo "$(_GREEN)[OK]$(_WHITE) $@\c"
-# LIBFT #
-$(LIBFT) :
-	@make -C $(LIBFTPATH)
-	@echo "\r                                                              \r\c"
-	@echo "$(_GREEN)[OK]$(_WHITE) $@\c"
-# CLEAN #
-clean :
-	@make -C $(LIBFTPATH) clean
-	@echo "$(_DYELLOW)[CLEAN]$(_WHITE)" LIBFT
-	@rm -f $(OBJ)
-	@echo "$(_DYELLOW)[DELETED]$(_WHITE)" OBJECTS
-	@rm -rf $(OBJDIR)
-	@echo "$(_DYELLOW)[DELETED]$(_WHITE)" $(OBJDIR)/
-# FCLEAN #
-fclean : clean
-	@make -C $(LIBFTPATH) fclean
-	@echo "$(_DYELLOW)[FCLEAN]$(_WHITE)" LIBFT
-	@rm -f	$(NAME)
-	@echo "$(_DYELLOW)[DELETED]$(_WHITE)" $(NAME)
-# RE #
-re : fclean all
-#==============================================================================#
+
+libft/libft.a :
+	@printf "$(YLW)Making libft...$(EOC)\n"
+	@make -s -j -C libft/
+
+$(LIBX_FD)/libmlx.a :
+	@printf "$(YLW)Making libx...$(EOC)\n"
+	@make -s -j all -C $(LIBX_FD)
+
+$(NAME) : $(LIBS) $(OBJ)
+	@printf "$(GRN)Linking $(NAME)...$(EOC)\n"
+	$(CC) $^ -o $@ $(CFLAGS) $(LDFLAGS) $(LDLIBS)
+
+$(OBJ_PATH) :
+	@mkdir -p $(OBJ_PATH) 2> /dev/null
+	@printf "$(GRN)Building with \"$(CFLAGS)\":$(EOC)\n"
+
+$(OBJ_PATH)/%.o : $(SRC_PATH)/%.c | $(OBJ_PATH)
+	@printf "\t$(CC) (...) $@\n"
+	@$(CC) $(CFLAGS) -o $@ -c $<
+
+libclean :
+	@printf "$(RED)Cleaning libx...$(EOC)\n"
+	@make -s clean -C $(LIBX_FD)
+	@printf "$(RED)Cleaning libft...$(EOC)\n"
+	@make -s fclean -C libft
+
+objclean :
+	@printf "$(RED)Cleaning objects...$(EOC)\n\trm -rf $(OBJ_PATH)\n"
+	@rm -rf $(OBJ_PATH)
+
+outclean :
+	@printf "$(RED)Cleaning $(NAME)...$(EOC)\n\trm -f $(NAME)\n"
+	@rm -f $(NAME)
+
+clean	:	libclean	objclean
+fclean	:	clean		outclean
+re		:	fclean		all
+sfclean	:	objclean	outclean
+sre		:	sfclean		$(NAME)
+
+.PHONY: all libclean objclean clean re fclean sfclean sre
+
+RED = \033[1;31m
+GRN = \033[1;32m
+YLW = \033[1;33m
+EOC = \033[0m

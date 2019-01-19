@@ -3,87 +3,120 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
+#    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2018/12/02 16:58:03 by wta              ###   ########.fr        #
+#    Created: 2018/07/16 11:55:20 by awoimbee          #+#    #+#              #
+#    Updated: 2019/01/17 01:45:19 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-#=======================================================================  COLOR#
-_GREEN		=	\033[0;32m
-_WHITE		=	\033[m
-_YELLOW		=	\033[0;33m
-_DYELLOW	=	\x1b[33;01m
-#==================================================================== VARIABLES#
-NAME		=	libft.a
-SRCSDIR		=	srcs
-LIBFT		=	$(addprefix $(SRCSDIR)/,libft)
-FT_PRINTF	=	$(addprefix $(SRCSDIR)/,ft_printf)
-LIBFT_H		=	libft.h
-FT_PRINTF_H	=	ft_printf.h
-INCDIR		=	includes
-OBJDIR		=	objs
-OBJLIBFT	=	$(addprefix $(OBJDIR)/,$(SRCSLIBFT:.c=.o))
-OBJPRINTF	=	$(addprefix $(OBJDIR)/,$(SRCSPRINTF:.c=.o))
-CC			=	gcc 
-INC			=	-I $(INCDIR)
-CFLAGS		=	-Wall -Wextra -Werror
-SRCSLIBFT		=															\
-ft_atoi.c		ft_bzero.c		ft_intlen_base.c	ft_isalnum.c			\
-ft_isalpha.c	ft_isascii.c	ft_isdigit.c		ft_isprint.c			\
-ft_itoa.c		ft_lstadd.c		ft_lstappend.c		ft_lstdel.c				\
-ft_lstdelone.c	ft_lstiter.c	ft_lstmap.c			ft_lstnew.c				\
-ft_memalloc.c	ft_memccpy.c	ft_memchr.c			ft_memcmp.c				\
-ft_memcpy.c		ft_memdel.c		ft_memmove.c		ft_memset.c				\
-ft_putchar.c	ft_putchar_fd.c	ft_putendl.c		ft_putendl_fd.c			\
-ft_putnbr.c		ft_putnbr_fd.c	ft_putstr.c			ft_putstr_fd.c			\
-ft_strcat.c		ft_strchr.c		ft_strclr.c			ft_strcmp.c				\
-ft_strcpy.c		ft_strdel.c		ft_strdup.c			ft_strdupdel.c			\
-ft_strequ.c		ft_striter.c	ft_striteri.c		ft_strjoin.c			\
-ft_strjoindel.c	ft_strlcat.c	ft_strlen.c			ft_strmap.c				\
-ft_strmapi.c	ft_strncat.c	ft_strncmp.c		ft_strncpy.c			\
-ft_strnequ.c	ft_strnew.c		ft_strnstr.c		ft_strrchr.c			\
-ft_strsplit.c	ft_strstr.c		ft_strsub.c			ft_strtrim.c			\
-ft_tolower.c	ft_toupper.c	ft_wdcpy.c			ft_word_count.c			\
-ft_word_len.c	get_next_line.c ft_strjoinfree.c	ft_strndup.c			\
-ft_strndupfree.c
-SRCSPRINTF	=																\
-ft_convert.c	ft_convert_c.c	ft_convert_d.c		ft_convert_f.c			\
-ft_convert_hex.c				ft_convert_o.c		ft_convert_p.c			\
-ft_convert_per.c				ft_convert_s.c		ft_convert_u.c			\
-ft_lst_pf.c		ft_parse_pf.c	ft_printf.c			ft_utils.c				\
-ft_utils2.c
-#======================================================================# RULES #
-all : $(NAME)
-#=======================================================================# NAME #
-$(NAME) : $(OBJLIBFT) $(OBJPRINTF) $(addprefix $(INCDIR)/,$(HEADER))
-	@ar -rcs $(NAME) $(OBJLIBFT) $(OBJPRINTF)
-	@echo "\n$(_GREEN)[CREATED]$(_WHITE)" $@
-	@echo "All objects files are in $(_DYELLOW)obj$(_WHITE)/"
-#===================================================================# MKDIROBJ #
-$(OBJDIR) :
-	@mkdir $@
-	@echo "$(_YELLOW)[CREATED]$(_WHITE)" $@
-#==================================================================# FT_PRINTF #
-$(addprefix $(OBJDIR)/,%.o) : $(addprefix $(FT_PRINTF)/,%.c) | $(OBJDIR) 
-	@$(CC) $(CFLAGS) $(INC) -o $@ -c $< 
-	@echo "\r                                                              \r\c"
-	@echo "$(_GREEN)[OK]$(_WHITE) $@\c"
-#======================================================================# LIBFT #
-$(addprefix $(OBJDIR)/,%.o) : $(addprefix $(LIBFT)/,%.c) | $(OBJDIR) 
-	@$(CC) $(CFLAGS) $(INC) -o $@ -c $< 
-	@echo "\r                                                              \r\c"
-	@echo "$(_GREEN)[OK]$(_WHITE) $@\c"
-#======================================================================# CLEAN #
-clean :
-	@rm -f $(OBJ)
-	@echo "$(_DYELLOW)[DELETED]$(_WHITE)" OBJECTS
-	@rm -rf $(OBJDIR)
-	@echo "$(_DYELLOW)[DELETED]$(_WHITE)" $(OBJDIR)/
-#=====================================================================# FCLEAN #
-fclean : clean
-	@rm -f	$(NAME)
-	@echo "$(_DYELLOW)[DELETED]$(_WHITE)" $(NAME)
-#=========================================================================# RE #
-re : fclean all
-#==============================================================================#
+
+NAME	=	libft.a
+
+CC	=	gcc
+
+CFLAGS = -Wall -Wextra -Werror
+
+SRCS_CHAR =	ft_isalnum.c		ft_isascii.c		ft_isprint.c		\
+			ft_isalpha.c		ft_isdigit.c		ft_tolower.c		\
+			ft_toupper.c
+
+SRCS_FD =	ft_putchar.c		ft_putendl_fd.c		ft_putstr.c			\
+			ft_putchar_fd.c		ft_putnbr.c			ft_putstr_fd.c		\
+			ft_putendl.c		ft_putnbr_fd.c		get_next_line.c
+
+SRCS_LST =	ft_lstadd.c			ft_lstdelone.c		ft_lstmap.c			\
+			ft_lst_at.c			ft_lst_free_link.c	ft_lstnew.c			\
+			ft_lstdel.c			ft_lstiter.c		ft_lst_push_back.c
+
+SRCS_MEM =	ft_bzero.c			ft_memchr.c			ft_memdel.c			\
+			ft_memalloc.c		ft_memcmp.c			ft_memmove.c		\
+			ft_memccpy.c		ft_memcpy.c			ft_memset.c			\
+			ft_mempcpy.c
+
+SRCS_NB =	ft_abs.c			ft_atoi.c			ft_itoa.c			\
+			ft_atoi_base.c		ft_itoa_base.c		ft_swap_int.c
+
+SRCS_STR =	ft_stpcpy.c			ft_striter.c		ft_strncpy.c		\
+			ft_strcat.c			ft_striteri.c		ft_strnequ.c		\
+			ft_strcat_join.c	ft_strjoin.c		ft_strnew.c			\
+			ft_strchr.c			ft_strlcat.c		ft_strnstr.c		\
+			ft_strclr.c			ft_strlen.c			ft_strrchr.c		\
+			ft_strcmp.c			ft_strmap.c			ft_strrev.c			\
+			ft_strcpy.c			ft_strmapi.c		ft_strsplit.c		\
+			ft_strdel.c			ft_strncat.c		ft_strstr.c			\
+			ft_strdup.c			ft_strncat_join.c	ft_strsub.c			\
+			ft_strequ.c			ft_strncmp.c		ft_strtrim.c
+
+SRCS_PRTF =	fill_arg_struct.c	s_itoa_base.c		sub_hub.c			\
+			ft_flag_cs.c		ft_vprintf.c		text_decoration.c	\
+			ft_flag_f.c			join_arg.c			u_itoa_base.c		\
+			ft_flag_r.c			lib0.c				ft_printf.c
+
+SRCS_NAME =	$(addprefix libchar/, $(SRCS_CHAR))		\
+			$(addprefix libfd/, $(SRCS_FD))			\
+			$(addprefix liblst/, $(SRCS_LST))		\
+			$(addprefix libmem/, $(SRCS_MEM))		\
+			$(addprefix libnb/, $(SRCS_NB))			\
+			$(addprefix libstr/, $(SRCS_STR))		\
+			$(addprefix ft_printf/, $(SRCS_PRTF))
+OBJ_NAME = $(SRCS_NAME:.c=.o)
+
+SRC_PATH = src
+OBJ_PATH = obj
+OBJ_DIRS = libchar libfd liblst libmem libnb libstr ft_printf
+
+SRCS = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
+OBJS = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
+
+CPPFLAGS = -I./
+
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	CFLAGS += -Wno-unused-result
+endif
+
+
+all	:
+	@make -s -j $(NAME)
+
+$(OBJ_PATH)	:
+	@mkdir -p $(OBJ_PATH) 2> /dev/null
+	@mkdir -p $(addprefix $(OBJ_PATH)/, $(OBJ_DIRS)) 2> /dev/null
+	@printf "$(GRN)Making libft with \"$(CFLAGS) $(CPPFLAGS)\"...$(EOC)\n"
+
+$(NAME)	: $(OBJS)
+	@printf "$(GRN)creating $(NAME)...$(EOC)\n"
+	@printf "\tar -rcs $(NAME) (...)\n"
+	@ar -rcs $(NAME) $(OBJS)
+
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c | $(OBJ_PATH)
+	@printf "\t$(CC) (...) $@\n"
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
+
+
+so	: all
+	@printf "$(CC) (...) -shared -o $(NAME:.a=.so)\n"
+	@$(CC) $(OBJS) -shared -o $(NAME:.a=.so)
+
+clean	:
+	@printf "$(RED)cleaning objects...$(EOC)\n"
+	@printf "\trm -rf $(OBJ_PATH)\n"
+	@rm -rf $(OBJ_PATH)
+
+fclean	:	clean
+	@printf "\033[0;31mcleaning $(NAME), $(NAME:.a=.so)...$(EOC)\n"
+	@printf "\trm -f $(NAME)\n\trm -f $(NAME:.a=.so)\n"
+	@rm -f $(NAME)
+	@rm -f $(NAME:.a=.so)
+
+re	:	fclean all
+
+.PHONY: all so clean fclean re
+
+flowchart:
+	@printf "%s\n"	\
+	"drive.google.com/file/d/1WmQpjdGgEPmhxpchUW6tD26C3euBPtcL/view?usp=sharing"
+
+GRN =	\033[0;32m
+RED =	\033[0;31m
+EOC =	\033[0m

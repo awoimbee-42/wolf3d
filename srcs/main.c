@@ -6,14 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 17:26:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 00:00:33 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
 #include "mlx.h"
 #include "wolf3d.h"
 
@@ -155,8 +152,8 @@ int		main(int ac, char **av)
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
 									info.mlx.img.img_ptr, 0, 0);
-			mlx_hook(info.mlx.win_ptr, 2, 0, key_pressed, &info);
-			mlx_hook(info.mlx.win_ptr, 3, 0, key_released, &info);
+			mlx_hook(info.mlx.win_ptr, 2, 1L, key_pressed, &info);
+			mlx_hook(info.mlx.win_ptr, 3, 1L << 1, key_released, &info);
 			mlx_loop_hook(info.mlx.mlx_ptr, apply_key, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
