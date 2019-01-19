@@ -6,12 +6,17 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 12:59:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 13:15:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 20:29:40 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "wolf3d.h"
+
+static int	is_outside_img(const t_int2 *p, const t_img *img)
+{
+	return(p->x < 0 || p->x >= img->width || p->y < 0 || p->y >= img->height);
+}
 
 static void	draw_line_higrad(t_int2 p0, t_int2 p1, t_img *img, int color)
 {
@@ -27,6 +32,8 @@ static void	draw_line_higrad(t_int2 p0, t_int2 p1, t_img *img, int color)
 	error = 2 * delta.x - delta.y;
 	while (p0.y < p1.y)
 	{
+		if (is_outside_img(&p0, img))
+			return ;
 		pxl_to_img(img, p0.x, p0.y, color);
 		if (error > 0)
 		{
@@ -52,6 +59,8 @@ static void	draw_line_lograd(t_int2 p0, t_int2 p1, t_img *img, int color)
 	error = 2 * delta.y - delta.x;
 	while (p0.x < p1.x)
 	{
+		if (is_outside_img(&p0, img))
+			return ;
 		pxl_to_img(img, p0.x, p0.y, color);
 		if (error > 0)
 		{
@@ -81,7 +90,9 @@ void		fill_pixel(t_img *img, t_int2 p0, t_int2 p1, int color)
 	}
 }
 
+
 void		pxl_to_img(t_img *img, int x, int y, int color)
 {
+
 	img->img_str[x + (y * img->sizel / 4)] = color;
 }
