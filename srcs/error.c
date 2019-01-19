@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:02 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:56:16 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 16:22:21 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,11 @@ void	err_handler(int err_id)
 
 	ft_bzero(buf, 255);
 	ft_strcpy(buf, "-Wolf3D: ");
-	if (err_id == -1 || err_id == GNL_ERR)
+	if (err_id == -1)
 		ft_strcat(buf, strerror(errno));
-	if (err_id == 1)
-		ft_strcpy(buf, "usage: wolf3d map_file");
 	if (err_id == RD_ERR)
 		ft_strcat(buf, "Read error");
-	if (err_id == BAD_FMT)
+	if (err_id == BAD_FMT || err_id == GNL_ERR)
 		ft_strcat(buf, "Bad format");
 	if (err_id == MALLOC_ERR)
 		ft_strcat(buf, "Allocation failed");
@@ -47,6 +45,7 @@ void	err_handler(int err_id)
 		ft_strcat(buf, "Minilibx failure");
 	ft_strcat(buf, "\n");
 	ft_putstr_fd(buf, 2);
+	ft_putstr_fd("usage: wolf3d [map]\n", 2);
 	(void)err_id;
 	exit(EXIT_FAILURE);
 }
