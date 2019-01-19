@@ -6,14 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 17:26:52 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 12:03:16 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
+#include <stdlib.h>
 #include "mlx.h"
 #include "wolf3d.h"
 
@@ -65,24 +62,22 @@ int		key_pressed(int key, void *param)
 	t_info	*info;
 
 	info = (t_info*)param;
-	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT
-		|| key == NUM_ZERO || key == OPT_FLOOR)
+	if (key == ESC)
+		exit(0);
+	if (key == K_UP)
+		info->key_pressed |= 0x1;
+	if (key == K_DOWN)
+		info->key_pressed |= 0x2;
+	if (key == K_LEFT)
+		info->key_pressed |= 0x4;
+	if (key == K_RIGHT)
+		info->key_pressed |= 0x8;
+	if (key == NUM_ZERO || key == OPT_FLOOR)
 	{
-		if (key == K_UP)
-			info->key_pressed |= 0x1;
-		if (key == K_DOWN)
-			info->key_pressed |= 0x2;
-		if (key == K_LEFT)
-			info->key_pressed |= 0x4;
-		if (key == K_RIGHT)
-			info->key_pressed |= 0x8;
-		if (key == NUM_ZERO || key == OPT_FLOOR)
-		{
-			info->key_pressed ^= (key == OPT_FLOOR) ? 0x20 : 0x10;
-			raycasting(info);
-			mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
-				info->mlx.img.img_ptr, 0, 0);
-		}
+		info->key_pressed ^= (key == OPT_FLOOR) ? 0x20 : 0x10;
+		raycasting(info);
+		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
+			info->mlx.img.img_ptr, 0, 0);
 	}
 	return (0);
 }
@@ -92,18 +87,33 @@ int		key_released(int key, void *param)
 	t_info	*info;
 
 	info = (t_info*)param;
-	if (key == K_UP || key == K_DOWN || key == K_LEFT || key == K_RIGHT)
-	{
-		if (key == K_UP)
-			info->key_pressed ^= 0x1;
-		if (key == K_DOWN)
-			info->key_pressed ^= 0x2;
-		if (key == K_LEFT)
-			info->key_pressed ^= 0x4;
-		if (key == K_RIGHT)
-			info->key_pressed ^= 0x8;
-	}
+	if (key == K_UP)
+		info->key_pressed ^= 0x1;
+	if (key == K_DOWN)
+		info->key_pressed ^= 0x2;
+	if (key == K_LEFT)
+		info->key_pressed ^= 0x4;
+	if (key == K_RIGHT)
+		info->key_pressed ^= 0x8;
 	return (0);
+}
+
+t_vec2	set_mvt(int key, t_vec2 mvt, t_vec2 dir)
+{
+	if (key & 0x1)
+		mvt = vec2_add(mvt, vec2_divf(dir, 20.));
+	if (key & 0x2)
+		mvt = vec2_sub(mvt, vec2_divf(dir, 20.));
+	vec2_normalize(mvt);
+	return (mvt);
+}
+
+void	set_rot_mvt(int key, t_vec2 *dir)
+{
+	if (key & 0x4)
+		*dir = rotate2d(*dir, -0.05);
+	if (key & 0x8)
+		*dir = rotate2d(*dir, 0.05);
 }
 
 int		apply_key(void *param)
@@ -117,22 +127,21 @@ int		apply_key(void *param)
 	if (key > 0)
 	{
 		mvt = (t_vec2){0., 0.};
-		if (key & 0x1)
-			mvt = vec2_add(mvt, vec2_divf(info->player.dir, 20.));
-		if (key & 0x2)
-			mvt = vec2_sub(mvt, vec2_divf(info->player.dir, 20.));
-		vec2_normalize(mvt);
+		mvt = set_mvt(key, mvt, info->player.dir);
 		move(&info->player.pos, mvt, info->m_info.map);
-		if (key & 0x4)
-			info->player.dir = rotate2d(info->player.dir, -0.05);
-		if (key & 0x8)
-			info->player.dir = rotate2d(info->player.dir, 0.05);
+		set_rot_mvt(key, &info->player.dir);
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
 			info->mlx.img.img_ptr, 0, 0);
 		if (key & 0x10)
 			minimap(info);
 	}
+	return (0);
+}
+
+int		close_win(void)
+{
+	exit(0);
 	return (0);
 }
 
@@ -157,6 +166,7 @@ int		main(int ac, char **av)
 									info.mlx.img.img_ptr, 0, 0);
 			mlx_hook(info.mlx.win_ptr, 2, 0, key_pressed, &info);
 			mlx_hook(info.mlx.win_ptr, 3, 0, key_released, &info);
+			mlx_hook(info.mlx.win_ptr, 17, 0, close_win, NULL);
 			mlx_loop_hook(info.mlx.mlx_ptr, apply_key, &info);
 			mlx_loop(info.mlx.mlx_ptr);
 		}
