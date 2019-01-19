@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 13:42:54 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:17:42 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define READ_ERR	6
 # define TOKENS		"@01"
 # define SHFT_32	0x100000000UL
-# define SCREEN_W	512
-# define SCREEN_H	512
+# define SCREEN_W	1200
+# define SCREEN_H	720
 # define K_LEFT		123
 # define K_UP		126
 # define K_RIGHT	124
@@ -117,9 +117,11 @@ void			err_handler(int err_id);
 int				splitlen(char **split);
 void			splitdel(char **split);
 
-void			draw_walls(int x, int end, int side, double dist, t_info *inf, t_vec2 ray_dir);
+void			draw_walls(t_int2 *seg, int side, double dist, t_info *inf, t_vec2 ray_dir);
 void			draw_tex_floor(int sy, int x, t_info *inf, double dist, t_vec2 ray_dir);
 void			draw_floor(int start, int x, t_info *inf);
 void			draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir);
+
+void			show_usage(t_info *info);
 
 #endif
