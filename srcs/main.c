@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 16:06:51 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 17:56:20 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		main(int ac, char **av)
 
 	err_id = 1;
 	init_info(&info);
-	if (ac > 1)
+	if (ac == 2)
 	{
 		info.player.dir = (t_vec2){1, 0};
 		if ((err_id = read_file(av[1], &info)) == 1

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:02 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 16:22:21 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 17:55:39 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ void	err_handler(int err_id)
 	if (err_id == MLX_ERR)
 		ft_strcat(buf, "Minilibx failure");
 	ft_strcat(buf, "\n");
-	ft_putstr_fd(buf, 2);
+	if (err_id != 1)
+		ft_putstr_fd(buf, 2);
 	ft_putstr_fd("usage: wolf3d [map]\n", 2);
 	(void)err_id;
 	exit(EXIT_FAILURE);
