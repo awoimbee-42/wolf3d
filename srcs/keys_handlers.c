@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 15:10:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 15:40:05 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 16:06:38 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ int			key_released(int key, void *param)
 		info->key_pressed ^= 0x80;
 	if (key == K_SHIFT)
 		info->key_pressed ^= 0x100;
+	return (0);
+}
+
+int			close_win(void)
+{
+	exit(EXIT_SUCCESS);
 	return (0);
 }
 
