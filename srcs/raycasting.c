@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 20:08:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 12:57:17 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
 	int line_h;
 
 	line_h = (int)(SCREEN_H / dist);
-	if ((end = SCREEN_H / 2 + line_h / 2) > SCREEN_H)
+	if ((end = SCREEN_H / 2 + line_h / 2) > SCREEN_H || end < 0)
 		end = SCREEN_H;
 	draw_walls(x, end, side, dist, info, ray_dir);
 	if (info->key_pressed & 0x20)
