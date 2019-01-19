@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 13:42:54 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:14:15 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,11 @@ typedef struct	s_info
 	t_map		m_info;
 	t_mlx		mlx;
 	int			key_pressed;
+	t_vec2		ray_dir;
 }				t_info;
 
 /*
-**	vec2_op.c
+**	vec2_opX.c
 */
 t_vec2			rotate2d(const t_vec2 vector, const double theta);
 t_vec2			vec2_add(t_vec2 a, const t_vec2 b);
@@ -99,6 +100,22 @@ t_vec2			vec2_sub(t_vec2 a, const t_vec2 b);
 t_vec2			vec2_multf(t_vec2 a, const double b);
 t_vec2			vec2_divf(t_vec2 a, const double b);
 t_vec2			vec2_normalize(t_vec2 a);
+
+/*
+**	keys_handlers.c
+*/
+void			set_key_mvt(int key, int *key_pressed);
+int				key_pressed(int key, void *param);
+int				key_released(int key, void *param);
+int				apply_key(void *param);
+
+/*
+**	movements.c
+*/
+void			move(t_vec2 *pos, t_vec2 dir, char **map);
+t_vec2			set_mvt(int key, t_vec2 mvt, t_vec2 dir);
+void			set_rot_mvt(int key, t_vec2 *dir);
+
 
 void			raycasting(t_info *info);
 
@@ -117,9 +134,9 @@ void			err_handler(int err_id);
 int				splitlen(char **split);
 void			splitdel(char **split);
 
-void			draw_walls(int x, int end, int side, double dist, t_info *inf, t_vec2 ray_dir);
-void			draw_tex_floor(int sy, int x, t_info *inf, double dist, t_vec2 ray_dir);
-void			draw_floor(int start, int x, t_info *inf);
-void			draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir);
+void			draw_walls(t_int2 col, double dist, int side, t_info *inf);
+void			draw_tex_floor(t_int2 col, double dist, t_info *inf);
+void			draw_floor(t_int2 col, t_info *inf);
+void			draw_line(int x, int side, double dist, t_info *info);
 
 #endif
