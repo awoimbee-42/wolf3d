@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:23:53 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:44:10 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	close_win(void)
 	return (0);
 }
 
-void	show_usage(t_info *info)
+void		show_usage(t_info *info)
 {
 	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 0, 0xffffff,
 			"Move           : Up/Down arrows");
@@ -92,7 +92,7 @@ int			main(int ac, char **av)
 			mlx_loop(info.mlx.mlx_ptr);
 		}
 	}
-	if (err_id != 1)
+	if (err_id != 1 || ac != 2)
 		err_handler(err_id);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 15:10:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 15:25:12 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:40:05 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int			key_released(int key, void *param)
 	return (0);
 }
 
-int		apply_key(void *param)
+int			apply_key(void *param)
 {
 	t_info	*info;
 	t_vec2	mvt;

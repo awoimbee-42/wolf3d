@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 13:17:37 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 15:31:08 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:48:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ void	draw_tex_floor(t_int2 *col, double dist, t_info *inf)
 						inf->player.pos.y + inf->ray_dir.y * dist};
 	while (col->y < SCREEN_H)
 	{
-		ratio = (SCREEN_H / (2. * col->y - SCREEN_H)) / dist;
-		ratio > 1. ? ratio = 1 : 0;
+		ratio = (SCREEN_H / (2. + 2. * col->y - SCREEN_H)) / dist;
 		cur_pos = vec2_add(vec2_multf(wall_grnd, ratio),
 							vec2_multf(inf->player.pos, (1 - ratio)));
 		tex_coords[0] = (t_int2){(int)(cur_pos.x * tex[0].width) % tex[0].width,
@@ -78,9 +77,11 @@ void	draw_floor(t_int2 *col, t_info *inf)
 {
 	while (col->y < SCREEN_H)
 	{
-		inf->mlx.img.img_str[col->x + col->y * inf->mlx.img.sizel / 4] = 0xf4a460;
+		inf->mlx.img.img_str[col->x + col->y * inf->mlx.img.sizel / 4] =
+		0xf4a460;
 		inf->mlx.img.img_str
-		[col->x + ((SCREEN_H - col->y - 1) * inf->mlx.img.sizel / 4)] = 0xb2b2ff;
+		[col->x + ((SCREEN_H - col->y - 1) * inf->mlx.img.sizel / 4)] =
+		0xb2b2ff;
 		++col->y;
 	}
 }
