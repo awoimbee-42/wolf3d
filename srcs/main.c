@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 12:39:37 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 12:52:03 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ t_vec2	set_mvt(int key, t_vec2 mvt, t_vec2 dir)
 {
 	double	div;
 
-	div = (key & 0x100) ? 1. : 10.;
+	div = (key & 0x100) ? 5. : 10.;
 	if (key & 0x1)
 		mvt = vec2_add(mvt, vec2_divf(dir, div));
 	if (key & 0x2)
