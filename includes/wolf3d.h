@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 12:27:05 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 13:42:54 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 
 typedef struct	s_img
 {
-	void	*img_ptr;
-	int		*img_str;
-	int		width;
-	int		height;
-	int		bpp;
-	int		sizel;
-	int		endian;
+	void		*img_ptr;
+	int			*img_str;
+	int			width;
+	int			height;
+	int			bpp;
+	int			sizel;
+	int			endian;
 }				t_img;
 
 typedef struct	s_mlx
@@ -54,31 +54,31 @@ typedef struct	s_mlx
 
 typedef struct	s_vec2
 {
-	double	x;
-	double	y;
+	double		x;
+	double		y;
 }				t_vec2;
 
 typedef struct	s_int2
 {
-	int		x;
-	int		y;
+	int			x;
+	int			y;
 }				t_int2;
 
 typedef struct	s_map
 {
-	t_img	minimap;
-	char	**map;
-	int		width;
-	int		height;
-	t_img	*texs;
+	t_img		minimap;
+	char		**map;
+	int			width;
+	int			height;
+	t_img		*texs;
 }				t_map;
 
 typedef struct	s_player
 {
-	t_vec2	pos;
-	t_vec2	dir;
-	t_vec2	cam_dir;
-	int		fov;
+	t_vec2		pos;
+	t_vec2		dir;
+	t_vec2		cam_dir;
+	int			fov;
 }				t_player;
 
 typedef struct	s_info
@@ -90,46 +90,36 @@ typedef struct	s_info
 	int			key_pressed;
 }				t_info;
 
-typedef struct	s_delta
-{
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int derror;
-	int	error;
-}				t_delta;
-
 /*
 **	vec2_op.c
 */
-t_vec2	rotate2d(t_vec2 vector, const double theta);
-t_vec2	vec2_add(t_vec2 a, const t_vec2 b);
-t_vec2	vec2_sub(t_vec2 a, const t_vec2 b);
-t_vec2	vec2_multv(t_vec2 a, const t_vec2 b);
-t_vec2	vec2_multf(t_vec2 a, const double b);
-t_vec2	vec2_div(t_vec2 a, const t_vec2 b);
-t_vec2	vec2_divf(t_vec2 a, const double b);
-double	vec2_dot(const t_vec2 a, const t_vec2 b);
-double	vec2_mod(const t_vec2 a);
-t_vec2	vec2_normalize(t_vec2 a);
-double	points_dist(const t_vec2 p1, const t_vec2 p2);
+t_vec2			rotate2d(const t_vec2 vector, const double theta);
+t_vec2			vec2_add(t_vec2 a, const t_vec2 b);
+t_vec2			vec2_sub(t_vec2 a, const t_vec2 b);
+t_vec2			vec2_multf(t_vec2 a, const double b);
+t_vec2			vec2_divf(t_vec2 a, const double b);
+t_vec2			vec2_normalize(t_vec2 a);
 
-void	raycasting(t_info *info);
+void			raycasting(t_info *info);
 
-int		read_file(char *file, t_info *info);
-int		check_bounds(t_map *m_info);
-t_img	*read_textures(void *mlx_ptr);
+int				read_file(char *file, t_info *info);
+int				check_bounds(t_map *m_info);
+t_img			*read_textures(void *mlx_ptr);
 
-void	minimap(t_info *info);
-void	pxl_to_img(t_img *img, int x, int y, int color);
-void	fill_pixel(t_img *img, t_int2 a, t_int2 b, int color);
+void			minimap(t_info *info);
+void			pxl_to_img(t_img *img, int x, int y, int color);
+void			fill_pixel(t_img *img, t_int2 a, t_int2 b, int color);
 
-int		ft_strdelerr(char *line, int err_id);
-int		splitdelerr(char **split, int err_id);
-void	err_handler(int err_id);
+int				ft_strdelerr(char *line, int err_id);
+int				splitdelerr(char **split, int err_id);
+void			err_handler(int err_id);
 
-int		splitlen(char **split);
-void	splitdel(char **split);
+int				splitlen(char **split);
+void			splitdel(char **split);
+
+void			draw_walls(int x, int end, int side, double dist, t_info *inf, t_vec2 ray_dir);
+void			draw_tex_floor(int sy, int x, t_info *inf, double dist, t_vec2 ray_dir);
+void			draw_floor(int start, int x, t_info *inf);
+void			draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir);
 
 #endif

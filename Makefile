@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/18 18:31:22 by wta              ###   ########.fr        #
+#    Updated: 2019/01/19 13:46:11 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ MLXFLAG		=	-framework OpenGL -framework Appkit
 SRCS=			\
 bresenham.c		\
 check_bounds.c	\
+draw_3d.c		\
 error.c			\
 main.c			\
 minimap.c		\
@@ -39,7 +40,8 @@ raycasting.c	\
 read_file.c		\
 read_textures.c	\
 utils.c			\
-vec2_op0.c
+vec2_op0.c		\
+vec2_op1.c
 HEADER		=	\
 wolf3d.h
 # RULES #
