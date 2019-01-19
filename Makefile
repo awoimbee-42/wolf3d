@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/18 23:47:10 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/19 23:37:13 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,16 @@ NAME = wolf3d
 
 CC = gcc
 
-CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror -Ofast
 
-SRC_NAME=	bresenham.c		\
-			check_bounds.c	\
-			error.c			\
-			main.c			\
-			minimap.c		\
-			raycasting.c	\
-			read_file.c		\
-			read_textures.c	\
-			utils.c			\
-			vec2_op0.c
+SRC_NAME=	main.c			bresenham.c		\
+			check_bounds.c	error.c			\
+			init.c			utils.c			\
+			keys_handlers.c	movements.c		\
+			minimap.c		raycasting.c	\
+			read_file.c		read_textures.c	\
+			vec2_op0.c		vec2_op1.c		\
+			draw_3d.c
 
 
 ################################################################################

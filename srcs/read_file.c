@@ -6,14 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 12:40:31 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 23:43:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 23:33:06 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include "libft.h"
 #include "wolf3d.h"
@@ -127,5 +126,5 @@ int			read_file(char *file, t_info *info)
 	close(fd);
 	if (line_count != info->m_info.height || ret == 0 || gnl_ret < 0)
 		return (splitdelerr(info->m_info.map, gnl_ret < 0 ? GNL_ERR : BAD_FMT));
-	return (1);
+	return (info->player.pos.x == -1 ? BAD_FMT : 1);
 }

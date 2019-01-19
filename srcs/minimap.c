@@ -6,15 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 09:30:25 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 15:49:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 23:36:14 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "mlx.h"
 #include "wolf3d.h"
-
-#include <math.h>
-#include <stdio.h>
 
 void	init_minimap(t_info *info)
 {

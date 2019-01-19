@@ -6,152 +6,64 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 00:07:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 23:28:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <unistd.h>
 #include <math.h>
 #include "mlx.h"
 #include "wolf3d.h"
 
-static void	get_ray_dir(int x, t_vec2 *ray_dir, t_info *info)
+static void		get_ray_dir(int x, t_info *info)
 {
 	t_player	*player;
 	double		proj_x;
 
 	player = &info->player;
 	proj_x = 2. * (double)x / (double)SCREEN_W - 1.;
-	*ray_dir = (t_vec2){player->dir.x + player->cam_dir.x * proj_x,
+	info->ray_dir = (t_vec2){player->dir.x + player->cam_dir.x * proj_x,
 						player->dir.y + player->cam_dir.y * proj_x};
 }
 
-static void	dda_helper(double *side_dst, double *delt, int *curr_pos, int *step)
+static void		dda_helper(double *side_dst, double *delt,
+							int *curr_pos, int *step)
 {
 	*side_dst += *delt;
 	*curr_pos += *step;
 }
 
-double		dda(int *side, t_vec2 *ray_dir, t_info *info)
+static double	dda(int *side, t_info *inf)
 {
 	t_int2		curr_pos;
-	t_vec2		delta;
+	t_vec2		delt;
 	t_int2		step;
 	t_vec2		side_dist;
 
-	delta = (t_vec2){fabs(1. / ray_dir->x), fabs(1. / ray_dir->y)};
-	curr_pos = (t_int2){info->player.pos.x, info->player.pos.y};
-	side_dist = (t_vec2){(ray_dir->x >= 0.) ? ((curr_pos.x - info->player.pos.x
-	+ 1) * delta.x) : ((info->player.pos.x - curr_pos.x) * delta.x), (ray_dir->y
-	>= 0.) ? ((curr_pos.y - info->player.pos.y + 1) * delta.y) :
-	((info->player.pos.y - curr_pos.y) * delta.y)};
-	step = (t_int2){(ray_dir->x >= 0.) ? 1 : -1, (ray_dir->y >= 0.) ? 1 : -1};
-	while (info->m_info.map[curr_pos.y][curr_pos.x] == '0')
+	delt = (t_vec2){fabs(1. / inf->ray_dir.x), fabs(1. / inf->ray_dir.y)};
+	curr_pos = (t_int2){inf->player.pos.x, inf->player.pos.y};
+	side_dist = (t_vec2){inf->ray_dir.x > 0 ? ((curr_pos.x - inf->player.pos.x
+	+ 1) * delt.x) : (inf->player.pos.x - curr_pos.x) * delt.x, (inf->ray_dir.y
+	>= 0.) ? ((curr_pos.y - inf->player.pos.y + 1) * delt.y) :
+	((inf->player.pos.y - curr_pos.y) * delt.y)};
+	step = (t_int2){inf->ray_dir.x > 0 ? 1 : -1, inf->ray_dir.y > 0 ? 1 : -1};
+	while (inf->m_info.map[curr_pos.y][curr_pos.x] == '0')
 	{
 		if (side_dist.x < side_dist.y && !(*side = 0))
-			dda_helper(&side_dist.x, &delta.x, &curr_pos.x, &step.x);
+			dda_helper(&side_dist.x, &delt.x, &curr_pos.x, &step.x);
 		else if ((*side = 1))
-			dda_helper(&side_dist.y, &delta.y, &curr_pos.y, &step.y);
+			dda_helper(&side_dist.y, &delt.y, &curr_pos.y, &step.y);
 	}
 	return (!*side ?
-		(curr_pos.x - info->player.pos.x + (1. - step.x) / 2.) / ray_dir->x :
-		(curr_pos.y - info->player.pos.y + (1. - step.y) / 2.) / ray_dir->y);
+	(curr_pos.x - inf->player.pos.x + (1. - step.x) / 2.) / inf->ray_dir.x :
+	(curr_pos.y - inf->player.pos.y + (1. - step.y) / 2.) / inf->ray_dir.y);
 }
 
-void	draw_walls(int x, int end, int side, double dist, t_info *inf, t_vec2 ray_dir)
+void			raycasting(t_info *info)
 {
-	unsigned int	tex_x;
-	unsigned int	tex_y;
-	t_img			*tex;
-	int				start;
-	int				line_h;
-
-	line_h = (int)(SCREEN_H / dist);
-	if ((start = SCREEN_H / 2 - line_h / 2 - 1) < -1)
-		start = -1;
-	tex_x = !side ? ((inf->player.pos.y + dist * ray_dir.y) * SHFT_32) :
-						((inf->player.pos.x + dist * ray_dir.x) * SHFT_32);
-	if (!side)
-		tex = (ray_dir.x > 0) ? &inf->m_info.texs[0] : &inf->m_info.texs[1];
-	else
-		tex = (ray_dir.y < 0) ? &inf->m_info.texs[2] : &inf->m_info.texs[3];
-	tex_x = (!side && ray_dir.x > 0) || (side && ray_dir.y < 0) ?
-		tex->width - (double)tex_x * tex->width / SHFT_32 - 1 :
-		(double)tex_x * tex->width / SHFT_32;
-	while (++start < end)
-	{
-		tex_y = ((start * 2 - SCREEN_H + line_h) * tex->height) / (line_h * 2);
-		inf->mlx.img.img_str[x + (start * inf->mlx.img.sizel / 4)] =
-		tex->img_str[tex->width * tex_y + tex_x];
-	}
-}
-
-/*
-**	Take the pixel at the bottom of the wall and the player position
-**		for each pixel between these 2, project a texture pixel
-*/
-
-void	draw_tex_floor(int sy, int x, t_info *inf, double dist, t_vec2 ray_dir)
-{
-	t_vec2	wall_grnd;
-	double	ratio;
-	t_int2	tex_coords[2];
-	t_img	*tex;
-	t_vec2	curr_floor;
-
-	tex = &inf->m_info.texs[4];
-	wall_grnd = (t_vec2){inf->player.pos.x + ray_dir.x * dist,
-						inf->player.pos.y + ray_dir.y * dist};
- 	while (++sy < SCREEN_H)
-	{
-		ratio = (SCREEN_H / (2. * sy + 1 - SCREEN_H)) / dist;
-		ratio > 1. ? ratio = 1 : 0;
-		curr_floor = vec2_add(vec2_multf(wall_grnd, ratio),
-							vec2_multf(inf->player.pos, (1 - ratio)));
-		tex_coords[0] = (t_int2){(int)(curr_floor.x * tex[0].width) % tex[0].width,
-						(int)(curr_floor.y * tex[0].height) % tex[0].height};
-		tex_coords[1] = (t_int2){(int)(curr_floor.x * tex[1].width) % tex[1].width,
-						(int)(curr_floor.y * tex[1].height) % tex[1].height};
-		inf->mlx.img.img_str[x + (sy * inf->mlx.img.sizel / 4)] =
-		tex[0].img_str[tex[0].width * tex_coords[0].y + tex_coords[0].x];
-		inf->mlx.img.img_str[x + ((SCREEN_H - sy) * inf->mlx.img.sizel / 4)] =
-		tex[1].img_str[tex[1].width * tex_coords[1].y + tex_coords[1].x];
-	}
-}
-
-void	draw_floor(int start, int x, t_info *inf)
-{
-	while (start < SCREEN_H)
-	{
-		inf->mlx.img.img_str[x + (start * inf->mlx.img.sizel / 4)] = 0xf4a460;
-		inf->mlx.img.img_str
-		[x + ((SCREEN_H - start - 1) * inf->mlx.img.sizel / 4)] = 0xb2b2ff;
-		++start;
-	}
-}
-
-void	draw_line(int x, int side, double dist, t_info *info, t_vec2 ray_dir)
-{
-	int	end;
-	int line_h;
-
-	line_h = (int)(SCREEN_H / dist);
-	if ((end = SCREEN_H / 2 + line_h / 2) > SCREEN_H)
-		end = SCREEN_H;
-	draw_walls(x, end, side, dist, info, ray_dir);
-	if (info->key_pressed & 0x20)
-		draw_tex_floor(end - 1, x, info, dist, ray_dir);
-	else
-		draw_floor(end, x, info);
-}
-
-void	raycasting(t_info *info)
-{
-	t_vec2	ray_dir;
-	double	dist;
-	int		screen_x;
-	int		side;
+	double		dist;
+	int			screen_x;
+	int			side;
 
 	screen_x = -1;
 	info->player.cam_dir = vec2_normalize(
@@ -159,8 +71,8 @@ void	raycasting(t_info *info)
 	while (++screen_x < SCREEN_W)
 	{
 		side = -1;
-		get_ray_dir(screen_x, &ray_dir, info);
-		dist = dda(&side, &ray_dir, info);
-		draw_line(screen_x, side, dist, info, ray_dir);
+		get_ray_dir(screen_x, info);
+		dist = dda(&side, info);
+		draw_line(screen_x, side, dist, info);
 	}
 }
