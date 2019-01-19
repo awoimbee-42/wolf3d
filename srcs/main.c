@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 12:29:51 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 12:39:37 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,17 @@ int		key_released(int key, void *param)
 
 t_vec2	set_mvt(int key, t_vec2 mvt, t_vec2 dir)
 {
+	double	div;
+
+	div = (key & 0x100) ? 1. : 10.;
 	if (key & 0x1)
-		mvt = vec2_add(mvt, vec2_divf(dir, (key & 0x100) ? 1. : 20.));
+		mvt = vec2_add(mvt, vec2_divf(dir, div));
 	if (key & 0x2)
-		mvt = vec2_sub(mvt, vec2_divf(dir, (key & 0x100) ? 1. : 20.));
+		mvt = vec2_sub(mvt, vec2_divf(dir, div));
 	if (key & 0x40)
-		mvt = vec2_add(mvt, rotate2d(vec2_divf(dir, 20.), -M_PI / 2));
+		mvt = vec2_add(mvt, rotate2d(vec2_divf(dir, div), -M_PI / 2));
 	if (key & 0x80)
-		mvt = vec2_add(mvt, rotate2d(vec2_divf(dir, 20.), M_PI / 2));
+		mvt = vec2_add(mvt, rotate2d(vec2_divf(dir, div), M_PI / 2));
 	return (mvt);
 }
 
