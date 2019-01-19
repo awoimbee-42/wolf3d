@@ -6,13 +6,13 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 13:17:37 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 15:22:28 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:31:08 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	draw_walls(t_int2 col, double dist, int side, t_info *inf)
+void	draw_walls(t_int2 *col, double dist, int side, t_info *inf)
 {
 	unsigned int	tex_x;
 	unsigned int	tex_y;
@@ -32,10 +32,10 @@ void	draw_walls(t_int2 col, double dist, int side, t_info *inf)
 	tex_x = (!side && inf->ray_dir.x > 0) || (side && inf->ray_dir.y < 0) ?
 		tex->width - (double)tex_x * tex->width / SHFT_32 - 1 :
 		(double)tex_x * tex->width / SHFT_32;
-	while (++start < col.y)
+	while (++start < col->y)
 	{
 		tex_y = ((start * 2 - SCREEN_H + line_h) * tex->height) / (line_h * 2);
-		inf->mlx.img.img_str[col.x + (start * inf->mlx.img.sizel / 4)] =
+		inf->mlx.img.img_str[col->x + (start * inf->mlx.img.sizel / 4)] =
 		tex->img_str[tex->width * tex_y + tex_x];
 	}
 }
@@ -45,7 +45,7 @@ void	draw_walls(t_int2 col, double dist, int side, t_info *inf)
 **		for each pixel between these 2, project a texture pixel
 */
 
-void	draw_tex_floor(t_int2 col, double dist, t_info *inf)
+void	draw_tex_floor(t_int2 *col, double dist, t_info *inf)
 {
 	t_vec2	wall_grnd;
 	double	ratio;
@@ -56,9 +56,9 @@ void	draw_tex_floor(t_int2 col, double dist, t_info *inf)
 	tex = &inf->m_info.texs[4];
 	wall_grnd = (t_vec2){inf->player.pos.x + inf->ray_dir.x * dist,
 						inf->player.pos.y + inf->ray_dir.y * dist};
-	while (col.y < SCREEN_H)
+	while (col->y < SCREEN_H)
 	{
-		ratio = (SCREEN_H / (2. * col.y - SCREEN_H)) / dist;
+		ratio = (SCREEN_H / (2. * col->y - SCREEN_H)) / dist;
 		ratio > 1. ? ratio = 1 : 0;
 		cur_pos = vec2_add(vec2_multf(wall_grnd, ratio),
 							vec2_multf(inf->player.pos, (1 - ratio)));
@@ -66,22 +66,22 @@ void	draw_tex_floor(t_int2 col, double dist, t_info *inf)
 						(int)(cur_pos.y * tex[0].height) % tex[0].height};
 		tex_coords[1] = (t_int2){(int)(cur_pos.x * tex[1].width) % tex[1].width,
 						(int)(cur_pos.y * tex[1].height) % tex[1].height};
-		pxl_to_img(&inf->mlx.img, col.x, col.y,
+		pxl_to_img(&inf->mlx.img, col->x, col->y,
 		tex[0].img_str[tex[0].width * tex_coords[0].y + tex_coords[0].x]);
-		pxl_to_img(&inf->mlx.img, col.x, SCREEN_H - col.y,
+		pxl_to_img(&inf->mlx.img, col->x, SCREEN_H - col->y,
 		tex[1].img_str[tex[1].width * tex_coords[1].y + tex_coords[1].x]);
-		++col.y;
+		++col->y;
 	}
 }
 
-void	draw_floor(t_int2 col, t_info *inf)
+void	draw_floor(t_int2 *col, t_info *inf)
 {
-	while (col.y < SCREEN_H)
+	while (col->y < SCREEN_H)
 	{
-		inf->mlx.img.img_str[col.x + col.y * inf->mlx.img.sizel / 4] = 0xf4a460;
+		inf->mlx.img.img_str[col->x + col->y * inf->mlx.img.sizel / 4] = 0xf4a460;
 		inf->mlx.img.img_str
-		[col.x + ((SCREEN_H - col.y - 1) * inf->mlx.img.sizel / 4)] = 0xb2b2ff;
-		++col.y;
+		[col->x + ((SCREEN_H - col->y - 1) * inf->mlx.img.sizel / 4)] = 0xb2b2ff;
+		++col->y;
 	}
 }
 
@@ -95,9 +95,9 @@ void	draw_line(int x, int side, double dist, t_info *info)
 	if ((floor_start.y = SCREEN_H / 2 + line_h / 2) > SCREEN_H
 	|| floor_start.y < 0)
 		floor_start.y = SCREEN_H;
-	draw_walls(floor_start, dist, side, info);
+	draw_walls(&floor_start, dist, side, info);
 	if (info->key_pressed & 0x20)
-		draw_tex_floor(floor_start, dist, info);
+		draw_tex_floor(&floor_start, dist, info);
 	else
-		draw_floor(floor_start, info);
+		draw_floor(&floor_start, info);
 }

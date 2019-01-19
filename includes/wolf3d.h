@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:20:50 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:30:47 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,9 +134,9 @@ void			err_handler(int err_id);
 int				splitlen(char **split);
 void			splitdel(char **split);
 
-void			draw_walls(t_int2 col, double dist, int side, t_info *inf);
-void			draw_tex_floor(t_int2 col, double dist, t_info *inf);
-void			draw_floor(t_int2 col, t_info *inf);
+void			draw_walls(t_int2 *col, double dist, int side, t_info *inf);
+void			draw_tex_floor(t_int2 *col, double dist, t_info *inf);
+void			draw_floor(t_int2 *col, t_info *inf);
 void			draw_line(int x, int side, double dist, t_info *info);
 
 void			show_usage(t_info *info);
