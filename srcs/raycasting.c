@@ -6,11 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:56:33 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 20:53:22 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <unistd.h>
 #include <math.h>
 #include "mlx.h"

@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/18 20:08:20 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 20:53:43 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "mlx.h"
-#include <stdio.h>
-
-#include <stdio.h>
 
 int			error_exit(int msg)
 {
