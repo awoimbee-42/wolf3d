@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:55:45 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 16:00:02 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,22 @@ void		show_usage(t_info *info)
 			"Floor/Ceiling  : Numpad 1");
 }
 
+void	mlx_flow(t_info *info)
+{
+	if (!(init_mlx(&info->mlx)))
+		err_handler(MLX_ERR);
+	info->m_info.texs = read_textures(info->mlx.mlx_ptr);
+	raycasting(info);
+	mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
+							info->mlx.img.img_ptr, 0, 0);
+	show_usage(info);
+	mlx_hook(info->mlx.win_ptr, 2, 0, key_pressed, info);
+	mlx_hook(info->mlx.win_ptr, 3, 0, key_released, info);
+	mlx_hook(info->mlx.win_ptr, 17, 0, close_win, NULL);
+	mlx_loop_hook(info->mlx.mlx_ptr, apply_key, info);
+	mlx_loop(info->mlx.mlx_ptr);
+}
+
 int			main(int ac, char **av)
 {
 	t_info	info;
@@ -77,20 +93,7 @@ int			main(int ac, char **av)
 		info.player.dir = (t_vec2){1, 0};
 		if ((err_id = read_file(av[1], &info)) == 1
 				&& (err_id = check_bounds(&info.m_info)) == 1)
-		{
-			if (!(init_mlx(&info.mlx)))
-				err_handler(MLX_ERR);
-			info.m_info.texs = read_textures(info.mlx.mlx_ptr);
-			raycasting(&info);
-			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
-									info.mlx.img.img_ptr, 0, 0);
-			show_usage(&info);
-			mlx_hook(info.mlx.win_ptr, 2, 0, key_pressed, &info);
-			mlx_hook(info.mlx.win_ptr, 3, 0, key_released, &info);
-			mlx_hook(info.mlx.win_ptr, 17, 0, close_win, NULL);
-			mlx_loop_hook(info.mlx.mlx_ptr, apply_key, &info);
-			mlx_loop(info.mlx.mlx_ptr);
-		}
+			mlx_flow(&info);
 	}
 	if (err_id != 1 || ac != 2)
 		err_handler(err_id);
