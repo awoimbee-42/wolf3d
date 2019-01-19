@@ -113,7 +113,7 @@ def saveFile():
             mapFile.write("\n")
         mapFile.close()
     else:
-        errorMsg.set("Il faut placer le spawn !")
+        errorMsg.set("You need to set the spawn point!")
 
 
 def setMapSize():
@@ -121,24 +121,22 @@ def setMapSize():
 
     tmpW = int(widthE.get())
     tmpH = int(heightE.get())
-    if 4 < tmpW < 1000 and 4 < tmpH < 1000:
+    if 4 < tmpW <= 400 and 4 < tmpH <= 400:
         mapWidth = tmpW
         mapHeight = tmpH
         askWin.destroy()
     else:
-        print("mauvaises dimensions !")
+        print("Bad dimensions !")
 
 def askSize():
     global askWin, widthE, heightE
     askWin = Tk()
     askWin.title("Quelles dimensions ?")
-
-    #Ajout d'un champ de saisie à la fenêtre
+    #Ajout de 2 champs de saisie à la fenêtre
     widthE = Entry(askWin)
     widthE.grid(row=1, column=1, padx=3, pady=3)
     heightE = Entry(askWin)
     heightE.grid(row=1, column=3, padx=3, pady=3)
-
     #Ajout d'un bouton à la fenêtre
     boutonOk = Button(askWin, text="OK", command=setMapSize)
     boutonOk.grid(row=2, column=2, padx=3, pady=3)
@@ -177,8 +175,6 @@ if __name__ == "__main__":
     #Initialisation du tableau
     board = [[0 if isntBorder(j, i) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
 
-
-
     ######## TABlEAU ########
     canvas = Canvas(root, width=caseSize*mapWidth, height=caseSize*mapHeight, bg="white", bd=0, highlightthickness=0)
     canvas.grid(column=1, row=1, padx=2, pady=2, columnspan=100)
@@ -186,7 +182,6 @@ if __name__ == "__main__":
     canvas.bind("<B1-Motion>", placeThing)
     canvas.bind("<Button-2>", placeThing)
     canvas.bind("<B2-Motion>", placeThing)
-
 
     ######## INTERFACE INTERACTIONS UTILISATEUR/PROGRAMME ########
     userPart = LabelFrame(root, bd=2, text="Utilisateur", bg="grey", fg="white", font=("Calibri", 12))
@@ -202,13 +197,10 @@ if __name__ == "__main__":
     devPart = LabelFrame(root, bd=2, text="Développeur", bg="grey", fg="white", font=("Calibri", 12))
     devPart.grid(column=99, row=2, padx=5, pady=2, sticky=W)
 
-
     errorMsg = StringVar()
     errorMsg.set("")
     cDisp1 = Label(devPart, textvariable=errorMsg, bg="grey", fg="red", font=("Calibri", 12))
     cDisp1.grid(column=1, row=1, padx=7, pady=5)
-
-
 
     #Fenêtre non-redimensionnable (provisoire)
     root.resizable(False, False)
