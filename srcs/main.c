@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:17:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 15:23:53 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void		init_player(t_player *player)
 {
-	player->pos = (t_vec2){-1, -1};
+	player->pos = (t_vec2){-1., -1.};
 	player->fov = 60;
 }
 
@@ -49,6 +49,22 @@ static int	close_win(void)
 	return (0);
 }
 
+void	show_usage(t_info *info)
+{
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 0, 0xffffff,
+			"Move           : Up/Down arrows");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 20, 0xffffff,
+			"Strife         : A/D keys");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 40, 0xffffff,
+			"Run            : Shift");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 60, 0xffffff,
+			"Rotate         : Left/Right arrows");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 80, 0xffffff,
+			"Minimap        : Numpad 0");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 100, 0xffffff,
+			"Floor/Ceiling  : Numpad 1");
+}
+
 int			main(int ac, char **av)
 {
 	t_info	info;
@@ -68,6 +84,7 @@ int			main(int ac, char **av)
 			raycasting(&info);
 			mlx_put_image_to_window(info.mlx.mlx_ptr, info.mlx.win_ptr,
 									info.mlx.img.img_ptr, 0, 0);
+			show_usage(&info);
 			mlx_hook(info.mlx.win_ptr, 2, 0, key_pressed, &info);
 			mlx_hook(info.mlx.win_ptr, 3, 0, key_released, &info);
 			mlx_hook(info.mlx.win_ptr, 17, 0, close_win, NULL);
