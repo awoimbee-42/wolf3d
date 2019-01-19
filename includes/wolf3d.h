@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 16:00:47 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 16:06:01 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ typedef struct	s_info
 	t_vec2		ray_dir;
 }				t_info;
 
+void			init_player(t_player *player);
+void			init_info(t_info *info);
+int				init_mlx(t_mlx *mlx);
+
 /*
 **	vec2_opX.c
 */
@@ -140,5 +144,6 @@ void			draw_floor(t_int2 *col, t_info *inf);
 void			draw_line(int x, int side, double dist, t_info *info);
 
 void			show_usage(t_info *info);
+int				close_win(void);
 
 #endif

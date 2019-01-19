@@ -6,7 +6,7 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/19 15:16:10 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/19 16:07:49 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,20 +30,9 @@ CFLAGS		=	-Wall -Wextra -Werror -Ofast
 MLXLIB		=	-L $(MLXDIR) -lmlx
 MLXFLAG		=	-framework OpenGL -framework Appkit
 SRCS=			\
-bresenham.c		\
-check_bounds.c	\
-draw_3d.c		\
-error.c			\
-keys_handlers.c	\
-main.c			\
-movements.c		\
-minimap.c		\
-raycasting.c	\
-read_file.c		\
-read_textures.c	\
-utils.c			\
-vec2_op0.c		\
-vec2_op1.c
+bresenham.c     error.c         main.c          raycasting.c    utils.c		\
+check_bounds.c  init.c          minimap.c       read_file.c     vec2_op0.c	\
+draw_3d.c       keys_handlers.c movements.c     read_textures.c vec2_op1.c
 HEADER		=	\
 wolf3d.h
 # RULES #
