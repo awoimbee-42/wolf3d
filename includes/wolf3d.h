@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 15:55:39 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/19 16:00:47 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ int				apply_key(void *param);
 void			move(t_vec2 *pos, t_vec2 dir, char **map);
 t_vec2			set_mvt(int key, t_vec2 mvt, t_vec2 dir);
 void			set_rot_mvt(int key, t_vec2 *dir);
-
 
 void			raycasting(t_info *info);
 
