@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 12:04:45 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 12:27:05 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@
 # define GNL_ERR	5
 # define READ_ERR	6
 # define TOKENS		"@01"
-# define WALL_S		2.
 # define SHFT_32	0x100000000UL
-# define SCREEN_W	1024
-# define SCREEN_H	720
+# define SCREEN_W	512
+# define SCREEN_H	512
 # define K_LEFT		123
 # define K_UP		126
 # define K_RIGHT	124
 # define K_DOWN		125
+# define K_A		0
+# define K_D		2
+# define K_SHIFT	257
 # define NUM_ZERO	82
 # define OPT_FLOOR	83
 # define ESC		53

@@ -6,11 +6,12 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 12:03:16 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 12:29:51 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <math.h>
 #include "mlx.h"
 #include "wolf3d.h"
 
@@ -57,6 +58,26 @@ void		move(t_vec2 *pos, t_vec2 dir, char **map)
 	*pos = vec2_add(*pos, dir);
 }
 
+void	set_key_mvt(int key, int *key_pressed)
+{
+	if (key == K_UP)
+		*key_pressed |= 0x1;
+	if (key == K_DOWN)
+		*key_pressed |= 0x2;
+	if (key == K_LEFT)
+		*key_pressed |= 0x4;
+	if (key == K_RIGHT)
+		*key_pressed |= 0x8;
+	if (key == K_A)
+		*key_pressed |= 0x40;
+	if (key == K_D)
+		*key_pressed |= 0x80;
+	if (key == K_SHIFT)
+		*key_pressed |= 0x100;
+}
+
+#include <stdio.h>
+
 int		key_pressed(int key, void *param)
 {
 	t_info	*info;
@@ -64,14 +85,7 @@ int		key_pressed(int key, void *param)
 	info = (t_info*)param;
 	if (key == ESC)
 		exit(0);
-	if (key == K_UP)
-		info->key_pressed |= 0x1;
-	if (key == K_DOWN)
-		info->key_pressed |= 0x2;
-	if (key == K_LEFT)
-		info->key_pressed |= 0x4;
-	if (key == K_RIGHT)
-		info->key_pressed |= 0x8;
+	set_key_mvt(key, &info->key_pressed);
 	if (key == NUM_ZERO || key == OPT_FLOOR)
 	{
 		info->key_pressed ^= (key == OPT_FLOOR) ? 0x20 : 0x10;
@@ -79,6 +93,7 @@ int		key_pressed(int key, void *param)
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
 			info->mlx.img.img_ptr, 0, 0);
 	}
+
 	return (0);
 }
 
@@ -95,16 +110,25 @@ int		key_released(int key, void *param)
 		info->key_pressed ^= 0x4;
 	if (key == K_RIGHT)
 		info->key_pressed ^= 0x8;
+	if (key == K_A)
+		info->key_pressed ^= 0x40;
+	if (key == K_D)
+		info->key_pressed ^= 0x80;
+	if (key == K_SHIFT)
+		info->key_pressed ^= 0x100;
 	return (0);
 }
 
 t_vec2	set_mvt(int key, t_vec2 mvt, t_vec2 dir)
 {
 	if (key & 0x1)
-		mvt = vec2_add(mvt, vec2_divf(dir, 20.));
+		mvt = vec2_add(mvt, vec2_divf(dir, (key & 0x100) ? 1. : 20.));
 	if (key & 0x2)
-		mvt = vec2_sub(mvt, vec2_divf(dir, 20.));
-	vec2_normalize(mvt);
+		mvt = vec2_sub(mvt, vec2_divf(dir, (key & 0x100) ? 1. : 20.));
+	if (key & 0x40)
+		mvt = vec2_add(mvt, rotate2d(vec2_divf(dir, 20.), -M_PI / 2));
+	if (key & 0x80)
+		mvt = vec2_add(mvt, rotate2d(vec2_divf(dir, 20.), M_PI / 2));
 	return (mvt);
 }
 
