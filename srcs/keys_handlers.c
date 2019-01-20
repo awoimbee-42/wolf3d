@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 15:10:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 16:06:38 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/20 13:59:47 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ int			key_pressed(int key, void *param)
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
 			info->mlx.img.img_ptr, 0, 0);
 	}
+	if (key == K_PLUS && info->fov < 3.)
+		info->fov += 0.1;
+	if (key == K_MINUS && info->fov > 0.33)
+		info->fov -= 0.1;
 	return (0);
 }
 
@@ -81,11 +85,13 @@ int			close_win(void)
 int			apply_key(void *param)
 {
 	t_info	*info;
+	t_img	*mnmap;
 	t_vec2	mvt;
 	int		key;
 
 	info = (t_info*)param;
 	key = info->key_pressed;
+	mnmap = &info->m_info.minimap;
 	if (key > 0)
 	{
 		mvt = (t_vec2){0., 0.};
@@ -96,7 +102,8 @@ int			apply_key(void *param)
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
 			info->mlx.img.img_ptr, 0, 0);
 		if (key & 0x10)
-			minimap(info);
+			mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
+				mnmap->img_ptr, mnmap->width * 3, 0);
 		show_usage(info);
 	}
 	return (0);

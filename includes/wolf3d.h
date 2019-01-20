@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 16:06:01 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/20 13:44:40 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define K_A		0
 # define K_D		2
 # define K_SHIFT	257
+# define K_PLUS		69
+# define K_MINUS	78
 # define NUM_ZERO	82
 # define OPT_FLOOR	83
 # define ESC		53
@@ -89,10 +91,11 @@ typedef struct	s_info
 	t_map		m_info;
 	t_mlx		mlx;
 	int			key_pressed;
+	double		fov;
 	t_vec2		ray_dir;
+	double		dist;
 }				t_info;
 
-void			init_player(t_player *player);
 void			init_info(t_info *info);
 int				init_mlx(t_mlx *mlx);
 
@@ -122,6 +125,8 @@ t_vec2			set_mvt(int key, t_vec2 mvt, t_vec2 dir);
 void			set_rot_mvt(int key, t_vec2 *dir);
 
 void			raycasting(t_info *info);
+void			ray_minimap(t_player *p, t_vec2 *r_dir, double *dist,
+		t_map *m_info);
 
 int				read_file(char *file, t_info *info);
 int				check_bounds(t_map *m_info);
