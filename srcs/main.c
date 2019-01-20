@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 17:56:20 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/20 14:21:20 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	show_usage(t_info *info)
 			"Minimap        : Numpad 0");
 	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 100, 0xffffff,
 			"Floor/Ceiling  : Numpad 1");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 120, 0xffffff,
+			"FOV            : Numpad +/-");
 }
 
 void	mlx_flow(t_info *info)
