@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 14:33:35 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 21:27:11 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/20 14:19:51 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int			error_exit(int msg)
 
 void		set_null(t_img *img)
 {
+	write(1, "Texture missing, replacing it with random color\n", 48);
 	img->img_str = (int*)(&img->img_str);
 	img->width = 1;
 	img->height = 1;
