@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 23:35:32 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 01:57:38 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,21 @@
 # define SCREEN_H	720
 
 # ifdef __linux__
+#  define K_PLUS	61
+#  define K_MINUS	45
 #  define K_LEFT	65361
 #  define K_UP		65362
 #  define K_RIGHT	65363
 #  define K_DOWN	65364
-#  define K_A		0
-#  define K_D		2
+#  define K_A		97
+#  define K_D		100
 #  define K_SHIFT	257
 #  define NUM_ZERO	48
 #  define OPT_FLOOR	49
-#  define ESC		53
+#  define ESC		65307
 # else
+#  define K_PLUS	000
+#  define K_MINUS	000
 #  define K_LEFT	123
 #  define K_UP		126
 #  define K_RIGHT	124
@@ -47,6 +51,12 @@
 #  define OPT_FLOOR	83
 #  define ESC		53
 # endif
+
+# include "mlx.h"
+# include <stdio.h> // printf in keyhandlers
+# include <stdlib.h>
+# include <stdlib.h>
+# include <math.h>
 
 typedef struct	s_img
 {
@@ -103,10 +113,11 @@ typedef struct	s_info
 	t_map		m_info;
 	t_mlx		mlx;
 	int			key_pressed;
+	double		fov;
 	t_vec2		ray_dir;
+	double		dist;
 }				t_info;
 
-void			init_player(t_player *player);
 void			init_info(t_info *info);
 int				init_mlx(t_mlx *mlx);
 
@@ -136,6 +147,8 @@ t_vec2			set_mvt(int key, t_vec2 mvt, t_vec2 dir);
 void			set_rot_mvt(int key, t_vec2 *dir);
 
 void			raycasting(t_info *info);
+void			ray_minimap(t_player *p, t_vec2 *r_dir, double *dist,
+		t_map *m_info);
 
 int				read_file(char *file, t_info *info);
 int				check_bounds(t_map *m_info);

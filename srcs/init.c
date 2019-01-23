@@ -6,24 +6,19 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 16:04:39 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 16:05:01 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/20 13:43:22 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "wolf3d.h"
 
-void		init_player(t_player *player)
-{
-	player->pos = (t_vec2){-1., -1.};
-	player->fov = 60;
-}
-
 void		init_info(t_info *info)
 {
-	init_player(&info->player);
+	info->player.pos = (t_vec2){-1., -1.};
 	info->options = 0;
 	info->key_pressed = 0;
+	info->fov = 1.;
 }
 
 int			init_mlx(t_mlx *mlx)

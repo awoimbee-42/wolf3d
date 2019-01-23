@@ -6,13 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:49:22 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 23:32:36 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 01:57:16 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <math.h>
-#include "mlx.h"
 #include "wolf3d.h"
 
 void	show_usage(t_info *info)
@@ -29,6 +26,8 @@ void	show_usage(t_info *info)
 			"Minimap        : Numpad 0");
 	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 100, 0xffffff,
 			"Floor/Ceiling  : Numpad 1");
+	mlx_string_put(info->mlx.mlx_ptr, info->mlx.win_ptr, 10, 120, 0xffffff,
+			"FOV            : Numpad +/-");
 }
 
 void	mlx_flow(t_info *info)

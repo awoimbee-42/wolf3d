@@ -12,7 +12,7 @@
 
 NAME = wolf3d
 
-CC = gcc
+CC = clang
 
 CFLAGS		=	-Wall -Wextra -Werror -Ofast
 

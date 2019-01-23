@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 23:28:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 01:49:30 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,19 @@ static double	dda(int *side, t_info *inf)
 
 void			raycasting(t_info *info)
 {
-	double		dist;
 	int			screen_x;
 	int			side;
 
 	screen_x = -1;
-	info->player.cam_dir = vec2_normalize(
-								rotate2d(info->player.dir, M_PI / 2.));
+	info->player.cam_dir = vec2_multf(rotate2d(info->player.dir, M_PI / 2.),
+			info->fov);
+	minimap(info);
 	while (++screen_x < SCREEN_W)
 	{
 		side = -1;
 		get_ray_dir(screen_x, info);
-		dist = dda(&side, info);
-		draw_line(screen_x, side, dist, info);
+		info->dist = dda(&side, info);
+		ray_minimap(&info->player, &info->ray_dir, &info->dist, &info->m_info);
+		draw_line(screen_x, side, info->dist, info);
 	}
 }

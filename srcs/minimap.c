@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 09:30:25 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 23:36:14 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 01:49:25 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,21 @@ void	draw_dir(t_player *player, t_img *minimap, t_map *m_info)
 	fill_pixel(minimap, intpos, intdir, 0x0);
 }
 
+void	ray_minimap(t_player *p, t_vec2 *r_dir, double *dist, t_map *m_info)
+{
+	t_vec2	r_pos;
+	t_int2	p_intpos;
+	t_int2	r_intpos;
+
+	r_pos = vec2_multf(*r_dir, *dist);
+	r_pos = vec2_add(p->pos, r_pos);
+	p_intpos = (t_int2){(int)(p->pos.x * m_info->minimap.width / m_info->width),
+	(int)(p->pos.y * m_info->minimap.height / m_info->height)};
+	r_intpos = (t_int2){(int)(r_pos.x * m_info->minimap.width / m_info->width),
+	(int)(r_pos.y * m_info->minimap.height / m_info->height)};
+	fill_pixel(&m_info->minimap, p_intpos, r_intpos, 0x00ff00);
+}
+
 void	minimap(t_info *info)
 {
 	t_img	*mnmap;
@@ -83,6 +98,4 @@ void	minimap(t_info *info)
 	draw_circle(info->player.pos.x * mnmap->width / info->m_info.width,
 		info->player.pos.y * mnmap->height / info->m_info.height, 3., mnmap);
 	draw_dir(&info->player, &info->m_info.minimap, &info->m_info);
-	mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
-		mnmap->img_ptr, mnmap->width * 3, 0);
 }
