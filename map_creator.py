@@ -70,7 +70,7 @@ def placeThing(event):
             #Si on clique sur une case noire, elle devient blanche
             elif board[event.y][event.x] == 1:
                 board[event.y][event.x] = 0
-        elif event.num == 2 or event.state == 512:
+        elif event.num == 3 or event.state == 1024:
             #click droit
             if board[event.y][event.x] != 64:
                 board[event.y][event.x] = 64
@@ -91,7 +91,8 @@ def clearAll():
     global board, step
     #Ré-initialisation des étapes
     step = 0
-    board = [[0 if isntBorder(j, i) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
+    board = [[0 if isntBorder(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
+    isPlayerSet.isSet = False
     #Affichage
     display()
 
@@ -112,6 +113,7 @@ def saveFile():
                     mapFile.write("0")
             mapFile.write("\n")
         mapFile.close()
+        root.destroy()
     else:
         errorMsg.set("You need to set the spawn point!")
 
@@ -139,6 +141,7 @@ def askSize():
     heightE.grid(row=1, column=3, padx=3, pady=3)
     #Ajout d'un bouton à la fenêtre
     boutonOk = Button(askWin, text="OK", command=setMapSize)
+    askWin.bind("<Return>", setMapSize)
     boutonOk.grid(row=2, column=2, padx=3, pady=3)
     askWin.mainloop()
 
@@ -173,15 +176,15 @@ if __name__ == "__main__":
     #Fond de la fenêtre
     root.configure(background="grey")
     #Initialisation du tableau
-    board = [[0 if isntBorder(j, i) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
+    board = [[0 if isntBorder(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
 
     ######## TABlEAU ########
     canvas = Canvas(root, width=caseSize*mapWidth, height=caseSize*mapHeight, bg="white", bd=0, highlightthickness=0)
     canvas.grid(column=1, row=1, padx=2, pady=2, columnspan=100)
     canvas.bind("<Button-1>", placeThing) #Localisation des clics dans le canvas3
     canvas.bind("<B1-Motion>", placeThing)
-    canvas.bind("<Button-2>", placeThing)
-    canvas.bind("<B2-Motion>", placeThing)
+    canvas.bind("<Button-3>", placeThing)
+    canvas.bind("<B3-Motion>", placeThing)
 
     ######## INTERFACE INTERACTIONS UTILISATEUR/PROGRAMME ########
     userPart = LabelFrame(root, bd=2, text="Utilisateur", bg="grey", fg="white", font=("Calibri", 12))

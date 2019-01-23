@@ -6,13 +6,13 @@
 #    By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/01 02:51:44 by wta               #+#    #+#              #
-#    Updated: 2019/01/19 23:37:13 by awoimbee         ###   ########.fr        #
+#    Updated: 2019/01/23 02:17:33 by awoimbee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = wolf3d
 
-CC = clang
+CC = gcc
 
 CFLAGS		=	-Wall -Wextra -Werror -Ofast
 
