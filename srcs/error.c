@@ -6,14 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:02 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 23:27:06 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:26:02 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
-#include <string.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "wolf3d.h"
 
 int		ft_strdelerr(char *line, int err_id)

@@ -6,12 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 16:14:56 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 13:44:00 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:27:41 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-#include <math.h>
 
 t_vec2		vec2_add(t_vec2 a, const t_vec2 b)
 {

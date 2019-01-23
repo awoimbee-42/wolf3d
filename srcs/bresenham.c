@@ -6,11 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/18 12:59:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/19 23:34:47 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:25:46 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "wolf3d.h"
 
 static int	is_outside_img(const t_int2 *p, const t_img *img)

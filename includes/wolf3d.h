@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/23 01:57:38 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:29:22 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@
 # endif
 
 # include "mlx.h"
+# include "libft.h"
 # include <stdio.h> // printf in keyhandlers
 # include <stdlib.h>
-# include <stdlib.h>
 # include <math.h>
+# include <errno.h>
+# include <string.h>
+# include <unistd.h>
 
 typedef struct	s_img
 {

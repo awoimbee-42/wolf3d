@@ -6,12 +6,11 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 14:37:55 by wta               #+#    #+#             */
-/*   Updated: 2019/01/18 23:44:07 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:27:58 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdlib.h>
+#include "wolf3d.h"
 
 int		splitlen(char **split)
 {

@@ -6,11 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 13:44:12 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/19 15:07:49 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:27:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "wolf3d.h"
 
 /*

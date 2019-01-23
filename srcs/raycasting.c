@@ -6,13 +6,10 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 03:57:58 by wta               #+#    #+#             */
-/*   Updated: 2019/01/23 01:49:30 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/01/23 17:27:12 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <math.h>
-#include "mlx.h"
 #include "wolf3d.h"
 
 static void		get_ray_dir(int x, t_info *info)

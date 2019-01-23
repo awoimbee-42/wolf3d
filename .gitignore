@@ -2,4 +2,6 @@ obj/
 *.o
 *.swp
 wolf3d
-libft.a
+*.a
+map
+*.gen

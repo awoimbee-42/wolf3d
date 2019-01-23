@@ -4,12 +4,10 @@
 # wta & awoimbee | Wolf3D Map Generator                                        #
 ################################################################################
 
-
-#Importation de divers modules utiles
 from tkinter import *
 from random import randint
 import time
-
+import sys
 
 class Player:
     def __init__(self, isSet = False, pos = (0, 0)):
@@ -19,6 +17,7 @@ class Player:
 ##########################################
 #              FONCTIONS                 #
 ##########################################
+
 def display():
     "Affiche un tableau dans le canvas à partir de la liste"
     global board
@@ -84,13 +83,10 @@ def placeThing(event):
     #Affichage
     display()
 
-
-
 def clearAll():
     "Efface toute les cellules"
-    global board, step
+    global board, isPlayerSet
     #Ré-initialisation des étapes
-    step = 0
     board = [[0 if isntBorder(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
     isPlayerSet.isSet = False
     #Affichage
@@ -113,6 +109,7 @@ def saveFile():
                     mapFile.write("0")
             mapFile.write("\n")
         mapFile.close()
+        print("You can now run:\n\t./wolf3d map")
         root.destroy()
     else:
         errorMsg.set("You need to set the spawn point!")
@@ -157,10 +154,17 @@ if __name__ == "__main__":
     #Taille d'une case en pixels
     caseSize = 20
     #Largeur du tableau
-    mapWidth = 1
-    mapHeight = 1
-    askSize()
-    if mapWidth < 4 or mapHeight < 4:
+    if (len(sys.argv) != 3):
+        print("quicktip:\n"
+            "you can directly specify the desired width and height when launching this script :\n"
+            "./map_creator.py <width> <height>")
+        mapWidth = 1
+        mapHeight = 1
+        askSize()
+    else :
+        mapWidth = int(sys.argv[1])
+        mapHeight = int(sys.argv[2])
+    if mapWidth < 4 or mapHeight < 4 or mapWidth > 400 or mapHeight > 400:
         exit(0)
     elif mapWidth > 256 or mapHeight > 256:
         caseSize = 2
@@ -221,7 +225,6 @@ if __name__ == "__main__":
         for j in range(len(board[0])):
             canvas.create_line(a, b, a+mapWidth*caseSize, b, fill="grey")
             b += caseSize
-
 
     #Activation du gestionnaire d'évènement de la fenêtre
     display()
