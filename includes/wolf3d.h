@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/14 09:48:50 by wta               #+#    #+#             */
-/*   Updated: 2019/01/23 17:29:22 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/04/14 03:59:32 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 #  define K_DOWN	65364
 #  define K_A		97
 #  define K_D		100
-#  define K_SHIFT	257
+#  define K_SHIFT	65505
 #  define NUM_ZERO	48
 #  define OPT_FLOOR	49
 #  define ESC		65307
@@ -54,7 +54,6 @@
 
 # include "mlx.h"
 # include "libft.h"
-# include <stdio.h> // printf in keyhandlers
 # include <stdlib.h>
 # include <math.h>
 # include <errno.h>

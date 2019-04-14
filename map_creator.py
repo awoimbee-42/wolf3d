@@ -152,7 +152,7 @@ if __name__ == "__main__":
     isPlayerSet = Player()
     last_drag = -1
     #Taille d'une case en pixels
-    caseSize = 20
+    caseSize = 15
     #Largeur du tableau
     if (len(sys.argv) != 3):
         print("quicktip:\n"
@@ -167,13 +167,13 @@ if __name__ == "__main__":
     if mapWidth < 4 or mapHeight < 4 or mapWidth > 400 or mapHeight > 400:
         exit(0)
     elif mapWidth > 256 or mapHeight > 256:
-        caseSize = 2
+        caseSize = 3
     elif mapWidth > 128 or mapHeight > 128:
         caseSize = 5
     elif mapWidth > 90 or mapHeight > 90:
-        caseSize = 10
+        caseSize = 7
     elif mapWidth > 60 or mapHeight > 60:
-        caseSize = 15
+        caseSize = 9
     #Initialisation de la fenêtre
     root = Tk()
     root.title("Wolf3D map generator")

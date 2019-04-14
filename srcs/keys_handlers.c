@@ -6,7 +6,7 @@
 /*   By: awoimbee <awoimbee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/19 15:10:33 by awoimbee          #+#    #+#             */
-/*   Updated: 2019/01/23 01:54:29 by awoimbee         ###   ########.fr       */
+/*   Updated: 2019/04/14 03:59:24 by awoimbee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,25 @@ int			key_pressed(int key, void *param)
 	t_info	*info;
 
 	info = (t_info*)param;
-
-	printf("keypressed: %d\n", key);
 	if (key == ESC)
 		exit(0);
 	set_key_mvt(key, &info->key_pressed);
-	if (key == NUM_ZERO || key == OPT_FLOOR)
+	if (key == NUM_ZERO || key == OPT_FLOOR
+		|| (key == K_PLUS && info->fov < 3.)
+		|| (key == K_MINUS && info->fov > 0.33))
 	{
-		info->key_pressed ^= (key == OPT_FLOOR) ? 0x20 : 0x10;
+		if (key == OPT_FLOOR)
+			info->key_pressed ^= 0x20;
+		else if (key == NUM_ZERO)
+			info->key_pressed ^= 0x10;
+		else if (key == K_PLUS)
+			info->fov += 0.1;
+		else if (key == K_MINUS)
+			info->fov -= 0.1;
 		raycasting(info);
 		mlx_put_image_to_window(info->mlx.mlx_ptr, info->mlx.win_ptr,
 			info->mlx.img.img_ptr, 0, 0);
 	}
-	if (key == K_PLUS && info->fov < 3.)
-		info->fov += 0.1;
-	if (key == K_MINUS && info->fov > 0.33)
-		info->fov -= 0.1;
 	return (0);
 }
 
