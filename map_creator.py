@@ -4,19 +4,13 @@
 # wta & awoimbee | Wolf3D Map Generator                                        #
 ################################################################################
 
-from tkinter import *
-from random import randint
-import time
+import tkinter as tk
 import sys
 
 class Player:
-    def __init__(self, isSet = False, pos = (0, 0)):
+    def __init__(self, isSet=False, pos=(0, 0)):
         self.isSet = isSet
         self.pos = pos
-
-##########################################
-#              FONCTIONS                 #
-##########################################
 
 def display():
     "Affiche un tableau dans le canvas à partir de la liste"
@@ -30,76 +24,85 @@ def display():
     #Parcours du tableau de long en large
     for row in range(len(board)):
         for column in range(len(board[0])):
-            #On trace seulement si la case est vivante
             if board[row][column] == 1:
-                canvas.create_rectangle(x, y, x+caseSize, y+caseSize, fill="black", tag="cell", outline="grey")
+                canvas.create_rectangle(
+                    x,
+                    y,
+                    x+caseSize,
+                    y+caseSize,
+                    fill="black",
+                    tag="cell",
+                    outline="grey"
+                )
             elif board[row][column] == 64:
-                canvas.create_rectangle(x, y, x+caseSize, y+caseSize, fill="green", tag="cell", outline="grey")
-            #On passe a la cellule suivante
+                canvas.create_rectangle(
+                    x,
+                    y,
+                    x+caseSize,
+                    y+caseSize,
+                    fill="green",
+                    tag="cell",
+                    outline="grey"
+                )
             x += caseSize
-            #Retour à la ligne
             if x >= mapWidth*caseSize:
                 x = 0
         y += caseSize
 
-def isntBorder(x, y):
-    return (y > 0 and y < mapHeight - 1 and x > 0 and x < mapWidth - 1)
+def is_not_border(x, y):
+    return 0 < y < mapHeight - 1 and 0 < x < mapWidth - 1
 
 
 def placeThing(event):
-    "Change la couleur de la case cliquée"
-    global last_drag;
-
-    #Calcul et affichage des coordonnées dans la case dans le tableau
+    ## canvas coordinates -> last_dragboard coordinates
     event.x //= caseSize
     event.y //= caseSize
 
     if event.state != 0:
-        if last_drag == (event.x, event.y, event.state):
+        if placeThing.lastDrag == (event.x, event.y, event.state):
             return
         else:
-            last_drag = (event.x, event.y, event.state)
+            placeThing.lastDrag = (event.x, event.y, event.state)
 
-    if isntBorder(event.x, event.y):
-        #click gauche
+    if is_not_border(event.x, event.y):
+        isPlayerLoc = board[event.y][event.x] == 64
+        ## Left click
         if event.state == 256 or event.num == 1:
-            #Si on clique sur une case blanche, elle devient noire
-            if board[event.y][event.x] != 1:
-                board[event.y][event.x] = 1
-            #Si on clique sur une case noire, elle devient blanche
-            elif board[event.y][event.x] == 1:
-                board[event.y][event.x] = 0
+            if isPlayerLoc:
+                player.isSet = False
+            board[event.y][event.x] = int(not board[event.y][event.x])
         elif event.num == 3 or event.state == 1024:
-            #click droit
-            if board[event.y][event.x] != 64:
+            ## Right click
+            if not isPlayerLoc:
                 board[event.y][event.x] = 64
-                if isPlayerSet.isSet == True:
-                    board[isPlayerSet.pos[1]][isPlayerSet.pos[0]] = 0
-                isPlayerSet.isSet = True
-                isPlayerSet.pos = (event.x, event.y)
+                if player.isSet:
+                    board[player.pos[1]][player.pos[0]] = 0
+                player.isSet = True
+                player.pos = (event.x, event.y)
             else:
                 board[event.y][event.x] = 0
-                isPlayerSet.isSet = False
+                player.isSet = False
     #Affichage
     display()
+placeThing.lastDrag = -1
+
 
 def clearAll():
     "Efface toute les cellules"
-    global board, isPlayerSet
+    global board, player
     #Ré-initialisation des étapes
-    board = [[0 if isntBorder(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
-    isPlayerSet.isSet = False
+    board = [[0 if is_not_border(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
+    player.isSet = False
     #Affichage
     display()
 
 def saveFile():
-    if (isPlayerSet.isSet):
+    if player.isSet:
         mapFile = open("./map", "w")
         mapFile.write(str(mapWidth) + " " + str(mapHeight) + "\n")
-        x, y = 0, 0
         #Parcours du tableau de long en large
-        for row in range(len(board)):
-            for column in range(len(board[0])):
+        for row, _ in enumerate(board):
+            for column, _ in enumerate(board[0]):
                 #On trace seulement si la case est vivante
                 if board[row][column] == 1:
                     mapFile.write("1")
@@ -116,10 +119,10 @@ def saveFile():
 
 
 def setMapSize():
-    global askWin, mapWidth, mapHeight, widthE, heightE
+    global askWin, mapWidth, mapHeight
 
-    tmpW = int(widthE.get())
-    tmpH = int(heightE.get())
+    tmpW = int(askSize.e_w.get())
+    tmpH = int(askSize.e_h.get())
     if 4 < tmpW <= 400 and 4 < tmpH <= 400:
         mapWidth = tmpW
         mapHeight = tmpH
@@ -128,18 +131,18 @@ def setMapSize():
         print("Bad dimensions !")
 
 def askSize():
-    global askWin, widthE, heightE
-    askWin = Tk()
+    global askWin
+    askWin = tk.Tk()
     askWin.title("Quelles dimensions ?")
     #Ajout de 2 champs de saisie à la fenêtre
-    widthE = Entry(askWin)
-    widthE.grid(row=1, column=1, padx=3, pady=3)
-    heightE = Entry(askWin)
-    heightE.grid(row=1, column=3, padx=3, pady=3)
+    askSize.e_w = tk.Entry(askWin)
+    askSize.e_w.grid(row=1, column=1, padx=3, pady=3)
+    askSize.e_h = tk.Entry(askWin)
+    askSize.e_h.grid(row=1, column=3, padx=3, pady=3)
     #Ajout d'un bouton à la fenêtre
-    boutonOk = Button(askWin, text="OK", command=setMapSize)
+    ok_button = tk.Button(askWin, text="OK", command=setMapSize)
     askWin.bind("<Return>", setMapSize)
-    boutonOk.grid(row=2, column=2, padx=3, pady=3)
+    ok_button.grid(row=2, column=2, padx=3, pady=3)
     askWin.mainloop()
 
 ##########################################
@@ -147,85 +150,95 @@ def askSize():
 ##########################################
 
 if __name__ == "__main__":
-
-    ######## INITIALISATION DES VARIABLES ########
-    isPlayerSet = Player()
-    last_drag = -1
-    #Taille d'une case en pixels
-    caseSize = 15
-    #Largeur du tableau
-    if (len(sys.argv) != 3):
-        print("quicktip:\n"
-            "you can directly specify the desired width and height when launching this script :\n"
-            "./map_creator.py <width> <height>")
-        mapWidth = 1
-        mapHeight = 1
+    global mapWidth, mapHeight
+    ######## INIT VARS ########
+    player = Player()
+    if len(sys.argv) != 3:
+        print(
+            "You can directly specify the width and height:\n"
+            "./map_creator.py <width> <height>"
+        )
         askSize()
-    else :
+    else:
         mapWidth = int(sys.argv[1])
         mapHeight = int(sys.argv[2])
     if mapWidth < 4 or mapHeight < 4 or mapWidth > 400 or mapHeight > 400:
-        exit(0)
-    elif mapWidth > 256 or mapHeight > 256:
-        caseSize = 3
-    elif mapWidth > 128 or mapHeight > 128:
-        caseSize = 5
-    elif mapWidth > 90 or mapHeight > 90:
-        caseSize = 7
-    elif mapWidth > 60 or mapHeight > 60:
-        caseSize = 9
-    #Initialisation de la fenêtre
-    root = Tk()
-    root.title("Wolf3D map generator")
-    #Fond de la fenêtre
-    root.configure(background="grey")
-    #Initialisation du tableau
-    board = [[0 if isntBorder(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
+        print("Invalid map size")
+        sys.exit(0)
+    caseSize = int(max(-0.15 * max(mapWidth, mapHeight * (16/9)) + 30, 4))
+    board = [[0 if is_not_border(i, j) else 1 for i in range(mapWidth)] for j in range(mapHeight)]
 
-    ######## TABlEAU ########
-    canvas = Canvas(root, width=caseSize*mapWidth, height=caseSize*mapHeight, bg="white", bd=0, highlightthickness=0)
+    ######## INIT WINDOW ########
+    root = tk.Tk()
+    root.title("Wolf3D map generator")
+    root.configure(background="grey")
+    ## Board canvas
+    canvas = tk.Canvas(
+        root,
+        width=caseSize*mapWidth,
+        height=caseSize*mapHeight,
+        bg="white",
+        bd=0,
+        highlightthickness=0
+    )
     canvas.grid(column=1, row=1, padx=2, pady=2, columnspan=100)
     canvas.bind("<Button-1>", placeThing) #Localisation des clics dans le canvas3
     canvas.bind("<B1-Motion>", placeThing)
     canvas.bind("<Button-3>", placeThing)
     canvas.bind("<B3-Motion>", placeThing)
-
-    ######## INTERFACE INTERACTIONS UTILISATEUR/PROGRAMME ########
-    userPart = LabelFrame(root, bd=2, text="Utilisateur", bg="grey", fg="white", font=("Calibri", 12))
-    userPart.grid(column=100, row=2, padx=5, pady=2, sticky=W)
-    #Bouton de save
-    saveButton = Button(userPart, text="sauvegarder", command=saveFile, bg="#545556", fg="white", relief="flat", font=("Calibri", 12))
+    ## Buttons frame
+    userPart = tk.LabelFrame(
+        root,
+        bd=2,
+        text="Utilisateur",
+        bg="grey",
+        fg="white",
+        font=("Calibri", 12)
+    )
+    userPart.grid(column=100, row=2, padx=5, pady=2, sticky=tk.W)
+    ### Save button
+    saveButton = tk.Button(
+        userPart,
+        text="sauvegarder",
+        command=saveFile,
+        bg="#545556",
+        fg="white",
+        relief="flat",
+        font=("Calibri", 12)
+    )
     saveButton.grid(column=1, row=1, padx=7, pady=5)
-    #Bouton de clear
-    clearButton = Button(userPart, text="Effacer tout", command=clearAll, bg="#545556", fg="white", relief="flat", font=("Calibri", 12))
+    ### Clear button
+    clearButton = tk.Button(
+        userPart,
+        text="Tout effacer",
+        command=clearAll,
+        bg="#545556",
+        fg="white",
+        relief="flat",
+        font=("Calibri", 12)
+    )
     clearButton.grid(column=1, row=2, padx=7, pady=5)
-
-    ######## INTERFACE INFORMATION ########
-    devPart = LabelFrame(root, bd=2, text="Développeur", bg="grey", fg="white", font=("Calibri", 12))
-    devPart.grid(column=99, row=2, padx=5, pady=2, sticky=W)
-
-    errorMsg = StringVar()
+    ### Info frame
+    devPart = tk.LabelFrame(
+        root,
+        bd=2,
+        text="Développeur",
+        bg="grey",
+        fg="white",
+        font=("Calibri", 12)
+    )
+    devPart.grid(column=99, row=2, padx=5, pady=2, sticky=tk.W)
+    errorMsg = tk.StringVar()
     errorMsg.set("")
-    cDisp1 = Label(devPart, textvariable=errorMsg, bg="grey", fg="red", font=("Calibri", 12))
+    cDisp1 = tk.Label(devPart, textvariable=errorMsg, bg="grey", fg="red", font=("Calibri", 12))
     cDisp1.grid(column=1, row=1, padx=7, pady=5)
-
-    #Fenêtre non-redimensionnable (provisoire)
+    ## :/
     root.resizable(False, False)
-
-    ######## TRACAGE DU QUADRILLAGE ########
-    #Traçage du quadrillage vertical
-    a,b = 0,0
+    ## Draw board lines
+    for i in range(len(board[0])):
+        canvas.create_line(i * caseSize, 0, i * caseSize, mapHeight * caseSize, fill="grey")
     for i in range(len(board)):
-        for j in range(len(board[0])):
-            canvas.create_line(a, b, a, b+mapHeight*caseSize, fill="grey")
-            a += caseSize
-    #Traçage d'un quadrillage horizontal
-    a, b = 0,0
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            canvas.create_line(a, b, a+mapWidth*caseSize, b, fill="grey")
-            b += caseSize
-
-    #Activation du gestionnaire d'évènement de la fenêtre
+        canvas.create_line(0, i * caseSize, mapWidth * caseSize, i * caseSize, fill="grey")
+    ## Events loop
     display()
     root.mainloop()
